@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4f46e5">
+  <title>DuoPilot</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <p class="kicker">Pilotez votre quotidien ensemble</p>
+        <h1>DuoPilot</h1>
+      </div>
+      <button id="installBtn" class="secondary hidden">Installer l’app</button>
+    </header>
+
+    <section class="stats">
+      <article><span>À venir</span><strong id="upcoming">0</strong></article>
+      <article><span>Cette semaine</span><strong id="week">0</strong></article>
+      <article><span>En retard</span><strong id="late">0</strong></article>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab active" data-owner="all">Vue globale</button>
+      <button class="tab" data-owner="Christelle">Christelle</button>
+      <button class="tab" data-owner="Armand">Armand</button>
+      <button class="tab" data-owner="Commun">Commun</button>
+    </nav>
+
+    <section class="toolbar">
+      <div>
+        <h2 id="titleView">Toutes les échéances</h2>
+        <p id="dateNow"></p>
+      </div>
+      <button id="addBtn" class="primary">+ Ajouter</button>
+    </section>
+
+    <section class="filters">
+      <select id="categoryFilter">
+        <option value="all">Toutes les catégories</option>
+        <option>Véhicule</option>
+        <option>Maison</option>
+        <option>Administratif</option>
+        <option>Santé</option>
+        <option>Professionnel</option>
+        <option>Voyage</option>
+        <option>Autre</option>
+      </select>
+      <select id="statusFilter">
+        <option value="all">Tous les statuts</option>
+        <option value="todo">À faire</option>
+        <option value="done">Terminées</option>
+        <option value="overdue">En retard</option>
+      </select>
+    </section>
+
+    <section id="taskList" class="task-list"></section>
+    <p id="empty" class="empty hidden">Aucune échéance à afficher.</p>
+  </div>
+
+  <dialog id="modal">
+    <form id="taskForm">
+      <div class="modal-head">
+        <div>
+          <p class="kicker">Nouvelle échéance</p>
+          <h2>Ajouter une tâche</h2>
+        </div>
+        <button type="button" id="closeBtn" class="icon">×</button>
+      </div>
+
+      <div class="grid">
+        <label class="full">Titre
+          <input name="title" required placeholder="Ex. Révision de la Mercedes">
+        </label>
+
+        <label>Responsable
+          <select name="owner">
+            <option>Christelle</option>
+            <option>Armand</option>
+            <option>Commun</option>
+          </select>
+        </label>
+
+        <label>Catégorie
+          <select name="category">
+            <option>Véhicule</option>
+            <option>Maison</option>
+            <option>Administratif</option>
+            <option>Santé</option>
+            <option>Professionnel</option>
+            <option>Voyage</option>
+            <option>Autre</option>
+          </select>
+        </label>
+
+        <label>Date
+          <input name="dueDate" type="date" required>
+        </label>
+
+        <label>Priorité
+          <select name="priority">
+            <option value="normal">Normale</option>
+            <option value="important">Importante</option>
+            <option value="urgent">Urgente</option>
+          </select>
+        </label>
+
+        <fieldset class="full">
+          <legend>Alertes</legend>
+          <label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label>
+          <label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label>
+          <label><input type="checkbox" name="alerts" value="1"> La veille</label>
+          <label><input type="checkbox" name="alerts" value="0"> Le jour même</label>
+        </fieldset>
+
+        <label class="full">Notes
+          <textarea name="notes" rows="3" placeholder="Informations utiles..."></textarea>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="cancelBtn" class="secondary">Annuler</button>
+        <button type="submit" class="primary">Enregistrer</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
