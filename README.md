@@ -1,26 +1,16 @@
-# DuoPilot V1.1
+# DuoPilot V1.2 CORRECTED
 
-## Thèmes contextuels
+Corrections vérifiées :
 - Vue d’ensemble : gris
 - SONKI : rose clair
-- SONKA : bleu Outlook assombri d’environ 5 %
+- SONKA : bleu assombri d’environ 5 %
 - À deux : gris bleuté
+- + Ajouter > Univers : champ texte libre, sans liste déroulante
+- création automatique d’un nouvel univers à l’enregistrement
+- migration automatique Christelle → SONKI et Armand → SONKA pour les anciennes données locales
 
-## Univers
-Dans la fenêtre « Nouvelle échéance », le champ Univers n’est plus une liste déroulante.
-Il est désormais totalement libre :
-- saisir « Banque »
-- saisir « Animaux »
-- saisir « École »
-- ou tout autre libellé
+Summary GitHub conseillé :
+V1.2 - Corrected themes + free universe field
 
-Lors de l’enregistrement :
-- si l’univers existe déjà, DuoPilot le réutilise ;
-- s’il n’existe pas, DuoPilot le crée automatiquement ;
-- il apparaît ensuite dans la section Univers de la barre latérale.
-
-## Summary GitHub conseillé
-V1.1 - Free universe field + contextual colors
-
-## Site
+Site :
 https://yarmkof.github.io/DuoPilot/

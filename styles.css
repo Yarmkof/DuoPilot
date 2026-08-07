@@ -947,3 +947,97 @@ body[data-theme="duo"] .desktop-appbar {
 #taskCategory {
   width:100%;
 }
+
+
+/* =========================================================
+   DuoPilot V1.2 CORRECTED — verified contextual themes
+   ========================================================= */
+
+/* Vue d'ensemble = GRIS */
+body[data-theme="overview"] {
+  background: linear-gradient(135deg,#f2f3f5 0%,#e4e7ea 55%,#d8dde2 100%) !important;
+}
+body[data-theme="overview"] .sidebar {
+  background: linear-gradient(180deg,#646b73 0%,#555c64 52%,#444b52 100%) !important;
+}
+body[data-theme="overview"] .desktop-appbar {
+  background: linear-gradient(90deg,#666d75 0%,#7a8087 58%,#90959b 100%) !important;
+}
+body[data-theme="overview"] .main-panel {
+  background: linear-gradient(180deg,rgba(247,248,249,.96),rgba(226,229,232,.90)) !important;
+}
+body[data-theme="overview"] .hero,
+body[data-theme="overview"] .workspace-main,
+body[data-theme="overview"] .insight-card,
+body[data-theme="overview"] .pulse-strip article {
+  background: linear-gradient(180deg,#fff 0%,#f4f5f6 100%) !important;
+  border-color:#cfd3d7 !important;
+}
+body[data-theme="overview"] .primary-action,
+body[data-theme="overview"] .calendar-day.today { background:#626970 !important; }
+body[data-theme="overview"] .focus-meter span { background:linear-gradient(90deg,#626970,#a0a5aa) !important; }
+
+/* SONKI = ROSE CLAIR */
+body[data-theme="sonki"] {
+  background: linear-gradient(135deg,#fff8fb 0%,#fcecf2 52%,#f7dfe8 100%) !important;
+}
+body[data-theme="sonki"] .sidebar {
+  background: linear-gradient(180deg,#efb8c8 0%,#e7a8bb 52%,#dc98af 100%) !important;
+  box-shadow:16px 0 34px rgba(140,75,98,.13) !important;
+}
+body[data-theme="sonki"] .desktop-appbar {
+  background: linear-gradient(90deg,#e7a8bb 0%,#efb7c7 58%,#f4c8d4 100%) !important;
+}
+body[data-theme="sonki"] .main-panel {
+  background: linear-gradient(180deg,rgba(255,250,252,.97),rgba(250,231,238,.92)) !important;
+}
+body[data-theme="sonki"] .hero,
+body[data-theme="sonki"] .workspace-main,
+body[data-theme="sonki"] .insight-card,
+body[data-theme="sonki"] .pulse-strip article {
+  background:linear-gradient(180deg,#fff 0%,#fff6f9 100%) !important;
+  border-color:#efc9d5 !important;
+}
+body[data-theme="sonki"] .hero h1,
+body[data-theme="sonki"] .workspace-toolbar h2,
+body[data-theme="sonki"] .card-head h3 { color:#7a4054 !important; }
+body[data-theme="sonki"] .hero-kicker,
+body[data-theme="sonki"] .section-kicker { color:#bd728c !important; }
+body[data-theme="sonki"] .primary-action,
+body[data-theme="sonki"] .calendar-day.today { background:#d88fa7 !important; border-color:#d88fa7 !important; }
+body[data-theme="sonki"] .focus-meter span { background:linear-gradient(90deg,#d88fa7,#efb4c4) !important; }
+
+/* SONKA = bleu 5% plus foncé */
+body[data-theme="sonka"] {
+  background: linear-gradient(135deg,#cee7f7 0%,#a8d1ed 50%,#7cb8e4 100%) !important;
+}
+body[data-theme="sonka"] .sidebar {
+  background: linear-gradient(180deg,#0e64b2 0%,#0a56a2 52%,#073b70 100%) !important;
+}
+body[data-theme="sonka"] .desktop-appbar {
+  background: linear-gradient(90deg,#0e64b2 0%,#006fc4 58%,#267fc8 100%) !important;
+}
+body[data-theme="sonka"] .main-panel {
+  background: linear-gradient(180deg,rgba(216,238,251,.95),rgba(196,226,246,.88)) !important;
+}
+body[data-theme="sonka"] .primary-action,
+body[data-theme="sonka"] .calendar-day.today { background:#006fc4 !important; border-color:#006fc4 !important; }
+body[data-theme="sonka"] .focus-meter span { background:linear-gradient(90deg,#006fc4,#4d98d2) !important; }
+
+/* À deux = gris bleuté */
+body[data-theme="duo"] {
+  background:linear-gradient(135deg,#eff4f7 0%,#dce6ed 52%,#cbd9e3 100%) !important;
+}
+body[data-theme="duo"] .sidebar {
+  background:linear-gradient(180deg,#586f80 0%,#4c6172 52%,#3d5263 100%) !important;
+}
+body[data-theme="duo"] .desktop-appbar {
+  background:linear-gradient(90deg,#586f80 0%,#698397 58%,#7d99ac 100%) !important;
+}
+
+/* Modal Universe = champ texte libre, jamais un select */
+#taskCategory {
+  width:100% !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+}

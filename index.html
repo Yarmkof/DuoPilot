@@ -8,7 +8,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body data-theme="global">
+<body data-theme="overview">
 <div class="ambient a1"></div><div class="ambient a2"></div>
 <div class="app-shell">
 <aside class="sidebar" id="sidebar">
@@ -31,7 +31,7 @@
   <div class="sidebar-label">Univers <span class="help-dot" data-tooltip="Un univers sert à classer vos échéances : Maison, Véhicules, Santé… Vous pouvez en créer autant que vous voulez.">?</span></div>
       <div id="universeList" class="universe-list"></div>
       <form id="universeForm" class="universe-add" autocomplete="off">
-        <input id="newUniverseInput" type="text" maxlength="30" placeholder="Ajouter un univers…" aria-label="Nouvel univers" data-tooltip="Ajoutez ici une nouvelle rubrique personnalisée : Banque, Animaux, École, Abonnements…" data-tooltip="Exemples : Animaux, École, Banque, Abonnements, Parents…">
+        <input id="newUniverseInput" type="text" maxlength="30" placeholder="Ajouter un univers…" aria-label="Nouvel univers" data-tooltip="Ajoutez ici une nouvelle rubrique personnalisée : Banque, Animaux, École, Abonnements…">
         <button type="submit" aria-label="Ajouter l’univers" data-tooltip="Ajouter cet univers à DuoPilot">＋</button>
       </form>
 
@@ -84,7 +84,12 @@
 <dialog id="modal"><form id="taskForm"><div class="modal-header"><div><p class="section-kicker">Nouvelle échéance</p><h2>Ajouter à DuoPilot</h2></div><button id="closeBtn" class="modal-close" type="button">×</button></div><div class="form-grid">
 <label class="full">Titre<input name="title" required maxlength="80" placeholder="Ex. Révision de la Mercedes"></label>
 <label>Responsable<select name="owner"><option>SONKI</option><option>SONKA</option><option>Commun</option></select></label>
-<label>Univers<select name="category"><option>Maison</option><option>Véhicule</option><option>Administratif</option><option>Santé</option><option>Professionnel</option><option>Voyage</option><option>Autre</option></select></label>
+<label>Univers
+  <input name="category" id="taskCategory" type="text" maxlength="30" required
+    placeholder="Ex. Banque, Animaux, École…"
+    autocomplete="off"
+    data-tooltip="Écrivez librement l’univers souhaité. S’il n’existe pas encore, DuoPilot le créera automatiquement.">
+</label>
 <label>Date<input name="dueDate" type="date" required></label>
 <label>Priorité<select name="priority"><option value="normal">Normale</option><option value="important">Importante</option><option value="urgent">Urgente</option></select></label>
 <fieldset class="full"><legend>Alertes</legend><div class="alerts-grid"><label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label><label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label><label><input type="checkbox" name="alerts" value="1"> La veille</label><label><input type="checkbox" name="alerts" value="0"> Le jour même</label></div></fieldset>

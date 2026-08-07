@@ -1,27 +1,273 @@
-const KEY="duopilot.tasks.v1";const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};const defaults=[{id:crypto.randomUUID(),title:"Révision de la Mercedes",owner:"SONKA",category:"Véhicule",dueDate:addDays(12),priority:"important",alerts:[14,7],notes:"Demander un devis et vérifier le carnet d’entretien.",done:false},{id:crypto.randomUUID(),title:"Contrôle de la VMC",owner:"Commun",category:"Maison",dueDate:addDays(25),priority:"normal",alerts:[14,7],notes:"Prévoir le contrôle annuel.",done:false},{id:crypto.randomUUID(),title:"Échéance professionnelle",owner:"SONKI",category:"Professionnel",dueDate:addDays(5),priority:"urgent",alerts:[14,7,1],notes:"Préparer les justificatifs.",done:false}];let tasks;try{tasks=JSON.parse(localStorage.getItem(KEY))||defaults}catch{tasks=defaults}let activeOwner="all",smart=null,cal=new Date(),installPrompt=null;const q=s=>document.querySelector(s),qa=s=>[...document.querySelectorAll(s)],list=q("#taskList"),empty=q("#empty"),modal=q("#modal"),form=q("#taskForm");const parse=v=>new Date(v+"T12:00:00"),today=()=>{const d=new Date();d.setHours(12,0,0,0);return d},days=v=>Math.ceil((parse(v)-today())/86400000),save=()=>localStorage.setItem(KEY,JSON.stringify(tasks)),fmt=(v,o={})=>new Intl.DateTimeFormat("fr-FR",{day:"numeric",month:"short",year:"numeric",...o}).format(parse(v)),esc=s=>String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m])),alertTxt=n=>n===14?"2 sem.":n===7?"1 sem.":n===1?"veille":n===0?"jour J":`${n} j`,timing=t=>{const d=days(t.dueDate);return t.done?"Terminée":d<0?`${Math.abs(d)} j de retard`:d===0?"Aujourd’hui":d===1?"Demain":`Dans ${d} jours`};
-function filtered(){const c=q("#categoryFilter").value,s=q("#statusFilter").value;return tasks.filter(t=>activeOwner==="all"||t.owner===activeOwner).filter(t=>c==="all"||t.category===c).filter(t=>{const d=days(t.dueDate);if(smart==="today")return!t.done&&d===0;if(smart==="week")return!t.done&&d>=0&&d<=7;if(smart==="overdue")return!t.done&&d<0;if(smart==="done")return t.done;if(s==="done")return t.done;if(s==="todo")return!t.done;if(s==="overdue")return!t.done&&d<0;return true}).sort((a,b)=>Number(a.done)-Number(b.done)||parse(a.dueDate)-parse(b.dueDate))}
-function renderTasks(){const arr=filtered();list.innerHTML="";list.classList.toggle("hidden",arr.length===0);empty.classList.toggle("hidden",arr.length>0);arr.forEach(t=>{const overdue=!t.done&&days(t.dueDate)<0,a=document.createElement("article");a.className=`task-item${t.done?" done":""}${overdue?" overdue":""}`;a.innerHTML=`<button class="complete-button"></button><div><div class="task-main-row"><span class="priority-mark ${t.priority}"></span><h3 class="task-title">${esc(t.title)}</h3></div><div class="task-meta"><span>${esc(t.owner)}</span><span>${esc(t.category)}</span><span class="alerts-meta">Alertes : ${t.alerts?.length?t.alerts.map(alertTxt).join(", "):"aucune"}</span></div>${t.notes?`<p class="task-notes">${esc(t.notes)}</p>`:""}</div><div class="task-time${overdue?" overdue":""}"><strong>${fmt(t.dueDate)}</strong><span>${timing(t)}</span></div><button class="delete-button">Supprimer</button>`;a.querySelector(".complete-button").onclick=()=>{t.done=!t.done;save();renderAll()};a.querySelector(".delete-button").onclick=()=>{if(confirm(`Supprimer « ${t.title} » ?`)){tasks=tasks.filter(x=>x.id!==t.id);save();renderAll()}};list.appendChild(a)})}
-function count(o){return tasks.filter(t=>!t.done&&(o==="all"||t.owner===o)).length}function counters(){const cur=tasks.filter(t=>!t.done&&(activeOwner==="all"||t.owner===activeOwner));q("#upcoming").textContent=cur.filter(t=>days(t.dueDate)>=0).length;q("#week").textContent=cur.filter(t=>{const d=days(t.dueDate);return d>=0&&d<=7}).length;q("#late").textContent=cur.filter(t=>days(t.dueDate)<0).length;q("#globalBadge").textContent=count("all");q("#christelleBadge").textContent=count("SONKI");q("#armandBadge").textContent=count("SONKA");q("#communBadge").textContent=count("Commun");q("#todayBadge").textContent=tasks.filter(t=>!t.done&&days(t.dueDate)===0).length;q("#weekBadgeSide").textContent=tasks.filter(t=>{const d=days(t.dueDate);return!t.done&&d>=0&&d<=7}).length;q("#lateBadgeSide").textContent=tasks.filter(t=>!t.done&&days(t.dueDate)<0).length;q("#doneBadgeSide").textContent=tasks.filter(t=>t.done).length}
-function status(){const late=tasks.filter(t=>!t.done&&days(t.dueDate)<0).length,w=tasks.filter(t=>{const d=days(t.dueDate);return!t.done&&d>=0&&d<=7}).length,orb=q("#statusOrb");orb.classList.remove("warning","danger");if(late){q("#dailyStatus").textContent=`${late} retard${late>1?"s":""}`;orb.classList.add("danger")}else if(w>=3){q("#dailyStatus").textContent="Semaine active";orb.classList.add("warning")}else q("#dailyStatus").textContent="Tout va bien"}
-function heading(){const g={all:["Votre cockpit","Bonjour 👋","Tout ce qui mérite votre attention, au même endroit."],SONKI:["Espace personnel","SONKI","Les échéances dont SONKI garde le pilotage."],SONKA:["Espace personnel","SONKA","Les échéances dont SONKA garde le pilotage."],Commun:["Espace partagé","À deux","Les sujets qui concernent votre quotidien commun."]};if(smart){const x={today:["Aujourd’hui","À faire aujourd’hui","Une vue simple de ce qui compte maintenant.","Aujourd’hui"],week:["Anticipation","Les 7 prochains jours","Gardez une longueur d’avance sur votre semaine.","Cette semaine"],overdue:["Priorité","À rattraper","Les échéances qui nécessitent votre attention.","En retard"],done:["Historique","Ce qui est terminé","Votre mémoire des tâches déjà réalisées.","Terminées"]}[smart];q("#viewEyebrow").textContent=x[0];q("#titleView").textContent=x[1];q("#heroSubtitle").textContent=x[2];q("#listTitle").textContent=x[3];return}const x=g[activeOwner];q("#viewEyebrow").textContent=x[0];q("#titleView").textContent=x[1];q("#heroSubtitle").textContent=x[2];q("#listTitle").textContent=activeOwner==="all"?"À surveiller":"Échéances"}
-function focus(){const rank={urgent:0,important:1,normal:2},n=tasks.filter(t=>!t.done).sort((a,b)=>{const al=days(a.dueDate)<0,bl=days(b.dueDate)<0;if(al!==bl)return al?-1:1;if(rank[a.priority]!==rank[b.priority])return rank[a.priority]-rank[b.priority];return parse(a.dueDate)-parse(b.dueDate)})[0];q("#nextFocusText").textContent=n?n.title:"Aucune";if(!n){q("#focusTitle").textContent="Aucune priorité";q("#focusOwner").textContent="—";q("#focusDate").textContent="Ajoutez une échéance pour commencer.";q("#focusNotes").textContent="";q("#focusMeter").style.width="0%";return}const d=days(n.dueDate),w=d<=0?100:Math.max(10,Math.min(90,100-d/30*100));q("#focusTitle").textContent=n.title;q("#focusOwner").textContent=n.owner;q("#focusDate").textContent=`${fmt(n.dueDate,{weekday:"long"})} · ${timing(n)}`;q("#focusNotes").textContent=n.notes||`${n.category} · priorité ${n.priority}`;q("#focusMeter").style.width=`${w}%`}
-function calendar(){const y=cal.getFullYear(),m=cal.getMonth(),ms=new Date(y,m,1,12),fd=(ms.getDay()+6)%7,gs=new Date(y,m,1-fd,12),tk=new Date().toISOString().slice(0,10),td=new Set(tasks.filter(t=>!t.done).map(t=>t.dueDate));q("#calendarTitle").textContent=new Intl.DateTimeFormat("fr-FR",{month:"long",year:"numeric"}).format(ms);q("#calendarGrid").innerHTML="";for(let i=0;i<42;i++){const d=new Date(gs);d.setDate(gs.getDate()+i);const k=d.toISOString().slice(0,10),b=document.createElement("button");b.className="calendar-day";b.textContent=d.getDate();if(d.getMonth()!==m)b.classList.add("muted");if(k===tk)b.classList.add("today");if(td.has(k))b.classList.add("has-task");q("#calendarGrid").appendChild(b)}}
-function renderAll(){renderTasks();counters();status();heading();focus();calendar()}function clearSmart(){smart=null;qa(".shortcut").forEach(b=>b.classList.remove("active"))}function openModal(){form.reset();form.owner.value=activeOwner==="all"?"SONKA":activeOwner;form.dueDate.value=addDays(7);qa('[name="alerts"]').forEach(i=>i.checked=["14","7"].includes(i.value));modal.showModal()}function closeSide(){q("#sidebar").classList.remove("open");q("#sidebarBackdrop").classList.add("hidden")}
-qa(".space-item").forEach(b=>b.onclick=()=>{qa(".space-item").forEach(x=>x.classList.remove("active"));b.classList.add("active");activeOwner=b.dataset.owner;clearSmart();q("#statusFilter").value="all";renderAll();closeSide()});qa(".shortcut").forEach(b=>b.onclick=()=>{qa(".shortcut").forEach(x=>x.classList.remove("active"));b.classList.add("active");smart=b.dataset.smart;activeOwner="all";qa(".space-item").forEach(x=>x.classList.remove("active"));q("#statusFilter").value="all";renderAll();closeSide()});qa(".universe-list button").forEach(b=>b.onclick=()=>{q("#categoryFilter").value=b.dataset.category;smart=null;renderAll();closeSide()});q("#categoryFilter").onchange=()=>{smart=null;renderAll()};q("#statusFilter").onchange=()=>{smart=null;renderAll()};qa(".density").forEach(b=>b.onclick=()=>{qa(".density").forEach(x=>x.classList.remove("active"));b.classList.add("active");list.classList.toggle("compact",b.dataset.mode==="compact")});["#addBtn","#quickAddBtn","#mobileAddBtn"].forEach(s=>q(s).onclick=openModal);q("#closeBtn").onclick=()=>modal.close();q("#cancelBtn").onclick=()=>modal.close();form.onsubmit=e=>{e.preventDefault();const d=new FormData(form);tasks.push({id:crypto.randomUUID(),title:d.get("title").trim(),owner:d.get("owner"),category:d.get("category"),dueDate:d.get("dueDate"),priority:d.get("priority"),alerts:d.getAll("alerts").map(Number),notes:d.get("notes").trim(),done:false});save();modal.close();renderAll()};q("#menuBtn").onclick=()=>{q("#sidebar").classList.add("open");q("#sidebarBackdrop").classList.remove("hidden")};q("#sidebarBackdrop").onclick=closeSide;q("#prevMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);calendar()};q("#nextMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);calendar()};
-elements.universeForm.addEventListener("submit", event => {
-  event.preventDefault();
-  const name = elements.newUniverseInput.value.trim();
-  if (!name) return;
+const TASKS_KEY = "duopilot.tasks.v1";
+const UNIVERSES_KEY = "duopilot.universes.v2";
+const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
 
-  const existing = universes.find(u => u.toLowerCase() === name.toLowerCase());
-  if (!existing) {
-    universes.push(name);
-    saveUniverses();
+const addDays = n => {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0, 10);
+};
+
+const defaultTasks = [
+  {id: crypto.randomUUID(), title:"Révision de la Mercedes", owner:"SONKA", category:"Véhicule", dueDate:addDays(12), priority:"important", alerts:[14,7], notes:"Demander un devis et vérifier le carnet d’entretien.", done:false},
+  {id: crypto.randomUUID(), title:"Contrôle de la VMC", owner:"Commun", category:"Maison", dueDate:addDays(25), priority:"normal", alerts:[14,7], notes:"Prévoir le contrôle annuel.", done:false},
+  {id: crypto.randomUUID(), title:"Échéance professionnelle", owner:"SONKI", category:"Professionnel", dueDate:addDays(5), priority:"urgent", alerts:[14,7,1], notes:"Préparer les justificatifs.", done:false}
+];
+
+const q = s => document.querySelector(s);
+const qa = s => [...document.querySelectorAll(s)];
+const list = q("#taskList");
+const empty = q("#empty");
+const modal = q("#modal");
+const form = q("#taskForm");
+
+let activeOwner = "all";
+let smart = null;
+let cal = new Date();
+let installPrompt = null;
+
+function migrateOwner(owner) {
+  if (owner === "Christelle") return "SONKI";
+  if (owner === "Armand") return "SONKA";
+  return owner;
+}
+
+function loadTasks() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(TASKS_KEY));
+    if (!Array.isArray(stored)) return defaultTasks;
+    const migrated = stored.map(t => ({...t, owner:migrateOwner(t.owner)}));
+    localStorage.setItem(TASKS_KEY, JSON.stringify(migrated));
+    return migrated;
+  } catch {
+    return defaultTasks;
   }
-  elements.newUniverseInput.value = "";
+}
+
+let tasks = loadTasks();
+
+function loadUniverses() {
+  let stored = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem(UNIVERSES_KEY));
+    if (Array.isArray(parsed)) stored = parsed;
+  } catch {}
+  const fromTasks = tasks.map(t => t.category).filter(Boolean);
+  return [...new Set([...DEFAULT_UNIVERSES, ...stored, ...fromTasks])];
+}
+
+let universes = loadUniverses();
+const saveTasks = () => localStorage.setItem(TASKS_KEY, JSON.stringify(tasks));
+const saveUniverses = () => localStorage.setItem(UNIVERSES_KEY, JSON.stringify(universes));
+
+const parse = v => new Date(v + "T12:00:00");
+const today = () => { const d = new Date(); d.setHours(12,0,0,0); return d; };
+const days = v => Math.ceil((parse(v) - today()) / 86400000);
+const fmt = (v,o={}) => new Intl.DateTimeFormat("fr-FR", {day:"numeric",month:"short",year:"numeric",...o}).format(parse(v));
+const esc = s => String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]));
+const alertTxt = n => n===14?"2 sem.":n===7?"1 sem.":n===1?"veille":n===0?"jour J":`${n} j`;
+const timing = t => { const d=days(t.dueDate); return t.done?"Terminée":d<0?`${Math.abs(d)} j de retard`:d===0?"Aujourd’hui":d===1?"Demain":`Dans ${d} jours`; };
+
+function normalizeUniverse(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "Autre";
+  const existing = universes.find(u => u.toLowerCase() === raw.toLowerCase());
+  if (existing) return existing;
+  universes.push(raw);
+  saveUniverses();
+  return raw;
+}
+
+function applyTheme() {
+  let theme = "overview";
+  if (activeOwner === "SONKI") theme = "sonki";
+  else if (activeOwner === "SONKA") theme = "sonka";
+  else if (activeOwner === "Commun") theme = "duo";
+  document.body.dataset.theme = theme;
+}
+
+function renderUniverses() {
+  const container = q("#universeList");
+  container.innerHTML = "";
+  universes.forEach(name => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.dataset.category = name;
+    b.setAttribute("data-tooltip", `Afficher les échéances de l’univers « ${name} ».`);
+    b.innerHTML = `<i class="u-dot"></i><span>${esc(name)}</span>`;
+    b.onclick = () => {
+      q("#categoryFilter").value = name;
+      smart = null;
+      renderAll();
+      closeSide();
+    };
+    container.appendChild(b);
+  });
+
+  const filter = q("#categoryFilter");
+  const selected = filter.value;
+  filter.innerHTML = '<option value="all">Toutes les catégories</option>';
+  universes.forEach(name => {
+    const o = document.createElement("option");
+    o.value = name;
+    o.textContent = name;
+    filter.appendChild(o);
+  });
+  filter.value = universes.includes(selected) ? selected : "all";
+}
+
+function filtered() {
+  const c=q("#categoryFilter").value, s=q("#statusFilter").value;
+  return tasks
+    .filter(t => activeOwner === "all" || t.owner === activeOwner)
+    .filter(t => c === "all" || t.category === c)
+    .filter(t => {
+      const d=days(t.dueDate);
+      if (smart === "today") return !t.done && d===0;
+      if (smart === "week") return !t.done && d>=0 && d<=7;
+      if (smart === "overdue") return !t.done && d<0;
+      if (smart === "done") return t.done;
+      if (s === "done") return t.done;
+      if (s === "todo") return !t.done;
+      if (s === "overdue") return !t.done && d<0;
+      return true;
+    })
+    .sort((a,b)=>Number(a.done)-Number(b.done)||parse(a.dueDate)-parse(b.dueDate));
+}
+
+function renderTasks() {
+  const arr=filtered();
+  list.innerHTML="";
+  list.classList.toggle("hidden",arr.length===0);
+  empty.classList.toggle("hidden",arr.length>0);
+  arr.forEach(t => {
+    const overdue=!t.done&&days(t.dueDate)<0;
+    const a=document.createElement("article");
+    a.className=`task-item${t.done?" done":""}${overdue?" overdue":""}`;
+    a.innerHTML=`<button class="complete-button"></button><div><div class="task-main-row"><span class="priority-mark ${t.priority}"></span><h3 class="task-title">${esc(t.title)}</h3></div><div class="task-meta"><span>${esc(t.owner)}</span><span>${esc(t.category)}</span><span class="alerts-meta">Alertes : ${t.alerts?.length?t.alerts.map(alertTxt).join(", "):"aucune"}</span></div>${t.notes?`<p class="task-notes">${esc(t.notes)}</p>`:""}</div><div class="task-time${overdue?" overdue":""}"><strong>${fmt(t.dueDate)}</strong><span>${timing(t)}</span></div><button class="delete-button">Supprimer</button>`;
+    a.querySelector(".complete-button").onclick=()=>{t.done=!t.done;saveTasks();renderAll();};
+    a.querySelector(".delete-button").onclick=()=>{if(confirm(`Supprimer « ${t.title} » ?`)){tasks=tasks.filter(x=>x.id!==t.id);saveTasks();renderAll();}};
+    list.appendChild(a);
+  });
+}
+
+function count(owner){return tasks.filter(t=>!t.done&&(owner==="all"||t.owner===owner)).length;}
+function counters(){
+  const cur=tasks.filter(t=>!t.done&&(activeOwner==="all"||t.owner===activeOwner));
+  q("#upcoming").textContent=cur.filter(t=>days(t.dueDate)>=0).length;
+  q("#week").textContent=cur.filter(t=>{const d=days(t.dueDate);return d>=0&&d<=7;}).length;
+  q("#late").textContent=cur.filter(t=>days(t.dueDate)<0).length;
+  q("#globalBadge").textContent=count("all");
+  q("#christelleBadge").textContent=count("SONKI");
+  q("#armandBadge").textContent=count("SONKA");
+  q("#communBadge").textContent=count("Commun");
+  q("#todayBadge").textContent=tasks.filter(t=>!t.done&&days(t.dueDate)===0).length;
+  q("#weekBadgeSide").textContent=tasks.filter(t=>{const d=days(t.dueDate);return !t.done&&d>=0&&d<=7;}).length;
+  q("#lateBadgeSide").textContent=tasks.filter(t=>!t.done&&days(t.dueDate)<0).length;
+  q("#doneBadgeSide").textContent=tasks.filter(t=>t.done).length;
+}
+
+function status(){
+  const scope=tasks.filter(t=>activeOwner==="all"||t.owner===activeOwner);
+  const late=scope.filter(t=>!t.done&&days(t.dueDate)<0).length;
+  const w=scope.filter(t=>{const d=days(t.dueDate);return !t.done&&d>=0&&d<=7;}).length;
+  const orb=q("#statusOrb");
+  orb.classList.remove("warning","danger");
+  if(late){q("#dailyStatus").textContent=`${late} retard${late>1?"s":""}`;orb.classList.add("danger");}
+  else if(w>=3){q("#dailyStatus").textContent="Semaine active";orb.classList.add("warning");}
+  else q("#dailyStatus").textContent="Tout va bien";
+}
+
+function heading(){
+  const g={
+    all:["Votre cockpit","Bonjour 👋","Tout ce qui mérite votre attention, au même endroit."],
+    SONKI:["Espace personnel","SONKI","Les échéances dont SONKI garde le pilotage."],
+    SONKA:["Espace personnel","SONKA","Les échéances dont SONKA garde le pilotage."],
+    Commun:["Espace partagé","À deux","Les sujets qui concernent votre quotidien commun."]
+  };
+  if(smart){
+    const x={today:["Aujourd’hui","À faire aujourd’hui","Une vue simple de ce qui compte maintenant.","Aujourd’hui"],week:["Anticipation","Les 7 prochains jours","Gardez une longueur d’avance sur votre semaine.","Cette semaine"],overdue:["Priorité","À rattraper","Les échéances qui nécessitent votre attention.","En retard"],done:["Historique","Ce qui est terminé","Votre mémoire des tâches déjà réalisées.","Terminées"]}[smart];
+    q("#viewEyebrow").textContent=x[0];q("#titleView").textContent=x[1];q("#heroSubtitle").textContent=x[2];q("#listTitle").textContent=x[3];return;
+  }
+  const x=g[activeOwner];
+  q("#viewEyebrow").textContent=x[0];q("#titleView").textContent=x[1];q("#heroSubtitle").textContent=x[2];q("#listTitle").textContent=activeOwner==="all"?"À surveiller":"Échéances";
+}
+
+function focus(){
+  const rank={urgent:0,important:1,normal:2};
+  const scope=tasks.filter(t=>!t.done&&(activeOwner==="all"||t.owner===activeOwner));
+  const n=scope.sort((a,b)=>{const al=days(a.dueDate)<0,bl=days(b.dueDate)<0;if(al!==bl)return al?-1:1;if(rank[a.priority]!==rank[b.priority])return rank[a.priority]-rank[b.priority];return parse(a.dueDate)-parse(b.dueDate);})[0];
+  q("#nextFocusText").textContent=n?n.title:"Aucune";
+  if(!n){q("#focusTitle").textContent="Aucune priorité";q("#focusOwner").textContent="—";q("#focusDate").textContent="Ajoutez une échéance pour commencer.";q("#focusNotes").textContent="";q("#focusMeter").style.width="0%";return;}
+  const d=days(n.dueDate),w=d<=0?100:Math.max(10,Math.min(90,100-d/30*100));
+  q("#focusTitle").textContent=n.title;q("#focusOwner").textContent=n.owner;q("#focusDate").textContent=`${fmt(n.dueDate,{weekday:"long"})} · ${timing(n)}`;q("#focusNotes").textContent=n.notes||`${n.category} · priorité ${n.priority}`;q("#focusMeter").style.width=`${w}%`;
+}
+
+function calendar(){
+  const y=cal.getFullYear(),m=cal.getMonth(),ms=new Date(y,m,1,12),fd=(ms.getDay()+6)%7,gs=new Date(y,m,1-fd,12),tk=new Date().toISOString().slice(0,10);
+  const scoped=tasks.filter(t=>!t.done&&(activeOwner==="all"||t.owner===activeOwner));
+  const td=new Set(scoped.map(t=>t.dueDate));
+  q("#calendarTitle").textContent=new Intl.DateTimeFormat("fr-FR",{month:"long",year:"numeric"}).format(ms);
+  q("#calendarGrid").innerHTML="";
+  for(let i=0;i<42;i++){const d=new Date(gs);d.setDate(gs.getDate()+i);const k=d.toISOString().slice(0,10),b=document.createElement("button");b.className="calendar-day";b.textContent=d.getDate();if(d.getMonth()!==m)b.classList.add("muted");if(k===tk)b.classList.add("today");if(td.has(k))b.classList.add("has-task");q("#calendarGrid").appendChild(b);}
+}
+
+function renderAll(){applyTheme();renderUniverses();renderTasks();counters();status();heading();focus();calendar();}
+function clearSmart(){smart=null;qa(".shortcut").forEach(b=>b.classList.remove("active"));}
+function closeSide(){q("#sidebar").classList.remove("open");q("#sidebarBackdrop").classList.add("hidden");}
+function openModal(){
+  form.reset();
+  form.owner.value=activeOwner==="all"?"SONKA":activeOwner;
+  form.dueDate.value=addDays(7);
+  form.category.value="";
+  qa('[name="alerts"]').forEach(i=>i.checked=["14","7"].includes(i.value));
+  modal.showModal();
+  setTimeout(()=>form.title.focus(),0);
+}
+
+qa(".space-item").forEach(b=>b.onclick=()=>{
+  qa(".space-item").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  activeOwner=b.dataset.owner;
+  clearSmart();
+  q("#statusFilter").value="all";
+  renderAll();closeSide();
+});
+qa(".shortcut").forEach(b=>b.onclick=()=>{
+  qa(".shortcut").forEach(x=>x.classList.remove("active"));b.classList.add("active");
+  smart=b.dataset.smart;activeOwner="all";qa(".space-item").forEach(x=>x.classList.remove("active"));q("#statusFilter").value="all";renderAll();closeSide();
+});
+q("#categoryFilter").onchange=()=>{smart=null;renderAll();};
+q("#statusFilter").onchange=()=>{smart=null;renderAll();};
+qa(".density").forEach(b=>b.onclick=()=>{qa(".density").forEach(x=>x.classList.remove("active"));b.classList.add("active");list.classList.toggle("compact",b.dataset.mode==="compact");});
+["#addBtn","#quickAddBtn","#mobileAddBtn"].forEach(s=>{const el=q(s);if(el)el.onclick=openModal;});
+q("#closeBtn").onclick=()=>modal.close();q("#cancelBtn").onclick=()=>modal.close();
+
+form.onsubmit=e=>{
+  e.preventDefault();
+  const d=new FormData(form);
+  const universe=normalizeUniverse(d.get("category"));
+  tasks.push({id:crypto.randomUUID(),title:String(d.get("title")||"").trim(),owner:migrateOwner(d.get("owner")),category:universe,dueDate:d.get("dueDate"),priority:d.get("priority"),alerts:d.getAll("alerts").map(Number),notes:String(d.get("notes")||"").trim(),done:false});
+  saveTasks();modal.close();q("#categoryFilter").value="all";renderAll();
+};
+
+q("#universeForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const input=q("#newUniverseInput");
+  const name=normalizeUniverse(input.value);
+  input.value="";
   renderAll();
-  elements.categoryFilter.value = existing || name;
+  q("#categoryFilter").value=name;
+  renderAll();
 });
 
+q("#menuBtn").onclick=()=>{q("#sidebar").classList.add("open");q("#sidebarBackdrop").classList.remove("hidden");};
+q("#sidebarBackdrop").onclick=closeSide;
+q("#prevMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);calendar();};
+q("#nextMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);calendar();};
 
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;q("#installBtn").classList.remove("hidden")});q("#installBtn").onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;q("#installBtn").classList.add("hidden")};q("#dateNow").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));renderAll();
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;q("#installBtn").classList.remove("hidden");});
+q("#installBtn").onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;q("#installBtn").classList.add("hidden");};
+q("#dateNow").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));
+renderAll();
