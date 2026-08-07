@@ -15,3 +15,10 @@
 Remplacer les fichiers du dépôt DuoPilot par le contenu de cette archive, puis Commit et Push depuis GitHub Desktop.
 
 URL : https://yarmkof.github.io/DuoPilot/
+
+
+## V0.5
+- thème Outlook bleu renforcé : sidebar bleue + fond principal bleuté ;
+- portrait lion placé directement devant SONKI ;
+- portrait éléphant placé directement devant SONKA ;
+- cache PWA incrémenté pour forcer le chargement du nouveau design.

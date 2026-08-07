@@ -152,3 +152,198 @@
   color: #005a9e;
   background: #e8f3fb;
 }
+
+
+/* =========================================================
+   DuoPilot V0.5 — véritable thème Outlook Blue
+   ========================================================= */
+:root{
+  --outlook:#0078d4;
+  --outlook-dark:#005a9e;
+  --outlook-deep:#004578;
+  --outlook-soft:#e7f3fb;
+  --outlook-pale:#f2f8fc;
+  --outlook-line:#cfe6f5;
+}
+
+/* Fond général bleu très clair, proche de l'univers Microsoft */
+html,
+body{
+  background:
+    radial-gradient(circle at 82% 8%, rgba(0,120,212,.15), transparent 30%),
+    linear-gradient(180deg,#eaf5fc 0%,#f6fbfe 48%,#edf7fd 100%) !important;
+}
+
+/* Colonne gauche franchement Outlook */
+.sidebar{
+  color:#fff !important;
+  background:
+    linear-gradient(180deg,#0078d4 0%,#006cbe 48%,#005a9e 100%) !important;
+  border-right:1px solid rgba(255,255,255,.14) !important;
+  box-shadow:14px 0 35px rgba(0,69,120,.16);
+}
+
+.brand strong,
+.sidebar .space-item,
+.sidebar .shortcut,
+.sidebar .universe-list button{
+  color:#fff !important;
+}
+
+.brand small,
+.sidebar-label,
+.sidebar .sync-status{
+  color:rgba(255,255,255,.74) !important;
+}
+
+.brand-symbol{
+  background:rgba(255,255,255,.16) !important;
+  border:1px solid rgba(255,255,255,.26);
+  box-shadow:none !important;
+}
+
+.new-task{
+  color:var(--outlook-deep) !important;
+  background:#fff !important;
+  box-shadow:0 8px 22px rgba(0,69,120,.22) !important;
+}
+
+.sidebar .space-item:hover,
+.sidebar .shortcut:hover,
+.sidebar .universe-list button:hover{
+  background:rgba(255,255,255,.12) !important;
+}
+
+.sidebar .space-item.active,
+.sidebar .shortcut.active{
+  color:#fff !important;
+  background:rgba(255,255,255,.20) !important;
+  box-shadow:inset 3px 0 0 #fff;
+}
+
+.sidebar .space-icon,
+.sidebar .shortcut span:first-child{
+  color:#fff !important;
+  background:rgba(255,255,255,.12) !important;
+}
+
+.sidebar .space-item b,
+.sidebar .shortcut b{
+  color:#fff !important;
+  background:rgba(255,255,255,.16) !important;
+}
+
+.sidebar .u-dot{
+  box-shadow:0 0 0 2px rgba(255,255,255,.32);
+}
+
+/* Le champ Ajouter un univers reste bien lisible */
+.universe-add input{
+  color:#12344d !important;
+  background:#fff !important;
+  border-color:rgba(255,255,255,.45) !important;
+}
+.universe-add button{
+  color:var(--outlook) !important;
+  background:#fff !important;
+}
+
+/* Portraits exactement en face des noms */
+.person-avatar.photo-avatar{
+  width:30px !important;
+  height:30px !important;
+  border-radius:50% !important;
+  border:2px solid rgba(255,255,255,.9) !important;
+  background:#fff !important;
+  box-shadow:0 3px 10px rgba(0,50,90,.22);
+}
+.person-avatar.photo-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  border-radius:50%;
+}
+.space-item{
+  grid-template-columns:34px 1fr auto !important;
+}
+
+/* Zone principale clairement bleutée */
+.main-panel{
+  background:linear-gradient(135deg,rgba(255,255,255,.34),rgba(226,242,252,.56));
+}
+
+.hero h1,
+.workspace-toolbar h2,
+.card-head h3,
+.priority-top h3,
+.duo-card h3{
+  color:var(--outlook-deep) !important;
+}
+
+.hero-kicker,
+.section-kicker{
+  color:var(--outlook) !important;
+}
+
+/* Cartes blanches avec accent bleu Outlook */
+.pulse-strip article,
+.workspace-main,
+.insight-card{
+  background:rgba(255,255,255,.90) !important;
+  border-color:var(--outlook-line) !important;
+  box-shadow:0 12px 34px rgba(0,90,158,.08) !important;
+}
+
+.pulse-strip article{
+  border-top:3px solid rgba(0,120,212,.55) !important;
+}
+
+.primary-action{
+  color:#fff !important;
+  border-color:var(--outlook) !important;
+  background:linear-gradient(135deg,var(--outlook),var(--outlook-dark)) !important;
+  box-shadow:0 10px 24px rgba(0,120,212,.22) !important;
+}
+
+.blue{
+  color:var(--outlook) !important;
+  background:var(--outlook-soft) !important;
+}
+
+.calendar-day.today{
+  background:var(--outlook) !important;
+}
+
+.focus-meter span{
+  background:linear-gradient(90deg,#0078d4,#28a8ea) !important;
+}
+
+.toolbar-controls select,
+.form-grid input,
+.form-grid select,
+.form-grid textarea{
+  border-color:var(--outlook-line) !important;
+}
+
+.density.active{
+  color:var(--outlook-deep) !important;
+  box-shadow:inset 0 0 0 1px var(--outlook-line);
+}
+
+/* Responsive: conserver le bleu de la sidebar mobile */
+@media(max-width:860px){
+  .mobile-header{
+    color:#fff !important;
+    background:linear-gradient(90deg,var(--outlook),var(--outlook-dark)) !important;
+    border-bottom:0 !important;
+  }
+  .mobile-icon{
+    color:#fff !important;
+    background:rgba(255,255,255,.15) !important;
+  }
+  .mobile-add{
+    color:var(--outlook) !important;
+    background:#fff !important;
+  }
+}
