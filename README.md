@@ -1,36 +1,26 @@
-# DuoPilot V1.0
+# DuoPilot V1.1
 
-Première version structurée comme un véritable produit.
+## Thèmes contextuels
+- Vue d’ensemble : gris
+- SONKI : rose clair
+- SONKA : bleu Outlook assombri d’environ 5 %
+- À deux : gris bleuté
 
-## Identité contextuelle
-- SONKI : interface rose pâle
-- SONKA : interface bleue Outlook
-- Vue d’ensemble / À deux : thème DuoPilot neutre
+## Univers
+Dans la fenêtre « Nouvelle échéance », le champ Univers n’est plus une liste déroulante.
+Il est désormais totalement libre :
+- saisir « Banque »
+- saisir « Animaux »
+- saisir « École »
+- ou tout autre libellé
 
-## Fonctionnalités conservées
-- espaces SONKI / SONKA / À deux
-- photos lion / éléphant
-- échéances
-- alertes paramétrables
-- calendrier
-- vues intelligentes
-- univers personnalisables
-- info-bulles
-- PWA / installation
-- stockage local
+Lors de l’enregistrement :
+- si l’univers existe déjà, DuoPilot le réutilise ;
+- s’il n’existe pas, DuoPilot le crée automatiquement ;
+- il apparaît ensuite dans la section Univers de la barre latérale.
 
-## Nouveauté V1.0
-Dans « Nouvelle échéance », il est maintenant possible de :
-1. sélectionner un univers existant ;
-2. saisir directement un nouvel univers absent de la liste ;
-3. cliquer sur + ;
-4. le nouvel univers est créé et sélectionné immédiatement.
+## Summary GitHub conseillé
+V1.1 - Free universe field + contextual colors
 
-Les univers personnalisés sont conservés dans le navigateur.
-
-## Publication
-Summary conseillé :
-V1.0 - Contextual themes + custom universes
-
-Site :
+## Site
 https://yarmkof.github.io/DuoPilot/

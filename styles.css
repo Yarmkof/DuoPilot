@@ -823,3 +823,127 @@ body[data-theme="sonki"] dialog {
 body[data-theme="sonka"] dialog {
   background:#fbfdff;
 }
+
+
+/* =========================================================
+   DuoPilot V1.1 — Final contextual palettes
+   Overview = grey | SONKI = pale pink | SONKA = darker blue
+   ========================================================= */
+
+/* OVERVIEW — neutral grey */
+body[data-theme="overview"] {
+  background:
+    radial-gradient(circle at 78% 0%, rgba(148,163,184,.18), transparent 28%),
+    linear-gradient(135deg,#f4f5f7 0%,#e7eaee 48%,#dde1e6 100%) !important;
+}
+body[data-theme="overview"] .sidebar {
+  background:linear-gradient(180deg,#666d75 0%,#585f67 52%,#474d54 100%) !important;
+  box-shadow:16px 0 34px rgba(52,58,64,.15) !important;
+}
+body[data-theme="overview"] .desktop-appbar {
+  background:linear-gradient(90deg,#626970 0%,#747b82 58%,#858b91 100%) !important;
+}
+body[data-theme="overview"] .main-panel {
+  background:linear-gradient(180deg,rgba(244,246,248,.94),rgba(229,232,235,.88)) !important;
+}
+body[data-theme="overview"] .hero,
+body[data-theme="overview"] .workspace-main,
+body[data-theme="overview"] .insight-card,
+body[data-theme="overview"] .pulse-strip article {
+  border-color:#d1d5da !important;
+  background:linear-gradient(180deg,#fff 0%,#f5f6f7 100%) !important;
+}
+body[data-theme="overview"] .hero h1,
+body[data-theme="overview"] .workspace-toolbar h2 {
+  color:#343a40 !important;
+}
+body[data-theme="overview"] .hero-kicker,
+body[data-theme="overview"] .section-kicker {
+  color:#6b7280 !important;
+}
+body[data-theme="overview"] .primary-action {
+  background:linear-gradient(135deg,#6c757d,#565e64) !important;
+  border-color:#6c757d !important;
+}
+body[data-theme="overview"] .calendar-day.today {
+  background:#6c757d !important;
+}
+body[data-theme="overview"] .focus-meter span {
+  background:linear-gradient(90deg,#6c757d,#9aa0a6) !important;
+}
+
+/* SONKI — genuinely pale pink, including rail and appbar */
+body[data-theme="sonki"] {
+  background:
+    radial-gradient(circle at 80% 0%, rgba(246,207,220,.45), transparent 29%),
+    linear-gradient(135deg,#fff8fa 0%,#fdeff4 48%,#f9e3eb 100%) !important;
+}
+body[data-theme="sonki"] .sidebar {
+  background:linear-gradient(180deg,#e9aebe 0%,#df9caf 52%,#d58ca2 100%) !important;
+  box-shadow:16px 0 34px rgba(153,89,111,.14) !important;
+}
+body[data-theme="sonki"] .desktop-appbar {
+  background:linear-gradient(90deg,#dfa0b2 0%,#e8adbd 58%,#efbdca 100%) !important;
+}
+body[data-theme="sonki"] .main-panel {
+  background:linear-gradient(180deg,rgba(255,249,251,.95),rgba(252,232,239,.88)) !important;
+}
+body[data-theme="sonki"] .hero,
+body[data-theme="sonki"] .workspace-main,
+body[data-theme="sonki"] .insight-card,
+body[data-theme="sonki"] .pulse-strip article {
+  border-color:#f0cbd7 !important;
+  background:linear-gradient(180deg,#fff 0%,#fff6f9 100%) !important;
+}
+body[data-theme="sonki"] .primary-action {
+  background:linear-gradient(135deg,#d991a7,#c97d96) !important;
+  border-color:#d991a7 !important;
+}
+body[data-theme="sonki"] .calendar-day.today {
+  background:#d991a7 !important;
+}
+body[data-theme="sonki"] .focus-meter span {
+  background:linear-gradient(90deg,#d991a7,#ebb4c4) !important;
+}
+
+/* SONKA — 5% darker than previous Outlook blue */
+body[data-theme="sonka"] {
+  background:
+    radial-gradient(circle at 78% 0%, rgba(77,151,210,.42), transparent 26%),
+    linear-gradient(135deg,#cfe9f8 0%,#abd4ef 45%,#7ebbea 100%) !important;
+}
+body[data-theme="sonka"] .sidebar {
+  background:linear-gradient(180deg,#0e64b2 0%,#0a56a2 48%,#073b70 100%) !important;
+}
+body[data-theme="sonka"] .desktop-appbar {
+  background:linear-gradient(90deg,#0e64b2 0%,#0070c6 55%,#277fc8 100%) !important;
+}
+body[data-theme="sonka"] .main-panel {
+  background:linear-gradient(180deg,rgba(217,239,252,.90),rgba(201,229,246,.78)) !important;
+}
+body[data-theme="sonka"] .primary-action {
+  background:linear-gradient(135deg,#0070c6,#00538f) !important;
+  border-color:#0070c6 !important;
+}
+body[data-theme="sonka"] .calendar-day.today {
+  background:#0070c6 !important;
+}
+body[data-theme="sonka"] .focus-meter span {
+  background:linear-gradient(90deg,#0070c6,#4f9bd5) !important;
+}
+
+/* DUO — blue grey */
+body[data-theme="duo"] {
+  background:linear-gradient(135deg,#eef3f7 0%,#dce6ed 48%,#cad8e2 100%) !important;
+}
+body[data-theme="duo"] .sidebar {
+  background:linear-gradient(180deg,#556b7c 0%,#485e70 52%,#394f61 100%) !important;
+}
+body[data-theme="duo"] .desktop-appbar {
+  background:linear-gradient(90deg,#556b7c 0%,#647e91 60%,#7592a6 100%) !important;
+}
+
+/* Universe is now a pure free-text field */
+#taskCategory {
+  width:100%;
+}

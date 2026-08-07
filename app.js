@@ -24,27 +24,4 @@ elements.universeForm.addEventListener("submit", event => {
 });
 
 
-elements.modalUniverseAddBtn.addEventListener("click", () => {
-  const name = elements.modalUniverseInput.value.trim();
-  if (!name) return;
-
-  let existing = universes.find(u => u.toLowerCase() === name.toLowerCase());
-  if (!existing) {
-    universes.push(name);
-    saveUniverses();
-    existing = name;
-  }
-
-  renderUniverses();
-  elements.taskCategory.value = existing;
-  elements.modalUniverseInput.value = "";
-});
-
-elements.modalUniverseInput.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    elements.modalUniverseAddBtn.click();
-  }
-});
-
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;q("#installBtn").classList.remove("hidden")});q("#installBtn").onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;q("#installBtn").classList.add("hidden")};q("#dateNow").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));renderAll();
