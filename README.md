@@ -1,14 +1,17 @@
-# DuoPilot V0.3 — Signature
+# DuoPilot V0.4 — Outlook Blue
 
-Nouvelle direction visuelle propre à DuoPilot : plus premium, plus personnelle et moins proche d'un gestionnaire de tâches classique.
+Évolutions :
+- interface bleu Outlook ;
+- SONKI et SONKA partout dans l’application ;
+- migration automatique des anciennes tâches « Christelle » / « Armand » ;
+- photo lion pour SONKI ;
+- photo éléphant pour SONKA ;
+- info-bulles d’aide sur les principales commandes ;
+- univers personnalisables avec champ « Ajouter un univers… » ;
+- univers personnalisés conservés dans le navigateur ;
+- conservation des tâches existantes.
 
-## Inclus
-- espaces SONKI / SONKA / À deux ;
-- vues Aujourd'hui, 7 prochains jours, En retard et Terminées ;
-- univers Maison, Véhicules, Administratif, Santé, Professionnel et Voyages ;
-- état du jour ;
-- priorité mise en avant ;
-- mini-calendrier ;
-- affichage Confort / Compact ;
-- responsive smartphone / tablette / PC / Mac ;
-- conservation du stockage local existant.
+## Publication
+Remplacer les fichiers du dépôt DuoPilot par le contenu de cette archive, puis Commit et Push depuis GitHub Desktop.
+
+URL : https://yarmkof.github.io/DuoPilot/
