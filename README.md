@@ -1,24 +1,23 @@
-  # DuoPilot V1
+# DuoPilot V0.2 — interface inspirée des applications de tâches modernes
 
-Première ébauche d'une application collaborative d'échéances.
+Cette version conserve les fonctions de la V1 et introduit une nouvelle interface :
 
-## Inclus
-- Espaces Christelle, Armand et Commun
-- Ajout et suppression d'échéances
-- Priorités, catégories et notes
-- Alertes à 2 semaines, 1 semaine, la veille ou le jour même
-- Filtres et compteurs
-- Sauvegarde locale
-- Installation PWA
+- barre latérale Christelle / Armand / Commun ;
+- vues Aujourd'hui, 7 prochains jours, En retard et Terminées ;
+- affichage Liste ou Compact ;
+- mini-calendrier ;
+- panneau de prochaine priorité ;
+- meilleure adaptation smartphone, tablette, PC et Mac ;
+- conservation des données déjà enregistrées dans le navigateur.
 
-## Lancement
-Dans le dossier :
+## Installation sur GitHub
 
-```bash
-python3 -m http.server 8000
-```
+Remplace les anciens fichiers du dépôt DuoPilot par les fichiers de ce dossier, puis :
 
-Puis ouvrir http://localhost:8000
+1. Commit dans GitHub Desktop ;
+2. Push origin ;
+3. attendre le déploiement GitHub Pages.
 
-Cette V1 ne contient pas encore la synchronisation internet, les comptes utilisateurs, les notifications push réelles ni les e-mails.
-Dernière mise à jour : test GitHub Pages
+L'adresse reste :
+
+https://yarmkof.github.io/DuoPilot/

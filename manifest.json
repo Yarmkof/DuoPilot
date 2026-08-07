@@ -3,8 +3,9 @@
   "short_name": "DuoPilot",
   "description": "Vos échéances, pilotées à deux.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#f5f7fb",
-  "theme_color": "#4f46e5",
+  "background_color": "#f6f8fc",
+  "theme_color": "#4776e6",
   "icons": []
 }

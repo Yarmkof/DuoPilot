@@ -3,78 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#4f46e5">
+  <meta name="theme-color" content="#4776e6">
+  <meta name="description" content="DuoPilot — le calendrier collaboratif de Christelle et Armand.">
   <title>DuoPilot</title>
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app">
-    <header>
-      <div>
-        <p class="kicker">Pilotez votre quotidien ensemble</p>
-        <h1>DuoPilot</h1>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">✓</div>
+        <div>
+          <strong>DuoPilot</strong>
+          <span>Pilotez ensemble</span>
+        </div>
       </div>
-      <button id="installBtn" class="secondary hidden">Installer l’app</button>
-    </header>
 
-    <section class="stats">
-      <article><span>À venir</span><strong id="upcoming">0</strong></article>
-      <article><span>Cette semaine</span><strong id="week">0</strong></article>
-      <article><span>En retard</span><strong id="late">0</strong></article>
-    </section>
+      <button id="quickAddBtn" class="quick-add" type="button">
+        <span>＋</span> Nouvelle échéance
+      </button>
 
-    <nav class="tabs">
-      <button class="tab active" data-owner="all">Vue globale</button>
-      <button class="tab" data-owner="Christelle">Christelle</button>
-      <button class="tab" data-owner="Armand">Armand</button>
-      <button class="tab" data-owner="Commun">Commun</button>
-    </nav>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <button class="nav-item active" data-owner="all">
+          <span class="nav-icon">⌂</span>
+          <span>Vue globale</span>
+          <b id="globalBadge">0</b>
+        </button>
+        <button class="nav-item" data-owner="Christelle">
+          <span class="avatar avatar-christelle">C</span>
+          <span>Christelle</span>
+          <b id="christelleBadge">0</b>
+        </button>
+        <button class="nav-item" data-owner="Armand">
+          <span class="avatar avatar-armand">A</span>
+          <span>Armand</span>
+          <b id="armandBadge">0</b>
+        </button>
+        <button class="nav-item" data-owner="Commun">
+          <span class="nav-icon">⌘</span>
+          <span>Commun</span>
+          <b id="communBadge">0</b>
+        </button>
+      </nav>
 
-    <section class="toolbar">
-      <div>
-        <h2 id="titleView">Toutes les échéances</h2>
-        <p id="dateNow"></p>
+      <div class="sidebar-section">
+        <p>Vues intelligentes</p>
+        <button class="smart-filter" data-smart="today">
+          <span>◉</span><span>Aujourd’hui</span><b id="todayBadge">0</b>
+        </button>
+        <button class="smart-filter" data-smart="week">
+          <span>▦</span><span>7 prochains jours</span><b id="weekBadgeSide">0</b>
+        </button>
+        <button class="smart-filter" data-smart="overdue">
+          <span>!</span><span>En retard</span><b id="lateBadgeSide">0</b>
+        </button>
+        <button class="smart-filter" data-smart="done">
+          <span>✓</span><span>Terminées</span><b id="doneBadgeSide">0</b>
+        </button>
       </div>
-      <button id="addBtn" class="primary">+ Ajouter</button>
-    </section>
 
-    <section class="filters">
-      <select id="categoryFilter">
-        <option value="all">Toutes les catégories</option>
-        <option>Véhicule</option>
-        <option>Maison</option>
-        <option>Administratif</option>
-        <option>Santé</option>
-        <option>Professionnel</option>
-        <option>Voyage</option>
-        <option>Autre</option>
-      </select>
-      <select id="statusFilter">
-        <option value="all">Tous les statuts</option>
-        <option value="todo">À faire</option>
-        <option value="done">Terminées</option>
-        <option value="overdue">En retard</option>
-      </select>
-    </section>
+      <div class="sidebar-section categories-menu">
+        <p>Catégories</p>
+        <button data-category="Véhicule"><i class="dot vehicle"></i>Véhicule</button>
+        <button data-category="Maison"><i class="dot home"></i>Maison</button>
+        <button data-category="Administratif"><i class="dot admin"></i>Administratif</button>
+        <button data-category="Santé"><i class="dot health"></i>Santé</button>
+        <button data-category="Professionnel"><i class="dot work"></i>Professionnel</button>
+      </div>
 
-    <section id="taskList" class="task-list"></section>
-    <p id="empty" class="empty hidden">Aucune échéance à afficher.</p>
+      <button id="installBtn" class="install-button hidden" type="button">Installer DuoPilot</button>
+    </aside>
+
+    <main class="main-panel">
+      <header class="mobile-header">
+        <button id="menuBtn" class="icon-button" type="button" aria-label="Ouvrir le menu">☰</button>
+        <strong>DuoPilot</strong>
+        <button id="mobileAddBtn" class="round-add" type="button" aria-label="Ajouter">＋</button>
+      </header>
+
+      <section class="page-header">
+        <div>
+          <p class="eyebrow" id="viewEyebrow">Tableau de bord</p>
+          <h1 id="titleView">Toutes les échéances</h1>
+          <p id="dateNow" class="date-line"></p>
+        </div>
+        <button id="addBtn" class="primary-button" type="button">
+          <span>＋</span> Ajouter
+        </button>
+      </section>
+
+      <section class="overview-cards" aria-label="Résumé des échéances">
+        <article class="overview-card">
+          <div class="overview-icon upcoming-icon">↗</div>
+          <div>
+            <span>À venir</span>
+            <strong id="upcoming">0</strong>
+          </div>
+        </article>
+        <article class="overview-card">
+          <div class="overview-icon week-icon">7</div>
+          <div>
+            <span>Cette semaine</span>
+            <strong id="week">0</strong>
+          </div>
+        </article>
+        <article class="overview-card">
+          <div class="overview-icon late-icon">!</div>
+          <div>
+            <span>En retard</span>
+            <strong id="late">0</strong>
+          </div>
+        </article>
+      </section>
+
+      <section class="list-toolbar">
+        <div class="segmented-control" aria-label="Affichage">
+          <button class="view-mode active" data-mode="list">Liste</button>
+          <button class="view-mode" data-mode="compact">Compact</button>
+        </div>
+        <div class="filter-row">
+          <label>
+            <span class="sr-only">Catégorie</span>
+            <select id="categoryFilter">
+              <option value="all">Toutes les catégories</option>
+              <option>Véhicule</option>
+              <option>Maison</option>
+              <option>Administratif</option>
+              <option>Santé</option>
+              <option>Professionnel</option>
+              <option>Voyage</option>
+              <option>Autre</option>
+            </select>
+          </label>
+          <label>
+            <span class="sr-only">Statut</span>
+            <select id="statusFilter">
+              <option value="all">Tous les statuts</option>
+              <option value="todo">À faire</option>
+              <option value="done">Terminées</option>
+              <option value="overdue">En retard</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section id="taskList" class="task-list" aria-live="polite"></section>
+      <div id="empty" class="empty-state hidden">
+        <div>✓</div>
+        <h2>Tout est à jour</h2>
+        <p>Aucune échéance ne correspond à cette vue.</p>
+      </div>
+    </main>
+
+    <aside class="details-panel">
+      <section class="mini-calendar">
+        <div class="calendar-head">
+          <button id="prevMonth" type="button" aria-label="Mois précédent">‹</button>
+          <strong id="calendarTitle"></strong>
+          <button id="nextMonth" type="button" aria-label="Mois suivant">›</button>
+        </div>
+        <div class="calendar-weekdays">
+          <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
+        </div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </section>
+
+      <section class="focus-card">
+        <div class="focus-head">
+          <div>
+            <span>Prochaine priorité</span>
+            <h2 id="focusTitle">Aucune échéance</h2>
+          </div>
+          <span id="focusOwner" class="owner-pill">—</span>
+        </div>
+        <p id="focusDate">Ajoutez une échéance pour commencer.</p>
+        <div id="focusProgress" class="progress-track"><span></span></div>
+        <p id="focusNotes" class="focus-notes"></p>
+      </section>
+
+      <section class="tips-card">
+        <div class="tips-icon">✦</div>
+        <div>
+          <strong>Astuce DuoPilot</strong>
+          <p>Utilisez plusieurs alertes pour les échéances importantes : deux semaines, une semaine et la veille.</p>
+        </div>
+      </section>
+    </aside>
   </div>
+
+  <div id="sidebarBackdrop" class="sidebar-backdrop hidden"></div>
 
   <dialog id="modal">
     <form id="taskForm">
       <div class="modal-head">
         <div>
-          <p class="kicker">Nouvelle échéance</p>
+          <p class="eyebrow">Nouvelle échéance</p>
           <h2>Ajouter une tâche</h2>
         </div>
-        <button type="button" id="closeBtn" class="icon">×</button>
+        <button type="button" id="closeBtn" class="modal-close" aria-label="Fermer">×</button>
       </div>
 
-      <div class="grid">
+      <div class="form-grid">
         <label class="full">Titre
-          <input name="title" required placeholder="Ex. Révision de la Mercedes">
+          <input name="title" required maxlength="80" placeholder="Ex. Révision de la Mercedes">
         </label>
 
         <label>Responsable
@@ -97,7 +229,7 @@
           </select>
         </label>
 
-        <label>Date
+        <label>Date d’échéance
           <input name="dueDate" type="date" required>
         </label>
 
@@ -111,20 +243,22 @@
 
         <fieldset class="full">
           <legend>Alertes</legend>
-          <label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label>
-          <label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label>
-          <label><input type="checkbox" name="alerts" value="1"> La veille</label>
-          <label><input type="checkbox" name="alerts" value="0"> Le jour même</label>
+          <div class="alert-options">
+            <label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label>
+            <label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label>
+            <label><input type="checkbox" name="alerts" value="1"> La veille</label>
+            <label><input type="checkbox" name="alerts" value="0"> Le jour même</label>
+          </div>
         </fieldset>
 
         <label class="full">Notes
-          <textarea name="notes" rows="3" placeholder="Informations utiles..."></textarea>
+          <textarea name="notes" rows="3" placeholder="Garage, document à préparer, numéro de dossier…"></textarea>
         </label>
       </div>
 
-      <div class="actions">
-        <button type="button" id="cancelBtn" class="secondary">Annuler</button>
-        <button type="submit" class="primary">Enregistrer</button>
+      <div class="modal-actions">
+        <button type="button" id="cancelBtn" class="secondary-button">Annuler</button>
+        <button type="submit" class="primary-button">Enregistrer</button>
       </div>
     </form>
   </dialog>
