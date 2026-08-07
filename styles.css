@@ -347,3 +347,282 @@ body{
     background:#fff !important;
   }
 }
+
+
+/* =========================================================
+   DuoPilot V0.6 — Fluent Blue / Outlook-inspired
+   Objectif : interface visiblement bleue, pas seulement accentuée.
+   ========================================================= */
+
+:root {
+  --ms-blue-950:#082f49;
+  --ms-blue-900:#0b4a6f;
+  --ms-blue-800:#0f5f92;
+  --ms-blue-700:#106ebe;
+  --ms-blue-600:#0078d4;
+  --ms-blue-500:#2b88d8;
+  --ms-blue-400:#5ca9e6;
+  --ms-blue-300:#8dc8f2;
+  --ms-blue-200:#c7e5f8;
+  --ms-blue-100:#e5f3fb;
+  --ms-blue-050:#f0f8fd;
+  --ms-white:#ffffff;
+}
+
+/* Whole page is blue */
+html,
+body {
+  background:
+    radial-gradient(circle at 78% 0%, rgba(92,169,230,.45), transparent 26%),
+    radial-gradient(circle at 15% 100%, rgba(0,120,212,.25), transparent 28%),
+    linear-gradient(135deg, #d7effc 0%, #b9def7 35%, #8fc9ef 70%, #d8eefb 100%) !important;
+  color:#14324a !important;
+}
+
+/* Deep Outlook left rail */
+.sidebar {
+  background:
+    linear-gradient(180deg, #0f6cbd 0%, #0b5cab 44%, #0a4f93 72%, #083f76 100%) !important;
+  border-right:1px solid rgba(255,255,255,.18) !important;
+  box-shadow:16px 0 34px rgba(6,63,116,.20) !important;
+}
+
+/* Make sidebar labels/actions unmistakably blue-white */
+.sidebar .brand strong,
+.sidebar .brand small,
+.sidebar .sidebar-label,
+.sidebar .space-item,
+.sidebar .shortcut,
+.sidebar .universe-list button,
+.sidebar .sync-status {
+  color:#fff !important;
+}
+.sidebar .brand small,
+.sidebar .sidebar-label,
+.sidebar .sync-status {
+  color:rgba(255,255,255,.76) !important;
+}
+.sidebar .space-item,
+.sidebar .shortcut,
+.sidebar .universe-list button {
+  border:1px solid transparent !important;
+}
+.sidebar .space-item:hover,
+.sidebar .shortcut:hover,
+.sidebar .universe-list button:hover {
+  background:rgba(255,255,255,.10) !important;
+  border-color:rgba(255,255,255,.12) !important;
+}
+.sidebar .space-item.active,
+.sidebar .shortcut.active {
+  background:rgba(255,255,255,.18) !important;
+  border-color:rgba(255,255,255,.20) !important;
+  box-shadow:inset 3px 0 0 #fff !important;
+}
+.sidebar .space-item b,
+.sidebar .shortcut b {
+  color:#fff !important;
+  background:rgba(255,255,255,.16) !important;
+}
+
+/* White new-task CTA in sidebar, like a Microsoft command button */
+.new-task {
+  color:#0f6cbd !important;
+  background:#fff !important;
+  box-shadow:0 10px 24px rgba(3,46,84,.24) !important;
+}
+.new-task:hover {
+  background:#f7fbfe !important;
+}
+
+/* Appbar = clear blue strip across the top */
+.desktop-appbar {
+  margin:-30px clamp(-22px,-3.5vw,-52px) 28px;
+  min-height:50px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:0 clamp(22px,3.5vw,52px);
+  color:#fff;
+  background:
+    linear-gradient(90deg, #0f6cbd 0%, #0078d4 55%, #2b88d8 100%);
+  box-shadow:0 8px 28px rgba(0,84,147,.16);
+}
+.desktop-appbar-left,
+.desktop-appbar-right {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.desktop-appbar-left {
+  font-size:.83rem;
+}
+.desktop-appbar-left strong {
+  font-size:.95rem;
+}
+.appbar-dot {
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#9fd8ff;
+  box-shadow:0 0 0 4px rgba(255,255,255,.12);
+}
+.appbar-separator {
+  width:1px;
+  height:18px;
+  background:rgba(255,255,255,.3);
+}
+.desktop-appbar-right button {
+  width:30px;
+  height:30px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:8px;
+  color:#fff;
+  background:rgba(255,255,255,.10);
+  font-weight:800;
+}
+.desktop-appbar-right button:hover {
+  background:rgba(255,255,255,.18);
+}
+
+/* Main content gets a blue glass panel, not white */
+.main-panel {
+  background:
+    linear-gradient(180deg, rgba(224,243,253,.85), rgba(214,237,251,.70)) !important;
+}
+
+/* Hero distinctly blue */
+.hero {
+  padding:20px 22px;
+  border:1px solid rgba(15,108,189,.20);
+  border-radius:22px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.86) 0%, rgba(230,245,253,.92) 54%, rgba(201,229,247,.92) 100%) !important;
+  box-shadow:0 18px 44px rgba(15,108,189,.10);
+}
+.hero h1 {
+  color:#083f76 !important;
+}
+.hero-kicker,
+.section-kicker {
+  color:#0f6cbd !important;
+}
+
+/* Strong blue stat cards */
+.pulse-strip article {
+  border:1px solid rgba(15,108,189,.24) !important;
+  border-top:4px solid #0f6cbd !important;
+  background:
+    linear-gradient(180deg,#ffffff 0%,#f0f8fd 100%) !important;
+}
+.pulse-strip article:nth-child(2) {
+  border-top-color:#2b88d8 !important;
+}
+.pulse-strip article:nth-child(3) {
+  border-top-color:#5ca9e6 !important;
+}
+.pulse-strip article:nth-child(4) {
+  border-top-color:#0b4a6f !important;
+}
+
+/* Workspace with pale blue surface */
+.workspace-main,
+.insight-card {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.94), rgba(235,247,253,.96)) !important;
+  border:1px solid rgba(15,108,189,.22) !important;
+  box-shadow:0 14px 34px rgba(15,108,189,.10) !important;
+}
+.task-list {
+  border-color:rgba(15,108,189,.20) !important;
+}
+.task-item:hover {
+  background:#eef8fd !important;
+}
+
+/* Controls */
+.primary-action {
+  background:linear-gradient(135deg,#0078d4,#005a9e) !important;
+  border-color:#0078d4 !important;
+  box-shadow:0 10px 22px rgba(0,120,212,.22) !important;
+}
+.toolbar-controls select,
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+  border-color:#b7d9ef !important;
+  background:#f8fcff !important;
+}
+.density-switch {
+  background:#d9edf9 !important;
+}
+.density.active {
+  color:#0f6cbd !important;
+  background:#fff !important;
+}
+
+/* Calendar and focus */
+.calendar-day.today {
+  background:#0078d4 !important;
+}
+.calendar-day.has-task:not(.today)::after {
+  background:#0f6cbd !important;
+}
+.focus-meter span {
+  background:linear-gradient(90deg,#0078d4,#5ca9e6) !important;
+}
+
+/* Portraits directly in front of SONKI and SONKA */
+.space-item .person-avatar.photo-avatar {
+  width:32px !important;
+  height:32px !important;
+  flex:0 0 32px !important;
+  border-radius:50% !important;
+  overflow:hidden !important;
+  border:2px solid rgba(255,255,255,.95) !important;
+  box-shadow:0 4px 12px rgba(2,50,88,.28) !important;
+  background:#fff !important;
+}
+.space-item .person-avatar.photo-avatar img {
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  border-radius:50% !important;
+}
+.space-item {
+  grid-template-columns:36px 1fr auto !important;
+}
+
+/* Universe creator */
+.universe-add input {
+  color:#0b3954 !important;
+  background:#fff !important;
+  border:1px solid rgba(255,255,255,.5) !important;
+}
+.universe-add button {
+  color:#0f6cbd !important;
+  background:#fff !important;
+}
+
+/* Floating tooltips remain readable over blue */
+[data-tooltip]::after {
+  background:#0b4a6f !important;
+}
+[data-tooltip]::before {
+  border-top-color:#0b4a6f !important;
+}
+.sidebar [data-tooltip]::before {
+  border-top-color:transparent !important;
+  border-right-color:#0b4a6f !important;
+}
+
+/* Mobile */
+@media (max-width:860px) {
+  .desktop-appbar { display:none; }
+  .mobile-header {
+    color:#fff !important;
+    background:linear-gradient(90deg,#0f6cbd,#0078d4) !important;
+  }
+}

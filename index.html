@@ -31,14 +31,27 @@
   <div class="sidebar-label">Univers <span class="help-dot" data-tooltip="Un univers sert à classer vos échéances : Maison, Véhicules, Santé… Vous pouvez en créer autant que vous voulez.">?</span></div>
       <div id="universeList" class="universe-list"></div>
       <form id="universeForm" class="universe-add" autocomplete="off">
-        <input id="newUniverseInput" type="text" maxlength="30" placeholder="Ajouter un univers…" aria-label="Nouvel univers" data-tooltip="Exemples : Animaux, École, Banque, Abonnements, Parents…">
+        <input id="newUniverseInput" type="text" maxlength="30" placeholder="Ajouter un univers…" aria-label="Nouvel univers" data-tooltip="Ajoutez ici une nouvelle rubrique personnalisée : Banque, Animaux, École, Abonnements…" data-tooltip="Exemples : Animaux, École, Banque, Abonnements, Parents…">
         <button type="submit" aria-label="Ajouter l’univers" data-tooltip="Ajouter cet univers à DuoPilot">＋</button>
       </form>
 
       <div class="sidebar-footer"><div class="sync-status"><span></span>Données locales</div><button id="installBtn" class="install-button hidden">Installer DuoPilot</button></div>
 </aside>
 <main class="main-panel">
-  <header class="mobile-header"><button id="menuBtn" class="mobile-icon">☰</button><strong>DuoPilot</strong><button id="mobileAddBtn" class="mobile-add">＋</button></header>
+  <div class="desktop-appbar">
+        <div class="desktop-appbar-left">
+          <span class="appbar-dot"></span>
+          <strong>DuoPilot</strong>
+          <span class="appbar-separator"></span>
+          <span>Assistant du quotidien</span>
+        </div>
+        <div class="desktop-appbar-right">
+          <button type="button" data-tooltip="Rechercher une échéance, un univers ou une note.">⌕</button>
+          <button type="button" data-tooltip="Aide rapide sur l’utilisation de DuoPilot.">?</button>
+        </div>
+      </div>
+
+      <header class="mobile-header"><button id="menuBtn" class="mobile-icon">☰</button><strong>DuoPilot</strong><button id="mobileAddBtn" class="mobile-add">＋</button></header>
   <section class="hero">
     <div><p class="hero-kicker" id="viewEyebrow">Votre cockpit</p><h1 id="titleView">Bonjour 👋</h1><p id="dateNow" class="hero-date"></p><p id="heroSubtitle" class="hero-subtitle">Tout ce qui mérite votre attention, au même endroit.</p></div>
     <div class="hero-actions"><div class="status-orb" id="statusOrb"><span></span><div><small>État du jour</small><strong id="dailyStatus">Tout va bien</strong></div></div><button id="addBtn" class="primary-action"><span>＋</span> Ajouter</button></div>

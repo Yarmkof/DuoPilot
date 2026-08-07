@@ -22,3 +22,12 @@ URL : https://yarmkof.github.io/DuoPilot/
 - portrait lion placé directement devant SONKI ;
 - portrait éléphant placé directement devant SONKA ;
 - cache PWA incrémenté pour forcer le chargement du nouveau design.
+
+
+## V0.6 Fluent Blue
+- interface rendue visiblement bleue sur toute la page ;
+- barre supérieure bleue type Microsoft/Outlook ;
+- sidebar bleu Outlook profond ;
+- fond principal bleu clair ;
+- cartes et modules avec accents Fluent ;
+- portraits SONKI/SONKA maintenus directement dans la navigation.
