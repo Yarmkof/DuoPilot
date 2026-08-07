@@ -1,4 +1,4 @@
-# DuoPilot V1
+  # DuoPilot V1
 
 Première ébauche d'une application collaborative d'échéances.
 
@@ -21,3 +21,4 @@ python3 -m http.server 8000
 Puis ouvrir http://localhost:8000
 
 Cette V1 ne contient pas encore la synchronisation internet, les comptes utilisateurs, les notifications push réelles ni les e-mails.
+Dernière mise à jour : test GitHub Pages
