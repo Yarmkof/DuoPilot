@@ -1,268 +1,83 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#4776e6">
-  <meta name="description" content="DuoPilot — le calendrier collaboratif de Christelle et Armand.">
-  <title>DuoPilot</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#14213d">
+<title>DuoPilot</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-shell">
-    <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">✓</div>
-        <div>
-          <strong>DuoPilot</strong>
-          <span>Pilotez ensemble</span>
-        </div>
-      </div>
-
-      <button id="quickAddBtn" class="quick-add" type="button">
-        <span>＋</span> Nouvelle échéance
-      </button>
-
-      <nav class="main-nav" aria-label="Navigation principale">
-        <button class="nav-item active" data-owner="all">
-          <span class="nav-icon">⌂</span>
-          <span>Vue globale</span>
-          <b id="globalBadge">0</b>
-        </button>
-        <button class="nav-item" data-owner="Christelle">
-          <span class="avatar avatar-christelle">C</span>
-          <span>Christelle</span>
-          <b id="christelleBadge">0</b>
-        </button>
-        <button class="nav-item" data-owner="Armand">
-          <span class="avatar avatar-armand">A</span>
-          <span>Armand</span>
-          <b id="armandBadge">0</b>
-        </button>
-        <button class="nav-item" data-owner="Commun">
-          <span class="nav-icon">⌘</span>
-          <span>Commun</span>
-          <b id="communBadge">0</b>
-        </button>
-      </nav>
-
-      <div class="sidebar-section">
-        <p>Vues intelligentes</p>
-        <button class="smart-filter" data-smart="today">
-          <span>◉</span><span>Aujourd’hui</span><b id="todayBadge">0</b>
-        </button>
-        <button class="smart-filter" data-smart="week">
-          <span>▦</span><span>7 prochains jours</span><b id="weekBadgeSide">0</b>
-        </button>
-        <button class="smart-filter" data-smart="overdue">
-          <span>!</span><span>En retard</span><b id="lateBadgeSide">0</b>
-        </button>
-        <button class="smart-filter" data-smart="done">
-          <span>✓</span><span>Terminées</span><b id="doneBadgeSide">0</b>
-        </button>
-      </div>
-
-      <div class="sidebar-section categories-menu">
-        <p>Catégories</p>
-        <button data-category="Véhicule"><i class="dot vehicle"></i>Véhicule</button>
-        <button data-category="Maison"><i class="dot home"></i>Maison</button>
-        <button data-category="Administratif"><i class="dot admin"></i>Administratif</button>
-        <button data-category="Santé"><i class="dot health"></i>Santé</button>
-        <button data-category="Professionnel"><i class="dot work"></i>Professionnel</button>
-      </div>
-
-      <button id="installBtn" class="install-button hidden" type="button">Installer DuoPilot</button>
-    </aside>
-
-    <main class="main-panel">
-      <header class="mobile-header">
-        <button id="menuBtn" class="icon-button" type="button" aria-label="Ouvrir le menu">☰</button>
-        <strong>DuoPilot</strong>
-        <button id="mobileAddBtn" class="round-add" type="button" aria-label="Ajouter">＋</button>
-      </header>
-
-      <section class="page-header">
-        <div>
-          <p class="eyebrow" id="viewEyebrow">Tableau de bord</p>
-          <h1 id="titleView">Toutes les échéances</h1>
-          <p id="dateNow" class="date-line"></p>
-        </div>
-        <button id="addBtn" class="primary-button" type="button">
-          <span>＋</span> Ajouter
-        </button>
-      </section>
-
-      <section class="overview-cards" aria-label="Résumé des échéances">
-        <article class="overview-card">
-          <div class="overview-icon upcoming-icon">↗</div>
-          <div>
-            <span>À venir</span>
-            <strong id="upcoming">0</strong>
-          </div>
-        </article>
-        <article class="overview-card">
-          <div class="overview-icon week-icon">7</div>
-          <div>
-            <span>Cette semaine</span>
-            <strong id="week">0</strong>
-          </div>
-        </article>
-        <article class="overview-card">
-          <div class="overview-icon late-icon">!</div>
-          <div>
-            <span>En retard</span>
-            <strong id="late">0</strong>
-          </div>
-        </article>
-      </section>
-
-      <section class="list-toolbar">
-        <div class="segmented-control" aria-label="Affichage">
-          <button class="view-mode active" data-mode="list">Liste</button>
-          <button class="view-mode" data-mode="compact">Compact</button>
-        </div>
-        <div class="filter-row">
-          <label>
-            <span class="sr-only">Catégorie</span>
-            <select id="categoryFilter">
-              <option value="all">Toutes les catégories</option>
-              <option>Véhicule</option>
-              <option>Maison</option>
-              <option>Administratif</option>
-              <option>Santé</option>
-              <option>Professionnel</option>
-              <option>Voyage</option>
-              <option>Autre</option>
-            </select>
-          </label>
-          <label>
-            <span class="sr-only">Statut</span>
-            <select id="statusFilter">
-              <option value="all">Tous les statuts</option>
-              <option value="todo">À faire</option>
-              <option value="done">Terminées</option>
-              <option value="overdue">En retard</option>
-            </select>
-          </label>
-        </div>
-      </section>
-
-      <section id="taskList" class="task-list" aria-live="polite"></section>
-      <div id="empty" class="empty-state hidden">
-        <div>✓</div>
-        <h2>Tout est à jour</h2>
-        <p>Aucune échéance ne correspond à cette vue.</p>
-      </div>
-    </main>
-
-    <aside class="details-panel">
-      <section class="mini-calendar">
-        <div class="calendar-head">
-          <button id="prevMonth" type="button" aria-label="Mois précédent">‹</button>
-          <strong id="calendarTitle"></strong>
-          <button id="nextMonth" type="button" aria-label="Mois suivant">›</button>
-        </div>
-        <div class="calendar-weekdays">
-          <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
-        </div>
-        <div id="calendarGrid" class="calendar-grid"></div>
-      </section>
-
-      <section class="focus-card">
-        <div class="focus-head">
-          <div>
-            <span>Prochaine priorité</span>
-            <h2 id="focusTitle">Aucune échéance</h2>
-          </div>
-          <span id="focusOwner" class="owner-pill">—</span>
-        </div>
-        <p id="focusDate">Ajoutez une échéance pour commencer.</p>
-        <div id="focusProgress" class="progress-track"><span></span></div>
-        <p id="focusNotes" class="focus-notes"></p>
-      </section>
-
-      <section class="tips-card">
-        <div class="tips-icon">✦</div>
-        <div>
-          <strong>Astuce DuoPilot</strong>
-          <p>Utilisez plusieurs alertes pour les échéances importantes : deux semaines, une semaine et la veille.</p>
-        </div>
-      </section>
-    </aside>
+<div class="ambient a1"></div><div class="ambient a2"></div>
+<div class="app-shell">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="brand-symbol"><span></span><span></span></div><div><strong>DuoPilot</strong><small>Orchestrez votre quotidien</small></div></div>
+  <button class="new-task" id="quickAddBtn"><span>＋</span> Nouvelle échéance</button>
+  <div class="sidebar-label">Espaces</div>
+  <nav class="space-nav">
+    <button class="space-item active" data-owner="all"><span class="space-icon">◈</span><span>Vue d’ensemble</span><b id="globalBadge">0</b></button>
+    <button class="space-item" data-owner="SONKI"><span class="person-avatar christelle">C</span><span>SONKI</span><b id="christelleBadge">0</b></button>
+    <button class="space-item" data-owner="SONKA"><span class="person-avatar armand">A</span><span>SONKA</span><b id="armandBadge">0</b></button>
+    <button class="space-item" data-owner="Commun"><span class="space-icon">∞</span><span>À deux</span><b id="communBadge">0</b></button>
+  </nav>
+  <div class="sidebar-label">Raccourcis</div>
+  <div class="shortcut-list">
+    <button class="shortcut" data-smart="today"><span>●</span><span>Aujourd’hui</span><b id="todayBadge">0</b></button>
+    <button class="shortcut" data-smart="week"><span>↗</span><span>7 prochains jours</span><b id="weekBadgeSide">0</b></button>
+    <button class="shortcut" data-smart="overdue"><span>!</span><span>En retard</span><b id="lateBadgeSide">0</b></button>
+    <button class="shortcut" data-smart="done"><span>✓</span><span>Terminées</span><b id="doneBadgeSide">0</b></button>
   </div>
-
-  <div id="sidebarBackdrop" class="sidebar-backdrop hidden"></div>
-
-  <dialog id="modal">
-    <form id="taskForm">
-      <div class="modal-head">
-        <div>
-          <p class="eyebrow">Nouvelle échéance</p>
-          <h2>Ajouter une tâche</h2>
-        </div>
-        <button type="button" id="closeBtn" class="modal-close" aria-label="Fermer">×</button>
-      </div>
-
-      <div class="form-grid">
-        <label class="full">Titre
-          <input name="title" required maxlength="80" placeholder="Ex. Révision de la Mercedes">
-        </label>
-
-        <label>Responsable
-          <select name="owner">
-            <option>Christelle</option>
-            <option>Armand</option>
-            <option>Commun</option>
-          </select>
-        </label>
-
-        <label>Catégorie
-          <select name="category">
-            <option>Véhicule</option>
-            <option>Maison</option>
-            <option>Administratif</option>
-            <option>Santé</option>
-            <option>Professionnel</option>
-            <option>Voyage</option>
-            <option>Autre</option>
-          </select>
-        </label>
-
-        <label>Date d’échéance
-          <input name="dueDate" type="date" required>
-        </label>
-
-        <label>Priorité
-          <select name="priority">
-            <option value="normal">Normale</option>
-            <option value="important">Importante</option>
-            <option value="urgent">Urgente</option>
-          </select>
-        </label>
-
-        <fieldset class="full">
-          <legend>Alertes</legend>
-          <div class="alert-options">
-            <label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label>
-            <label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label>
-            <label><input type="checkbox" name="alerts" value="1"> La veille</label>
-            <label><input type="checkbox" name="alerts" value="0"> Le jour même</label>
-          </div>
-        </fieldset>
-
-        <label class="full">Notes
-          <textarea name="notes" rows="3" placeholder="Garage, document à préparer, numéro de dossier…"></textarea>
-        </label>
-      </div>
-
-      <div class="modal-actions">
-        <button type="button" id="cancelBtn" class="secondary-button">Annuler</button>
-        <button type="submit" class="primary-button">Enregistrer</button>
-      </div>
-    </form>
-  </dialog>
-
-  <script src="app.js"></script>
-</body>
-</html>
+  <div class="sidebar-label">Univers</div>
+  <div class="universe-list">
+    <button data-category="Maison"><i class="u-dot maison"></i>Maison</button>
+    <button data-category="Véhicule"><i class="u-dot voiture"></i>Véhicules</button>
+    <button data-category="Administratif"><i class="u-dot admin"></i>Administratif</button>
+    <button data-category="Santé"><i class="u-dot sante"></i>Santé</button>
+    <button data-category="Professionnel"><i class="u-dot pro"></i>Professionnel</button>
+    <button data-category="Voyage"><i class="u-dot voyage"></i>Voyages</button>
+  </div>
+  <div class="sidebar-footer"><div class="sync-status"><span></span>Données locales</div><button id="installBtn" class="install-button hidden">Installer DuoPilot</button></div>
+</aside>
+<main class="main-panel">
+  <header class="mobile-header"><button id="menuBtn" class="mobile-icon">☰</button><strong>DuoPilot</strong><button id="mobileAddBtn" class="mobile-add">＋</button></header>
+  <section class="hero">
+    <div><p class="hero-kicker" id="viewEyebrow">Votre cockpit</p><h1 id="titleView">Bonjour 👋</h1><p id="dateNow" class="hero-date"></p><p id="heroSubtitle" class="hero-subtitle">Tout ce qui mérite votre attention, au même endroit.</p></div>
+    <div class="hero-actions"><div class="status-orb" id="statusOrb"><span></span><div><small>État du jour</small><strong id="dailyStatus">Tout va bien</strong></div></div><button id="addBtn" class="primary-action"><span>＋</span> Ajouter</button></div>
+  </section>
+  <section class="pulse-strip">
+    <article><div><small>À venir</small><strong id="upcoming">0</strong></div><span class="pulse-symbol blue">↗</span></article>
+    <article><div><small>Cette semaine</small><strong id="week">0</strong></div><span class="pulse-symbol green">7</span></article>
+    <article><div><small>En retard</small><strong id="late">0</strong></div><span class="pulse-symbol red">!</span></article>
+    <article class="next-focus"><div><small>Prochaine priorité</small><strong id="nextFocusText">Aucune</strong></div><span class="pulse-symbol gold">✦</span></article>
+  </section>
+  <section class="workspace">
+    <div class="workspace-main">
+      <div class="workspace-toolbar"><div><p class="section-kicker">Échéances</p><h2 id="listTitle">À surveiller</h2></div><div class="toolbar-controls">
+        <select id="categoryFilter"><option value="all">Toutes les catégories</option><option>Maison</option><option>Véhicule</option><option>Administratif</option><option>Santé</option><option>Professionnel</option><option>Voyage</option><option>Autre</option></select>
+        <select id="statusFilter"><option value="all">Tous les statuts</option><option value="todo">À faire</option><option value="done">Terminées</option><option value="overdue">En retard</option></select>
+        <div class="density-switch"><button class="density active" data-mode="comfort">Confort</button><button class="density" data-mode="compact">Compact</button></div>
+      </div></div>
+      <section id="taskList" class="task-list"></section>
+      <div id="empty" class="empty-state hidden"><div class="empty-orbit">✓</div><h3>Rien à signaler</h3><p>Cette vue ne contient aucune échéance.</p></div>
+    </div>
+    <aside class="insight-column">
+      <section class="insight-card calendar-card"><div class="card-head"><div><p class="section-kicker">Calendrier</p><h3 id="calendarTitle"></h3></div><div class="calendar-nav"><button id="prevMonth">‹</button><button id="nextMonth">›</button></div></div><div class="calendar-weekdays"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div><div id="calendarGrid" class="calendar-grid"></div></section>
+      <section class="insight-card priority-card"><div class="priority-top"><div><p class="section-kicker">Focus</p><h3 id="focusTitle">Aucune priorité</h3></div><span id="focusOwner" class="focus-owner">—</span></div><p id="focusDate" class="focus-date">Ajoutez une échéance pour commencer.</p><div class="focus-meter"><span id="focusMeter"></span></div><p id="focusNotes" class="focus-notes"></p></section>
+      <section class="insight-card duo-card"><div class="duo-avatars"><span class="big-avatar christelle">C</span><span class="link-dot">•</span><span class="big-avatar armand">A</span></div><div><p class="section-kicker">À deux</p><h3>Votre quotidien partagé</h3><p>Les tâches communes restent visibles sans mélanger les responsabilités personnelles.</p></div></section>
+    </aside>
+  </section>
+</main>
+</div>
+<div id="sidebarBackdrop" class="sidebar-backdrop hidden"></div>
+<dialog id="modal"><form id="taskForm"><div class="modal-header"><div><p class="section-kicker">Nouvelle échéance</p><h2>Ajouter à DuoPilot</h2></div><button id="closeBtn" class="modal-close" type="button">×</button></div><div class="form-grid">
+<label class="full">Titre<input name="title" required maxlength="80" placeholder="Ex. Révision de la Mercedes"></label>
+<label>Responsable<select name="owner"><option>SONKI</option><option>SONKA</option><option>Commun</option></select></label>
+<label>Univers<select name="category"><option>Maison</option><option>Véhicule</option><option>Administratif</option><option>Santé</option><option>Professionnel</option><option>Voyage</option><option>Autre</option></select></label>
+<label>Date<input name="dueDate" type="date" required></label>
+<label>Priorité<select name="priority"><option value="normal">Normale</option><option value="important">Importante</option><option value="urgent">Urgente</option></select></label>
+<fieldset class="full"><legend>Alertes</legend><div class="alerts-grid"><label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label><label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label><label><input type="checkbox" name="alerts" value="1"> La veille</label><label><input type="checkbox" name="alerts" value="0"> Le jour même</label></div></fieldset>
+<label class="full">Notes<textarea name="notes" rows="3" placeholder="Ajoutez les détails utiles…"></textarea></label>
+</div><div class="modal-actions"><button id="cancelBtn" class="secondary-action" type="button">Annuler</button><button class="primary-action" type="submit">Enregistrer</button></div></form></dialog>
+<script src="app.js"></script>
+</body></html>
