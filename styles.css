@@ -626,3 +626,200 @@ body {
     background:linear-gradient(90deg,#0f6cbd,#0078d4) !important;
   }
 }
+
+
+/* =========================================================
+   DuoPilot V1.0 — Contextual Identity
+   SONKI = rose pâle
+   SONKA = bleu
+   Global / Duo = neutre premium
+   ========================================================= */
+
+body {
+  transition: background .35s ease, color .25s ease;
+}
+
+.main-panel,
+.sidebar,
+.hero,
+.workspace-main,
+.insight-card,
+.pulse-strip article,
+.desktop-appbar,
+.primary-action,
+.new-task {
+  transition:
+    background .35s ease,
+    border-color .35s ease,
+    color .25s ease,
+    box-shadow .35s ease;
+}
+
+/* -------- SONKI : rose pâle -------- */
+body[data-theme="sonki"] {
+  background:
+    radial-gradient(circle at 80% 0%, rgba(242,180,199,.34), transparent 28%),
+    linear-gradient(135deg,#fff5f8 0%,#fbe8ee 48%,#f8dfe7 100%) !important;
+}
+
+body[data-theme="sonki"] .sidebar {
+  background:
+    linear-gradient(180deg,#d98ca6 0%,#cf7f9b 48%,#bd6c89 100%) !important;
+  box-shadow:16px 0 34px rgba(130,68,91,.18) !important;
+}
+
+body[data-theme="sonki"] .desktop-appbar {
+  background:
+    linear-gradient(90deg,#cb7895 0%,#d98ca6 55%,#e6a5bb 100%) !important;
+  box-shadow:0 8px 28px rgba(143,79,102,.16) !important;
+}
+
+body[data-theme="sonki"] .main-panel {
+  background:
+    linear-gradient(180deg,rgba(255,246,249,.92),rgba(250,229,236,.82)) !important;
+}
+
+body[data-theme="sonki"] .hero {
+  background:
+    linear-gradient(135deg,#fff 0%,#fff5f8 55%,#f8dfe8 100%) !important;
+  border-color:#efc5d3 !important;
+  box-shadow:0 18px 44px rgba(184,103,132,.10) !important;
+}
+
+body[data-theme="sonki"] .hero h1,
+body[data-theme="sonki"] .workspace-toolbar h2,
+body[data-theme="sonki"] .card-head h3,
+body[data-theme="sonki"] .priority-top h3,
+body[data-theme="sonki"] .duo-card h3 {
+  color:#7b3d56 !important;
+}
+
+body[data-theme="sonki"] .hero-kicker,
+body[data-theme="sonki"] .section-kicker {
+  color:#bd6c89 !important;
+}
+
+body[data-theme="sonki"] .pulse-strip article,
+body[data-theme="sonki"] .workspace-main,
+body[data-theme="sonki"] .insight-card {
+  border-color:#efc9d5 !important;
+  background:linear-gradient(180deg,#fff 0%,#fff6f9 100%) !important;
+  box-shadow:0 14px 34px rgba(185,105,132,.08) !important;
+}
+
+body[data-theme="sonki"] .pulse-strip article {
+  border-top-color:#d98ca6 !important;
+}
+
+body[data-theme="sonki"] .primary-action {
+  background:linear-gradient(135deg,#cf7f9b,#b96382) !important;
+  border-color:#cf7f9b !important;
+  box-shadow:0 10px 22px rgba(185,99,130,.22) !important;
+}
+
+body[data-theme="sonki"] .calendar-day.today {
+  background:#cf7f9b !important;
+}
+
+body[data-theme="sonki"] .focus-meter span {
+  background:linear-gradient(90deg,#cf7f9b,#e5a0b7) !important;
+}
+
+body[data-theme="sonki"] .toolbar-controls select,
+body[data-theme="sonki"] .form-grid input,
+body[data-theme="sonki"] .form-grid select,
+body[data-theme="sonki"] .form-grid textarea {
+  border-color:#efcbd7 !important;
+  background:#fff9fb !important;
+}
+
+/* -------- SONKA : bleu Outlook -------- */
+body[data-theme="sonka"] {
+  background:
+    radial-gradient(circle at 78% 0%, rgba(92,169,230,.45), transparent 26%),
+    linear-gradient(135deg,#d7effc 0%,#b9def7 45%,#8fc9ef 100%) !important;
+}
+
+body[data-theme="sonka"] .sidebar {
+  background:
+    linear-gradient(180deg,#0f6cbd 0%,#0b5cab 48%,#083f76 100%) !important;
+}
+
+body[data-theme="sonka"] .desktop-appbar {
+  background:
+    linear-gradient(90deg,#0f6cbd 0%,#0078d4 55%,#2b88d8 100%) !important;
+}
+
+body[data-theme="sonka"] .main-panel {
+  background:
+    linear-gradient(180deg,rgba(224,243,253,.88),rgba(214,237,251,.74)) !important;
+}
+
+body[data-theme="sonka"] .hero {
+  background:
+    linear-gradient(135deg,#fff 0%,#e9f6fd 58%,#cbe9fa 100%) !important;
+  border-color:#b9dff5 !important;
+}
+
+body[data-theme="sonka"] .primary-action {
+  background:linear-gradient(135deg,#0078d4,#005a9e) !important;
+  border-color:#0078d4 !important;
+}
+
+/* -------- Global / Duo : élégant neutre bleu -------- */
+body[data-theme="global"],
+body[data-theme="duo"] {
+  background:
+    radial-gradient(circle at 78% 0%, rgba(126,180,222,.28), transparent 28%),
+    linear-gradient(135deg,#edf6fb 0%,#dcecf6 48%,#d0e4f1 100%) !important;
+}
+
+body[data-theme="global"] .sidebar,
+body[data-theme="duo"] .sidebar {
+  background:
+    linear-gradient(180deg,#174f7a 0%,#123f64 55%,#0c3454 100%) !important;
+}
+
+body[data-theme="global"] .desktop-appbar,
+body[data-theme="duo"] .desktop-appbar {
+  background:
+    linear-gradient(90deg,#174f7a 0%,#1c669e 60%,#2b7db6 100%) !important;
+}
+
+/* New universe field inside modal */
+.inline-universe-add {
+  display:grid;
+  grid-template-columns:1fr 38px;
+  gap:7px;
+  margin-top:8px;
+}
+
+.inline-universe-add input {
+  margin-top:0 !important;
+}
+
+.inline-universe-add button {
+  border:0;
+  border-radius:10px;
+  color:#fff;
+  background:#0078d4;
+  font-size:1.05rem;
+  font-weight:900;
+}
+
+body[data-theme="sonki"] .inline-universe-add button {
+  background:#cf7f9b;
+}
+
+.inline-universe-add button:hover {
+  filter:brightness(1.04);
+}
+
+/* Modal gets a slight context tint */
+body[data-theme="sonki"] dialog {
+  background:#fffafb;
+}
+
+body[data-theme="sonka"] dialog {
+  background:#fbfdff;
+}

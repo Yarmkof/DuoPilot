@@ -1,33 +1,36 @@
-# DuoPilot V0.4 — Outlook Blue
+# DuoPilot V1.0
 
-Évolutions :
-- interface bleu Outlook ;
-- SONKI et SONKA partout dans l’application ;
-- migration automatique des anciennes tâches « Christelle » / « Armand » ;
-- photo lion pour SONKI ;
-- photo éléphant pour SONKA ;
-- info-bulles d’aide sur les principales commandes ;
-- univers personnalisables avec champ « Ajouter un univers… » ;
-- univers personnalisés conservés dans le navigateur ;
-- conservation des tâches existantes.
+Première version structurée comme un véritable produit.
+
+## Identité contextuelle
+- SONKI : interface rose pâle
+- SONKA : interface bleue Outlook
+- Vue d’ensemble / À deux : thème DuoPilot neutre
+
+## Fonctionnalités conservées
+- espaces SONKI / SONKA / À deux
+- photos lion / éléphant
+- échéances
+- alertes paramétrables
+- calendrier
+- vues intelligentes
+- univers personnalisables
+- info-bulles
+- PWA / installation
+- stockage local
+
+## Nouveauté V1.0
+Dans « Nouvelle échéance », il est maintenant possible de :
+1. sélectionner un univers existant ;
+2. saisir directement un nouvel univers absent de la liste ;
+3. cliquer sur + ;
+4. le nouvel univers est créé et sélectionné immédiatement.
+
+Les univers personnalisés sont conservés dans le navigateur.
 
 ## Publication
-Remplacer les fichiers du dépôt DuoPilot par le contenu de cette archive, puis Commit et Push depuis GitHub Desktop.
+Summary conseillé :
+V1.0 - Contextual themes + custom universes
 
-URL : https://yarmkof.github.io/DuoPilot/
-
-
-## V0.5
-- thème Outlook bleu renforcé : sidebar bleue + fond principal bleuté ;
-- portrait lion placé directement devant SONKI ;
-- portrait éléphant placé directement devant SONKA ;
-- cache PWA incrémenté pour forcer le chargement du nouveau design.
-
-
-## V0.6 Fluent Blue
-- interface rendue visiblement bleue sur toute la page ;
-- barre supérieure bleue type Microsoft/Outlook ;
-- sidebar bleu Outlook profond ;
-- fond principal bleu clair ;
-- cartes et modules avec accents Fluent ;
-- portraits SONKI/SONKA maintenus directement dans la navigation.
+Site :
+https://yarmkof.github.io/DuoPilot/
