@@ -262,7 +262,6 @@ qa(".pulse-card").forEach(card=>card.onclick=()=>{
     x.setAttribute("aria-pressed","false");
   });
   qa(".shortcut").forEach(x=>x.classList.remove("active"));
-  q("#categoryFilter").value="all";
   q("#statusFilter").value="all";
 
   if (wasActive) {
@@ -274,7 +273,6 @@ qa(".pulse-card").forEach(card=>card.onclick=()=>{
   }
 
   renderAll();
-  q("#workspace").scrollIntoView({behavior:"smooth",block:"start"});
 });
 
 q("#categoryFilter").onchange=()=>{clearSmart();renderAll();};
@@ -306,22 +304,36 @@ q("#sidebarBackdrop").onclick=closeSide;
 q("#prevMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);calendar();};
 q("#nextMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);calendar();};
 
+
+const homeBrand = q("#homeBrand");
+if (homeBrand) {
+  homeBrand.addEventListener("click", () => {
+    activeOwner = "all";
+    smart = null;
+
+    qa(".space-item").forEach(item => {
+      item.classList.toggle("active", item.dataset.owner === "all");
+    });
+
+    qa(".shortcut").forEach(item => item.classList.remove("active"));
+    qa(".pulse-card").forEach(item => {
+      item.classList.remove("active");
+      item.setAttribute("aria-pressed", "false");
+    });
+
+    const categoryFilter = q("#categoryFilter");
+    const statusFilter = q("#statusFilter");
+    if (categoryFilter) categoryFilter.value = "all";
+    if (statusFilter) statusFilter.value = "all";
+
+    renderAll();
+    closeSide();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;q("#installBtn").classList.remove("hidden");});
 q("#installBtn").onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;q("#installBtn").classList.add("hidden");};
 q("#dateNow").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
-if("serviceWorker" in navigator){
-  window.addEventListener("load",async()=>{
-    const hadController=Boolean(navigator.serviceWorker.controller);
-    let refreshing=false;
-    navigator.serviceWorker.addEventListener("controllerchange",()=>{
-      if(!hadController||refreshing)return;
-      refreshing=true;
-      window.location.reload();
-    });
-    try{
-      const registration=await navigator.serviceWorker.register("./service-worker.js?v=1.4.0",{updateViaCache:"none"});
-      await registration.update();
-    }catch{}
-  });
-}
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));
 renderAll();

@@ -5,14 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#14213d">
 <title>DuoPilot</title>
-<link rel="manifest" href="manifest.json?v=1.4.0">
-<link rel="stylesheet" href="styles.css?v=1.4.0">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body data-theme="overview">
 <div class="ambient a1"></div><div class="ambient a2"></div>
 <div class="app-shell">
 <aside class="sidebar" id="sidebar">
-  <a class="brand home-link" href="./" aria-label="DuoPilot — revenir à l’accueil"><div class="brand-symbol"><span></span><span></span></div><div><strong>DuoPilot</strong><small>Orchestrez votre quotidien</small></div></a>
+  <button class="brand brand-home" id="homeBrand" type="button"
+              aria-label="Retour à la vue d’ensemble"
+              data-tooltip="Retourner à la page d’accueil de DuoPilot.">
+              <div class="brand-symbol"><span></span><span></span>
+            </button><div><strong>DuoPilot</strong><small>Orchestrez votre quotidien</small></div></div>
   <button class="new-task" id="quickAddBtn"><span>＋</span> Nouvelle échéance</button>
   <div class="sidebar-label">Espaces</div>
   <nav class="space-nav">
@@ -41,7 +45,7 @@
   <div class="desktop-appbar">
         <div class="desktop-appbar-left">
           <span class="appbar-dot"></span>
-          <a class="appbar-home-link" href="./" aria-label="DuoPilot — revenir à l’accueil">DuoPilot</a>
+          <strong>DuoPilot</strong>
           <span class="appbar-separator"></span>
           <span>Assistant du quotidien</span>
         </div>
@@ -51,27 +55,27 @@
         </div>
       </div>
 
-      <header class="mobile-header"><button id="menuBtn" class="mobile-icon">☰</button><a class="mobile-home-link" href="./" aria-label="DuoPilot — revenir à l’accueil">DuoPilot</a><button id="mobileAddBtn" class="mobile-add">＋</button></header>
+      <header class="mobile-header"><button id="menuBtn" class="mobile-icon">☰</button><strong>DuoPilot</strong><button id="mobileAddBtn" class="mobile-add">＋</button></header>
   <section class="hero">
     <div><p class="hero-kicker" id="viewEyebrow">Votre cockpit</p><h1 id="titleView">Bonjour 👋</h1><p id="dateNow" class="hero-date"></p><p id="heroSubtitle" class="hero-subtitle">Tout ce qui mérite votre attention, au même endroit.</p></div>
     <div class="hero-actions"><div class="status-orb" id="statusOrb"><span></span><div><small>État du jour</small><strong id="dailyStatus">Tout va bien</strong></div></div><button id="addBtn" class="primary-action"><span>＋</span> Ajouter</button></div>
   </section>
   <section class="pulse-strip">
-    <button class="pulse-card" type="button" data-pulse="upcoming" aria-pressed="false" aria-controls="workspace"
+    <button class="pulse-card" type="button" data-pulse="upcoming" aria-pressed="false"
       data-tooltip="Afficher toutes les échéances à venir dans l’espace actuellement sélectionné.">
       <div><small>À venir</small><strong id="upcoming">0</strong></div><span class="pulse-symbol blue">↗</span>
     </button>
-    <button class="pulse-card" type="button" data-pulse="week" aria-pressed="false" aria-controls="workspace"
+    <button class="pulse-card" type="button" data-pulse="week" aria-pressed="false"
       data-tooltip="Afficher uniquement les échéances prévues dans les 7 prochains jours.">
       <div><small>Cette semaine</small><strong id="week">0</strong></div><span class="pulse-symbol green">7</span>
     </button>
-    <button class="pulse-card" type="button" data-pulse="overdue" aria-pressed="false" aria-controls="workspace"
+    <button class="pulse-card" type="button" data-pulse="overdue" aria-pressed="false"
       data-tooltip="Afficher uniquement les échéances en retard.">
       <div><small>En retard</small><strong id="late">0</strong></div><span class="pulse-symbol red">!</span>
     </button>
     <article class="next-focus"><div><small>Prochaine priorité</small><strong id="nextFocusText">Aucune</strong></div><span class="pulse-symbol gold">✦</span></article>
   </section>
-  <section class="workspace" id="workspace">
+  <section class="workspace">
     <div class="workspace-main">
       <div class="workspace-toolbar"><div><p class="section-kicker">Échéances</p><h2 id="listTitle">À surveiller</h2></div><div class="toolbar-controls">
         <select id="categoryFilter" data-tooltip="Filtrer l’affichage par univers."><option value="all">Toutes les catégories</option><option>Maison</option><option>Véhicule</option><option>Administratif</option><option>Santé</option><option>Professionnel</option><option>Voyage</option><option>Autre</option></select>
@@ -104,5 +108,5 @@
 <fieldset class="full"><legend>Alertes</legend><div class="alerts-grid"><label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label><label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label><label><input type="checkbox" name="alerts" value="1"> La veille</label><label><input type="checkbox" name="alerts" value="0"> Le jour même</label></div></fieldset>
 <label class="full">Notes<textarea name="notes" rows="3" placeholder="Ajoutez les détails utiles…"></textarea></label>
 </div><div class="modal-actions"><button id="cancelBtn" class="secondary-action" type="button">Annuler</button><button class="primary-action" type="submit">Enregistrer</button></div></form></dialog>
-<script src="app.js?v=1.4.0"></script>
+<script src="app.js"></script>
 </body></html>
