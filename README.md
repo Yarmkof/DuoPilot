@@ -25,8 +25,9 @@ https://yarmkof.github.io/DuoPilot/
 - Le filtre respecte l’espace courant : Vue d’ensemble, SONKI, SONKA ou À deux.
 
 
-## V1.4 — Ajustements interface
-- cartes « À venir », « Cette semaine » et « En retard » avec angles plus arrondis ;
-- compteurs recentrés pour un meilleur équilibre visuel ;
-- bloc DuoPilot dans la barre latérale désormais cliquable ;
-- clic sur DuoPilot = retour à la Vue d’ensemble, suppression des filtres temporaires et retour en haut de page.
+## V1.4.1 FIXED
+- correction de la structure HTML cassée dans V1.4 ;
+- cartes arrondies ;
+- chiffres recentrés ;
+- DuoPilot cliquable vers Vue d’ensemble ;
+- aucune modification du moteur principal de l’application.

@@ -307,7 +307,7 @@ q("#nextMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);
 
 const homeBrand = q("#homeBrand");
 if (homeBrand) {
-  homeBrand.addEventListener("click", () => {
+  const goHome = () => {
     activeOwner = "all";
     smart = null;
 
@@ -329,6 +329,14 @@ if (homeBrand) {
     renderAll();
     closeSide();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  homeBrand.addEventListener("click", goHome);
+  homeBrand.addEventListener("keydown", event => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      goHome();
+    }
   });
 }
 

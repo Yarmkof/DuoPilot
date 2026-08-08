@@ -1108,110 +1108,67 @@ body[data-theme="sonka"] .pulse-strip .pulse-card.active {
 
 
 /* =========================================================
-   DuoPilot V1.4 — UI polish + home navigation
+   DuoPilot V1.4.1 FIXED — rounded cards + centered values + home
    ========================================================= */
 
-/* Dashboard cards: visibly rounded */
-.pulse-strip .pulse-card,
-.pulse-strip > article,
-.priority-card {
+/* Keep the existing dashboard layout intact, only polish cards */
+.pulse-strip .pulse-card {
   border-radius: 22px !important;
   overflow: hidden;
-}
-
-/* The three clickable counters use a balanced centered composition */
-.pulse-strip .pulse-card {
   min-height: 128px;
   position: relative;
-  display: grid !important;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  padding: 22px 24px !important;
 }
 
-/* Text block occupies the card, value is no longer stuck to far left */
+/* Center numeric value more naturally inside each card */
 .pulse-strip .pulse-card > div {
-  min-width: 0;
-  display: grid;
-  grid-template-rows: auto 1fr;
+  width: 100%;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
   text-align: center;
-  padding-left: 38px;
 }
 
 .pulse-strip .pulse-card small {
-  justify-self: start;
   width: 100%;
   text-align: left;
   margin-bottom: 8px;
 }
 
 .pulse-strip .pulse-card strong {
-  display: block;
   width: 100%;
-  text-align: center;
+  display: block;
+  text-align: center !important;
   font-size: clamp(1.7rem, 2.2vw, 2.25rem);
   line-height: 1;
-  margin: 2px auto 0;
 }
 
-/* Keep icon comfortably on the right */
+/* Keep icon anchored on the right without pushing the value left */
 .pulse-strip .pulse-card .pulse-symbol {
-  justify-self: end;
-  margin-left: 14px;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
-/* Priority card follows same rounded language */
-.pulse-strip > article:last-child,
+/* Make the priority card rounded too */
+.pulse-strip > article,
 .priority-card {
   border-radius: 22px !important;
+  overflow: hidden;
 }
 
-/* Clickable DuoPilot logo/brand */
+/* Clickable DuoPilot brand without changing its structure */
 .brand-home {
-  appearance: none;
-  border: 0;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  color: inherit;
-  background: transparent;
-  font: inherit;
-  text-align: left;
   cursor: pointer;
-}
-
-.brand-home:hover {
-  opacity: .94;
-}
-
-.brand-home:focus-visible {
-  outline: 3px solid rgba(255,255,255,.35);
-  outline-offset: 5px;
   border-radius: 14px;
 }
 
-/* If .brand originally uses flex/grid, preserve alignment */
-button.brand.brand-home {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.brand-home:hover {
+  background: rgba(255,255,255,.06);
 }
 
-/* Smaller screens */
-@media (max-width: 1100px) {
-  .pulse-strip .pulse-card > div {
-    padding-left: 16px;
-  }
-}
-
-@media (max-width: 700px) {
-  .pulse-strip .pulse-card {
-    min-height: 112px;
-    padding: 18px !important;
-  }
-  .pulse-strip .pulse-card > div {
-    padding-left: 0;
-  }
+.brand-home:focus-visible {
+  outline: 3px solid rgba(255,255,255,.28);
+  outline-offset: 3px;
 }
