@@ -304,10 +304,17 @@ q("#sidebarBackdrop").onclick=closeSide;
 q("#prevMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);calendar();};
 q("#nextMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);calendar();};
 
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;q("#installBtn").classList.remove("hidden");});
+q("#installBtn").onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;q("#installBtn").classList.add("hidden");};
+q("#dateNow").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));
+renderAll();
 
-const homeBrand = q("#homeBrand");
+
+// DuoPilot V1.4.2 — retour accueil sans modifier la structure de l'application
+const homeBrand = document.getElementById("homeBrand");
 if (homeBrand) {
-  const goHome = () => {
+  const returnHome = () => {
     activeOwner = "all";
     smart = null;
 
@@ -321,27 +328,21 @@ if (homeBrand) {
       item.setAttribute("aria-pressed", "false");
     });
 
-    const categoryFilter = q("#categoryFilter");
-    const statusFilter = q("#statusFilter");
-    if (categoryFilter) categoryFilter.value = "all";
-    if (statusFilter) statusFilter.value = "all";
+    const category = q("#categoryFilter");
+    const status = q("#statusFilter");
+    if (category) category.value = "all";
+    if (status) status.value = "all";
 
     renderAll();
-    closeSide();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof closeSide === "function") closeSide();
+    window.scrollTo({top: 0, behavior: "smooth"});
   };
 
-  homeBrand.addEventListener("click", goHome);
+  homeBrand.addEventListener("click", returnHome);
   homeBrand.addEventListener("keydown", event => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      goHome();
+      returnHome();
     }
   });
 }
-
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;q("#installBtn").classList.remove("hidden");});
-q("#installBtn").onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;q("#installBtn").classList.add("hidden");};
-q("#dateNow").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));
-renderAll();
