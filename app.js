@@ -304,6 +304,163 @@ q("#sidebarBackdrop").onclick=closeSide;
 q("#prevMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);calendar();};
 q("#nextMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);calendar();};
 
+
+// =========================================================
+// DuoPilot V1.5 — Recherche + Aide
+// =========================================================
+const searchBtn = q("#searchBtn");
+const helpBtn = q("#helpBtn");
+const searchDialog = q("#searchDialog");
+const helpDialog = q("#helpDialog");
+const globalSearchInput = q("#globalSearchInput");
+const searchResults = q("#searchResults");
+const searchResultCount = q("#searchResultCount");
+
+function normalizeSearch(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function searchTaskHaystack(task) {
+  return normalizeSearch([
+    task.title,
+    task.notes,
+    task.category,
+    task.owner,
+    task.priority,
+    task.date
+  ].join(" "));
+}
+
+function openSearch() {
+  if (!searchDialog) return;
+  searchDialog.showModal();
+  setTimeout(() => globalSearchInput?.focus(), 30);
+}
+
+function openHelp() {
+  if (!helpDialog) return;
+  helpDialog.showModal();
+}
+
+function closeUtilityDialog(dialog) {
+  if (dialog?.open) dialog.close();
+}
+
+searchBtn?.addEventListener("click", openSearch);
+helpBtn?.addEventListener("click", openHelp);
+
+qa("[data-close-dialog]").forEach(button => {
+  button.addEventListener("click", () => {
+    closeUtilityDialog(q("#" + button.dataset.closeDialog));
+  });
+});
+
+[searchDialog, helpDialog].forEach(dialog => {
+  dialog?.addEventListener("click", event => {
+    if (event.target === dialog) dialog.close();
+  });
+});
+
+document.addEventListener("keydown", event => {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+    event.preventDefault();
+    openSearch();
+  }
+  if (event.key === "Escape") {
+    closeUtilityDialog(searchDialog);
+    closeUtilityDialog(helpDialog);
+  }
+});
+
+globalSearchInput?.addEventListener("input", () => {
+  const query = normalizeSearch(globalSearchInput.value);
+
+  if (!query) {
+    searchResultCount.textContent = "Commencez à saisir votre recherche.";
+    searchResults.innerHTML = `
+      <div class="search-empty">
+        <span>⌕</span>
+        <strong>Recherche instantanée</strong>
+        <p>Vous pouvez rechercher dans les titres, les notes, les univers et les responsables.</p>
+      </div>`;
+    return;
+  }
+
+  const results = tasks
+    .filter(task => searchTaskHaystack(task).includes(query))
+    .sort((a,b) => new Date(a.date) - new Date(b.date));
+
+  searchResultCount.textContent = `${results.length} résultat${results.length > 1 ? "s" : ""}`;
+
+  if (!results.length) {
+    searchResults.innerHTML = `
+      <div class="search-empty">
+        <span>∅</span>
+        <strong>Aucun résultat</strong>
+        <p>Essayez un autre mot-clé.</p>
+      </div>`;
+    return;
+  }
+
+  searchResults.innerHTML = results.map(task => `
+    <button class="search-result-item" type="button" data-search-task="${escapeHtml(task.id)}">
+      <div class="search-result-main">
+        <strong>${escapeHtml(task.title || "Sans titre")}</strong>
+        <span>${escapeHtml(task.owner || "")} · ${escapeHtml(task.category || "Autre")}</span>
+        ${task.notes ? `<p>${escapeHtml(task.notes)}</p>` : ""}
+      </div>
+      <div class="search-result-date">
+        <strong>${escapeHtml(task.date || "")}</strong>
+        <span>${task.done ? "Terminée" : "À faire"}</span>
+      </div>
+    </button>
+  `).join("");
+
+  qa("[data-search-task]").forEach(button => {
+    button.addEventListener("click", () => {
+      const task = tasks.find(item => String(item.id) === String(button.dataset.searchTask));
+      if (!task) return;
+
+      // Navigate to corresponding owner view
+      activeOwner = task.owner === "SONKI" || task.owner === "SONKA" || task.owner === "Commun"
+        ? task.owner
+        : "all";
+      smart = null;
+
+      qa(".space-item").forEach(item => {
+        item.classList.toggle("active", item.dataset.owner === activeOwner);
+      });
+      qa(".shortcut").forEach(item => item.classList.remove("active"));
+      qa(".pulse-card").forEach(item => {
+        item.classList.remove("active");
+        item.setAttribute("aria-pressed","false");
+      });
+
+      const categoryFilter = q("#categoryFilter");
+      const statusFilter = q("#statusFilter");
+      if (categoryFilter) categoryFilter.value = task.category || "all";
+      if (statusFilter) statusFilter.value = "all";
+
+      renderAll();
+      searchDialog.close();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  });
+});
+
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;q("#installBtn").classList.remove("hidden");});
 q("#installBtn").onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;q("#installBtn").classList.add("hidden");};
 q("#dateNow").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());

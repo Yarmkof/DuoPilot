@@ -6,7 +6,16 @@
 <meta name="theme-color" content="#14213d">
 <title>DuoPilot</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=1.4.2">
+<link rel="stylesheet" href="styles.css?v=1.5">
+
+  <meta name="theme-color" content="#6c757d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="DuoPilot">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+
 </head>
 <body data-theme="overview">
 <div class="ambient a1"></div><div class="ambient a2"></div>
@@ -46,8 +55,8 @@
           <span>Assistant du quotidien</span>
         </div>
         <div class="desktop-appbar-right">
-          <button type="button" data-tooltip="Rechercher une échéance, un univers ou une note.">⌕</button>
-          <button type="button" data-tooltip="Aide rapide sur l’utilisation de DuoPilot.">?</button>
+          <button id="searchBtn" type="button" aria-label="Rechercher" data-tooltip="Rechercher une échéance, un univers ou une note.">⌕</button>
+          <button id="helpBtn" type="button" aria-label="Aide" data-tooltip="Aide rapide sur l’utilisation de DuoPilot.">?</button>
         </div>
       </div>
 
@@ -104,5 +113,78 @@
 <fieldset class="full"><legend>Alertes</legend><div class="alerts-grid"><label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label><label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label><label><input type="checkbox" name="alerts" value="1"> La veille</label><label><input type="checkbox" name="alerts" value="0"> Le jour même</label></div></fieldset>
 <label class="full">Notes<textarea name="notes" rows="3" placeholder="Ajoutez les détails utiles…"></textarea></label>
 </div><div class="modal-actions"><button id="cancelBtn" class="secondary-action" type="button">Annuler</button><button class="primary-action" type="submit">Enregistrer</button></div></form></dialog>
-<script src="app.js?v=1.4.2"></script>
+<script src="app.js?v=1.5"></script>
+
+  <dialog id="searchDialog" class="utility-dialog">
+    <div class="utility-dialog-head">
+      <div>
+        <small class="section-kicker">RECHERCHE</small>
+        <h2>Rechercher dans DuoPilot</h2>
+      </div>
+      <button class="utility-close" type="button" data-close-dialog="searchDialog" aria-label="Fermer">×</button>
+    </div>
+
+    <label class="search-field">
+      <span>Recherche</span>
+      <input id="globalSearchInput" type="search" placeholder="Titre, note, univers, SONKI, SONKA…" autocomplete="off">
+    </label>
+
+    <div class="search-meta">
+      <span id="searchResultCount">Commencez à saisir votre recherche.</span>
+    </div>
+
+    <div id="searchResults" class="search-results">
+      <div class="search-empty">
+        <span>⌕</span>
+        <strong>Recherche instantanée</strong>
+        <p>Vous pouvez rechercher dans les titres, les notes, les univers et les responsables.</p>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="helpDialog" class="utility-dialog help-dialog">
+    <div class="utility-dialog-head">
+      <div>
+        <small class="section-kicker">AIDE DUOPILOT</small>
+        <h2>Comment utiliser DuoPilot ?</h2>
+      </div>
+      <button class="utility-close" type="button" data-close-dialog="helpDialog" aria-label="Fermer">×</button>
+    </div>
+
+    <div class="help-grid">
+      <article>
+        <span>◇</span>
+        <div><strong>Vue d’ensemble</strong><p>Regroupe toutes les échéances et utilise le thème gris neutre.</p></div>
+      </article>
+      <article>
+        <span>🦁</span>
+        <div><strong>SONKI</strong><p>Affiche uniquement les échéances pilotées par SONKI, dans l’univers rose.</p></div>
+      </article>
+      <article>
+        <span>🐘</span>
+        <div><strong>SONKA</strong><p>Affiche uniquement les échéances pilotées par SONKA, dans l’univers bleu.</p></div>
+      </article>
+      <article>
+        <span>∞</span>
+        <div><strong>À deux</strong><p>Réunit les échéances communes aux deux espaces.</p></div>
+      </article>
+      <article>
+        <span>↗</span>
+        <div><strong>Filtres rapides</strong><p>À venir, Cette semaine et En retard sont cliquables et filtrent immédiatement la liste.</p></div>
+      </article>
+      <article>
+        <span>＋</span>
+        <div><strong>Univers personnalisés</strong><p>Dans Nouvelle échéance, saisissez librement l’univers souhaité : Banque, École, Animaux…</p></div>
+      </article>
+    </div>
+
+    <div class="iphone-install-box">
+      <div class="iphone-install-icon">⌂</div>
+      <div>
+        <strong>Installer DuoPilot sur iPhone</strong>
+        <p>Ouvrez DuoPilot dans Safari, touchez <b>Partager</b>, puis <b>Sur l’écran d’accueil</b> et enfin <b>Ajouter</b>.</p>
+      </div>
+    </div>
+  </dialog>
+
 </body></html>

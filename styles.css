@@ -1146,3 +1146,277 @@ body[data-theme="sonka"] .pulse-strip .pulse-card.active {
   outline: 2px solid rgba(255,255,255,.45);
   outline-offset: 4px;
 }
+
+
+/* =========================================================
+   DuoPilot V1.5 — Search, Help, iPhone/PWA
+   ========================================================= */
+
+.desktop-appbar-right button {
+  cursor: pointer;
+}
+
+.utility-dialog {
+  width: min(720px, calc(100vw - 32px));
+  max-height: min(760px, calc(100vh - 44px));
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  color: #172033;
+  background: rgba(255,255,255,.98);
+  box-shadow: 0 30px 80px rgba(18,42,70,.24);
+  overflow: hidden;
+}
+
+.utility-dialog::backdrop {
+  background: rgba(18,32,50,.42);
+  backdrop-filter: blur(7px);
+}
+
+.utility-dialog-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 26px 28px 18px;
+  border-bottom: 1px solid #e8edf3;
+}
+
+.utility-dialog-head h2 {
+  margin: 4px 0 0;
+  font-size: 1.45rem;
+}
+
+.utility-close {
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.3rem;
+  color: #566273;
+  background: #f1f4f7;
+}
+
+.search-field {
+  display: grid;
+  gap: 8px;
+  padding: 22px 28px 12px;
+  font-weight: 700;
+}
+
+.search-field input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid #d6e0e8;
+  border-radius: 13px;
+  font: inherit;
+  background: #f9fbfd;
+  outline: none;
+}
+
+.search-field input:focus {
+  border-color: #8eb9d8;
+  box-shadow: 0 0 0 4px rgba(68,140,190,.12);
+}
+
+.search-meta {
+  padding: 0 28px 10px;
+  color: #7b8794;
+  font-size: .88rem;
+}
+
+.search-results {
+  max-height: 430px;
+  overflow-y: auto;
+  padding: 0 16px 20px;
+}
+
+.search-empty {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  text-align: center;
+  color: #87919d;
+}
+
+.search-empty > span {
+  font-size: 2rem;
+}
+
+.search-empty strong {
+  color: #2e3b4b;
+}
+
+.search-empty p {
+  max-width: 440px;
+  margin: 0;
+}
+
+.search-result-item {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  padding: 16px 14px;
+  border: 0;
+  border-bottom: 1px solid #edf1f5;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  background: transparent;
+}
+
+.search-result-item:hover {
+  border-radius: 14px;
+  background: #f2f7fb;
+}
+
+.search-result-main {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.search-result-main > span,
+.search-result-date span {
+  color: #7a8693;
+  font-size: .82rem;
+}
+
+.search-result-main p {
+  margin: 4px 0 0;
+  color: #596575;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-result-date {
+  display: grid;
+  justify-items: end;
+  align-content: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.help-dialog {
+  width: min(780px, calc(100vw - 32px));
+}
+
+.help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 22px 28px;
+}
+
+.help-grid article {
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e6ebf0;
+  border-radius: 16px;
+  background: #fbfcfd;
+}
+
+.help-grid article > span {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: #eef5fa;
+  font-size: 1.1rem;
+}
+
+.help-grid p {
+  margin: 4px 0 0;
+  color: #657181;
+  font-size: .88rem;
+  line-height: 1.4;
+}
+
+.iphone-install-box {
+  margin: 0 28px 28px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 14px;
+  border-radius: 17px;
+  color: #173b5b;
+  background: linear-gradient(135deg,#edf8ff,#dceefb);
+}
+
+.iphone-install-icon {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 14px;
+  color: #fff;
+  background: #0f6cbd;
+  font-size: 1.3rem;
+}
+
+.iphone-install-box p {
+  margin: 5px 0 0;
+  line-height: 1.45;
+}
+
+/* iPhone / touch ergonomics */
+@media (max-width: 860px) {
+  button,
+  select,
+  input,
+  textarea {
+    min-height: 44px;
+  }
+
+  .utility-dialog {
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 16px);
+    border-radius: 20px;
+  }
+
+  .utility-dialog-head {
+    padding: 20px 18px 14px;
+  }
+
+  .search-field {
+    padding: 18px 18px 10px;
+  }
+
+  .search-meta {
+    padding: 0 18px 8px;
+  }
+
+  .help-grid {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .iphone-install-box {
+    margin: 0 18px 18px;
+  }
+
+  .search-result-item {
+    grid-template-columns: 1fr;
+  }
+
+  .search-result-date {
+    justify-items: start;
+  }
+}
+
+/* standalone PWA safe-area support on iPhone */
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}

@@ -1,16 +1,22 @@
-# DuoPilot V1.4.2 SAFE
+# DuoPilot V1.5
 
-Correctif construit directement sur la V1.3 fonctionnelle.
+## Nouveautés
+- Loupe fonctionnelle : recherche instantanée dans les titres, notes, univers et responsables.
+- Raccourci clavier : Cmd+K sur Mac / Ctrl+K sur Windows.
+- Point d’interrogation fonctionnel : guide d’utilisation intégré.
+- Aide dédiée à l’installation sur iPhone.
+- PWA améliorée : manifest, icônes, mode standalone, safe areas iPhone et cibles tactiles.
+- Nouvelle icône DuoPilot pour l’écran d’accueil.
 
-Modifications uniquement :
-- angles arrondis sur les cartes du tableau de bord ;
-- chiffres mieux recentrés ;
-- clic sur le bloc DuoPilot = retour à la Vue d’ensemble ;
-- correction réelle du cache Service Worker ;
-- paramètres ?v=1.4.2 sur CSS et JavaScript pour empêcher Chrome de mélanger les versions.
+## Installer sur iPhone
+1. Ouvrir https://yarmkof.github.io/DuoPilot/ dans Safari.
+2. Appuyer sur Partager.
+3. Choisir « Sur l’écran d’accueil ».
+4. Appuyer sur « Ajouter ».
+5. DuoPilot apparaît comme une application sur l’iPhone.
 
-Summary GitHub :
-V1.4.2 - Safe UI fix + cache repair
+## Summary GitHub Desktop
+V1.5 - Search + Help + iPhone PWA
 
-Site :
+## Site
 https://yarmkof.github.io/DuoPilot/
