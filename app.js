@@ -124,6 +124,7 @@ function filtered() {
     .filter(t => {
       const d=days(t.dueDate);
       if (smart === "today") return !t.done && d===0;
+      if (smart === "upcoming") return !t.done && d>=0;
       if (smart === "week") return !t.done && d>=0 && d<=7;
       if (smart === "overdue") return !t.done && d<0;
       if (smart === "done") return t.done;
@@ -186,7 +187,7 @@ function heading(){
     Commun:["Espace partagé","À deux","Les sujets qui concernent votre quotidien commun."]
   };
   if(smart){
-    const x={today:["Aujourd’hui","À faire aujourd’hui","Une vue simple de ce qui compte maintenant.","Aujourd’hui"],week:["Anticipation","Les 7 prochains jours","Gardez une longueur d’avance sur votre semaine.","Cette semaine"],overdue:["Priorité","À rattraper","Les échéances qui nécessitent votre attention.","En retard"],done:["Historique","Ce qui est terminé","Votre mémoire des tâches déjà réalisées.","Terminées"]}[smart];
+    const x={today:["Aujourd’hui","À faire aujourd’hui","Une vue simple de ce qui compte maintenant.","Aujourd’hui"],upcoming:["À venir","Vos prochaines échéances","Tout ce qui est prévu à partir d’aujourd’hui.","À venir"],week:["Anticipation","Les 7 prochains jours","Gardez une longueur d’avance sur votre semaine.","Cette semaine"],overdue:["Priorité","À rattraper","Les échéances qui nécessitent votre attention.","En retard"],done:["Historique","Ce qui est terminé","Votre mémoire des tâches déjà réalisées.","Terminées"]}[smart];
     q("#viewEyebrow").textContent=x[0];q("#titleView").textContent=x[1];q("#heroSubtitle").textContent=x[2];q("#listTitle").textContent=x[3];return;
   }
   const x=g[activeOwner];
@@ -213,7 +214,14 @@ function calendar(){
 }
 
 function renderAll(){applyTheme();renderUniverses();renderTasks();counters();status();heading();focus();calendar();}
-function clearSmart(){smart=null;qa(".shortcut").forEach(b=>b.classList.remove("active"));}
+function clearSmart(){
+  smart=null;
+  qa(".shortcut").forEach(b=>b.classList.remove("active"));
+  qa(".pulse-card").forEach(b=>{
+    b.classList.remove("active");
+    b.setAttribute("aria-pressed","false");
+  });
+}
 function closeSide(){q("#sidebar").classList.remove("open");q("#sidebarBackdrop").classList.add("hidden");}
 function openModal(){
   form.reset();
@@ -234,11 +242,41 @@ qa(".space-item").forEach(b=>b.onclick=()=>{
   renderAll();closeSide();
 });
 qa(".shortcut").forEach(b=>b.onclick=()=>{
-  qa(".shortcut").forEach(x=>x.classList.remove("active"));b.classList.add("active");
-  smart=b.dataset.smart;activeOwner="all";qa(".space-item").forEach(x=>x.classList.remove("active"));q("#statusFilter").value="all";renderAll();closeSide();
+  qa(".shortcut").forEach(x=>x.classList.remove("active"));
+  qa(".pulse-card").forEach(x=>{x.classList.remove("active");x.setAttribute("aria-pressed","false");});
+  b.classList.add("active");
+  smart=b.dataset.smart;
+  activeOwner="all";
+  qa(".space-item").forEach(x=>x.classList.remove("active"));
+  q("#statusFilter").value="all";
+  renderAll();
+  closeSide();
 });
-q("#categoryFilter").onchange=()=>{smart=null;renderAll();};
-q("#statusFilter").onchange=()=>{smart=null;renderAll();};
+
+qa(".pulse-card").forEach(card=>card.onclick=()=>{
+  const requested = card.dataset.pulse;
+  const wasActive = smart === requested && card.classList.contains("active");
+
+  qa(".pulse-card").forEach(x=>{
+    x.classList.remove("active");
+    x.setAttribute("aria-pressed","false");
+  });
+  qa(".shortcut").forEach(x=>x.classList.remove("active"));
+  q("#statusFilter").value="all";
+
+  if (wasActive) {
+    smart = null;
+  } else {
+    smart = requested;
+    card.classList.add("active");
+    card.setAttribute("aria-pressed","true");
+  }
+
+  renderAll();
+});
+
+q("#categoryFilter").onchange=()=>{clearSmart();renderAll();};
+q("#statusFilter").onchange=()=>{clearSmart();renderAll();};
 qa(".density").forEach(b=>b.onclick=()=>{qa(".density").forEach(x=>x.classList.remove("active"));b.classList.add("active");list.classList.toggle("compact",b.dataset.mode==="compact");});
 ["#addBtn","#quickAddBtn","#mobileAddBtn"].forEach(s=>{const el=q(s);if(el)el.onclick=openModal;});
 q("#closeBtn").onclick=()=>modal.close();q("#cancelBtn").onclick=()=>modal.close();

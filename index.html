@@ -57,9 +57,18 @@
     <div class="hero-actions"><div class="status-orb" id="statusOrb"><span></span><div><small>État du jour</small><strong id="dailyStatus">Tout va bien</strong></div></div><button id="addBtn" class="primary-action"><span>＋</span> Ajouter</button></div>
   </section>
   <section class="pulse-strip">
-    <article><div><small>À venir</small><strong id="upcoming">0</strong></div><span class="pulse-symbol blue">↗</span></article>
-    <article><div><small>Cette semaine</small><strong id="week">0</strong></div><span class="pulse-symbol green">7</span></article>
-    <article><div><small>En retard</small><strong id="late">0</strong></div><span class="pulse-symbol red">!</span></article>
+    <button class="pulse-card" type="button" data-pulse="upcoming" aria-pressed="false"
+      data-tooltip="Afficher toutes les échéances à venir dans l’espace actuellement sélectionné.">
+      <div><small>À venir</small><strong id="upcoming">0</strong></div><span class="pulse-symbol blue">↗</span>
+    </button>
+    <button class="pulse-card" type="button" data-pulse="week" aria-pressed="false"
+      data-tooltip="Afficher uniquement les échéances prévues dans les 7 prochains jours.">
+      <div><small>Cette semaine</small><strong id="week">0</strong></div><span class="pulse-symbol green">7</span>
+    </button>
+    <button class="pulse-card" type="button" data-pulse="overdue" aria-pressed="false"
+      data-tooltip="Afficher uniquement les échéances en retard.">
+      <div><small>En retard</small><strong id="late">0</strong></div><span class="pulse-symbol red">!</span>
+    </button>
     <article class="next-focus"><div><small>Prochaine priorité</small><strong id="nextFocusText">Aucune</strong></div><span class="pulse-symbol gold">✦</span></article>
   </section>
   <section class="workspace">

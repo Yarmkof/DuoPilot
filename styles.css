@@ -1041,3 +1041,67 @@ body[data-theme="duo"] .desktop-appbar {
   appearance:none !important;
   -webkit-appearance:none !important;
 }
+
+
+/* =========================================================
+   DuoPilot V1.3 — clickable dashboard counters
+   ========================================================= */
+.pulse-strip .pulse-card {
+  appearance: none;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  border: 1px solid rgba(15,108,189,.24);
+  border-top: 4px solid #0f6cbd;
+  border-radius: inherit;
+  background: linear-gradient(180deg,#ffffff 0%,#f0f8fd 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: inherit;
+  box-shadow: 0 12px 34px rgba(0,90,158,.08);
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease, background .15s ease;
+}
+.pulse-strip .pulse-card:nth-child(2) { border-top-color:#2b88d8; }
+.pulse-strip .pulse-card:nth-child(3) { border-top-color:#d65d68; }
+
+.pulse-strip .pulse-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 38px rgba(0,90,158,.14);
+}
+.pulse-strip .pulse-card:focus-visible {
+  outline: 3px solid rgba(0,120,212,.25);
+  outline-offset: 2px;
+}
+.pulse-strip .pulse-card.active {
+  border-color: currentColor;
+  box-shadow: 0 0 0 3px rgba(0,120,212,.13), 0 16px 38px rgba(0,90,158,.14);
+}
+.pulse-strip .pulse-card.active small::after {
+  content: " • filtre actif";
+  font-weight: 700;
+}
+
+/* Preserve contextual palettes */
+body[data-theme="overview"] .pulse-strip .pulse-card {
+  border-color:#d1d5da;
+  background:linear-gradient(180deg,#fff 0%,#f5f6f7 100%);
+}
+body[data-theme="overview"] .pulse-strip .pulse-card.active {
+  color:#4b5563;
+  box-shadow:0 0 0 3px rgba(107,114,128,.16),0 14px 34px rgba(52,58,64,.10);
+}
+body[data-theme="sonki"] .pulse-strip .pulse-card {
+  border-color:#f0cbd7;
+  background:linear-gradient(180deg,#fff 0%,#fff6f9 100%);
+}
+body[data-theme="sonki"] .pulse-strip .pulse-card.active {
+  color:#a55772;
+  box-shadow:0 0 0 3px rgba(217,145,167,.18),0 14px 34px rgba(185,105,132,.12);
+}
+body[data-theme="sonka"] .pulse-strip .pulse-card.active {
+  color:#00538f;
+  box-shadow:0 0 0 3px rgba(0,112,198,.16),0 14px 34px rgba(0,83,143,.14);
+}

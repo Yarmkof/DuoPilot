@@ -14,3 +14,12 @@ V1.2 - Corrected themes + free universe field
 
 Site :
 https://yarmkof.github.io/DuoPilot/
+
+
+## V1.3 — Cartes du tableau de bord cliquables
+- « À venir » affiche toutes les échéances futures de l’espace sélectionné.
+- « Cette semaine » affiche les échéances des 7 prochains jours.
+- « En retard » affiche les échéances dépassées.
+- La carte active est mise en évidence.
+- Un second clic sur la carte active désactive le filtre.
+- Le filtre respecte l’espace courant : Vue d’ensemble, SONKI, SONKA ou À deux.
