@@ -23,3 +23,9 @@ https://yarmkof.github.io/DuoPilot/
 - La carte active est mise en évidence.
 - Un second clic sur la carte active désactive le filtre.
 - Le filtre respecte l’espace courant : Vue d’ensemble, SONKI, SONKA ou À deux.
+
+## V1.4 — Accueil et mises à jour fiables
+- Les cartes « À venir », « Cette semaine » et « En retard » ouvrent directement la liste filtrée.
+- Le filtre d’univers est réinitialisé lors du clic afin que les résultats attendus restent visibles.
+- Un clic sur « DuoPilot » ramène à la page d’accueil, sur ordinateur comme sur mobile.
+- Les fichiers de l’application sont versionnés pour éviter qu’une ancienne version reste bloquée dans le cache.

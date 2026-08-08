@@ -262,6 +262,7 @@ qa(".pulse-card").forEach(card=>card.onclick=()=>{
     x.setAttribute("aria-pressed","false");
   });
   qa(".shortcut").forEach(x=>x.classList.remove("active"));
+  q("#categoryFilter").value="all";
   q("#statusFilter").value="all";
 
   if (wasActive) {
@@ -273,6 +274,7 @@ qa(".pulse-card").forEach(card=>card.onclick=()=>{
   }
 
   renderAll();
+  q("#workspace").scrollIntoView({behavior:"smooth",block:"start"});
 });
 
 q("#categoryFilter").onchange=()=>{clearSmart();renderAll();};
@@ -307,5 +309,19 @@ q("#nextMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;q("#installBtn").classList.remove("hidden");});
 q("#installBtn").onclick=async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;q("#installBtn").classList.add("hidden");};
 q("#dateNow").textContent=new Intl.DateTimeFormat("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(new Date());
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));
+if("serviceWorker" in navigator){
+  window.addEventListener("load",async()=>{
+    const hadController=Boolean(navigator.serviceWorker.controller);
+    let refreshing=false;
+    navigator.serviceWorker.addEventListener("controllerchange",()=>{
+      if(!hadController||refreshing)return;
+      refreshing=true;
+      window.location.reload();
+    });
+    try{
+      const registration=await navigator.serviceWorker.register("./service-worker.js?v=1.4.0",{updateViaCache:"none"});
+      await registration.update();
+    }catch{}
+  });
+}
 renderAll();

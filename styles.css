@@ -1105,3 +1105,37 @@ body[data-theme="sonka"] .pulse-strip .pulse-card.active {
   color:#00538f;
   box-shadow:0 0 0 3px rgba(0,112,198,.16),0 14px 34px rgba(0,83,143,.14);
 }
+
+/* =========================================================
+   DuoPilot V1.4 — navigation vers l’accueil
+   ========================================================= */
+.home-link,
+.appbar-home-link,
+.mobile-home-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-link {
+  border-radius: 14px;
+}
+
+.appbar-home-link,
+.mobile-home-link {
+  border-radius: 7px;
+  font-weight: 800;
+}
+
+.home-link:hover strong,
+.appbar-home-link:hover,
+.mobile-home-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.home-link:focus-visible,
+.appbar-home-link:focus-visible,
+.mobile-home-link:focus-visible {
+  outline: 3px solid rgba(255,255,255,.55);
+  outline-offset: 3px;
+}
