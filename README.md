@@ -1,24 +1,21 @@
-# DuoPilot V1.6
+# DuoPilot V1.7
 
-## Correctif mobile / iPhone
-Les thèmes contextuels sont maintenant explicitement appliqués sur smartphone et en mode PWA installé.
+## Correctif smartphone
+- navigation SONKI / SONKA / À deux / Vue d’ensemble renforcée ;
+- application immédiate du thème après un tap ;
+- fermeture fiable du menu mobile ;
+- pointer-events et z-index corrigés ;
+- thème appliqué au body et au html pour la PWA iPhone ;
+- cache PWA renouvelé.
 
+## Couleurs
 - Vue d’ensemble : gris
 - SONKI : rose clair
-- SONKA : bleu Outlook assombri
+- SONKA : bleu foncé
 - À deux : gris bleuté
 
-## Fonctions conservées
-- recherche
-- aide
-- PWA iPhone
-- cartes cliquables
-- univers personnalisés
-- filtres
-- SONKI / SONKA / À deux
-
 ## Summary GitHub Desktop
-V1.6 - Mobile contextual colors fix
+V1.7 - Mobile navigation + theme interaction fix
 
 ## Site
 https://yarmkof.github.io/DuoPilot/

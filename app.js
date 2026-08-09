@@ -83,7 +83,9 @@ function applyTheme() {
   if (activeOwner === "SONKI") theme = "sonki";
   else if (activeOwner === "SONKA") theme = "sonka";
   else if (activeOwner === "Commun") theme = "duo";
-  document.body.dataset.theme = theme;
+
+  document.body.setAttribute("data-theme", theme);
+  document.documentElement.setAttribute("data-theme", theme);
 }
 
 function renderUniverses() {
@@ -222,7 +224,13 @@ function clearSmart(){
     b.setAttribute("aria-pressed","false");
   });
 }
-function closeSide(){q("#sidebar").classList.remove("open");q("#sidebarBackdrop").classList.add("hidden");}
+function closeSide(){
+  const sidebar=q("#sidebar");
+  const backdrop=q("#sidebarBackdrop");
+  if(sidebar) sidebar.classList.remove("open");
+  if(backdrop) backdrop.classList.add("hidden");
+  document.body.classList.remove("mobile-menu-open");
+}
 function openModal(){
   form.reset();
   form.owner.value=activeOwner==="all"?"SONKA":activeOwner;
@@ -233,13 +241,34 @@ function openModal(){
   setTimeout(()=>form.title.focus(),0);
 }
 
-qa(".space-item").forEach(b=>b.onclick=()=>{
-  qa(".space-item").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");
-  activeOwner=b.dataset.owner;
+function activateSpace(owner, sourceButton = null) {
+  activeOwner = owner || "all";
   clearSmart();
-  q("#statusFilter").value="all";
-  renderAll();closeSide();
+
+  qa(".space-item").forEach(item => {
+    const isActive = item.dataset.owner === activeOwner;
+    item.classList.toggle("active", isActive);
+    item.setAttribute("aria-pressed", isActive ? "true" : "false");
+  });
+
+  if (sourceButton) {
+    sourceButton.classList.add("active");
+    sourceButton.setAttribute("aria-pressed", "true");
+  }
+
+  const statusFilter = q("#statusFilter");
+  if (statusFilter) statusFilter.value = "all";
+
+  applyTheme();
+  renderAll();
+  closeSide();
+}
+
+qa(".space-item").forEach(button => {
+  button.addEventListener("click", event => {
+    event.preventDefault();
+    activateSpace(button.dataset.owner, button);
+  });
 });
 qa(".shortcut").forEach(b=>b.onclick=()=>{
   qa(".shortcut").forEach(x=>x.classList.remove("active"));
@@ -299,7 +328,13 @@ q("#universeForm").addEventListener("submit",e=>{
   renderAll();
 });
 
-q("#menuBtn").onclick=()=>{q("#sidebar").classList.add("open");q("#sidebarBackdrop").classList.remove("hidden");};
+q("#menuBtn").onclick=()=>{
+  const sidebar=q("#sidebar");
+  const backdrop=q("#sidebarBackdrop");
+  if(sidebar) sidebar.classList.add("open");
+  if(backdrop) backdrop.classList.remove("hidden");
+  document.body.classList.add("mobile-menu-open");
+};
 q("#sidebarBackdrop").onclick=closeSide;
 q("#prevMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()-1,1);calendar();};
 q("#nextMonth").onclick=()=>{cal=new Date(cal.getFullYear(),cal.getMonth()+1,1);calendar();};

@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#14213d">
 <title>DuoPilot</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=1.6">
+<link rel="stylesheet" href="styles.css?v=1.7">
 
   <meta name="theme-color" content="#6c757d">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,10 +25,10 @@
   <button class="new-task" id="quickAddBtn"><span>＋</span> Nouvelle échéance</button>
   <div class="sidebar-label">Espaces</div>
   <nav class="space-nav">
-    <button class="space-item active" data-owner="all" data-tooltip="Affiche toutes les échéances de SONKI, SONKA et celles gérées à deux."><span class="space-icon">◈</span><span>Vue d’ensemble</span><b id="globalBadge">0</b></button>
-    <button class="space-item" data-owner="SONKI" data-tooltip="Affiche uniquement les échéances attribuées à SONKI."><span class="person-avatar photo-avatar"><img src="assets/sonki-lion.png" alt="Lion SONKI"></span><span>SONKI</span><b id="christelleBadge">0</b></button>
-    <button class="space-item" data-owner="SONKA" data-tooltip="Affiche uniquement les échéances attribuées à SONKA."><span class="person-avatar photo-avatar"><img src="assets/sonka-elephant.jpg" alt="Éléphant SONKA"></span><span>SONKA</span><b id="armandBadge">0</b></button>
-    <button class="space-item" data-owner="Commun" data-tooltip="Affiche les échéances qui concernent SONKI et SONKA ensemble."><span class="space-icon">∞</span><span>À deux</span><b id="communBadge">0</b></button>
+    <button class="space-item active" aria-pressed="true" data-owner="all" data-tooltip="Affiche toutes les échéances de SONKI, SONKA et celles gérées à deux."><span class="space-icon">◈</span><span>Vue d’ensemble</span><b id="globalBadge">0</b></button>
+    <button class="space-item" aria-pressed="false" data-owner="SONKI" data-tooltip="Affiche uniquement les échéances attribuées à SONKI."><span class="person-avatar photo-avatar"><img src="assets/sonki-lion.png" alt="Lion SONKI"></span><span>SONKI</span><b id="christelleBadge">0</b></button>
+    <button class="space-item" aria-pressed="false" data-owner="SONKA" data-tooltip="Affiche uniquement les échéances attribuées à SONKA."><span class="person-avatar photo-avatar"><img src="assets/sonka-elephant.jpg" alt="Éléphant SONKA"></span><span>SONKA</span><b id="armandBadge">0</b></button>
+    <button class="space-item" aria-pressed="false" data-owner="Commun" data-tooltip="Affiche les échéances qui concernent SONKI et SONKA ensemble."><span class="space-icon">∞</span><span>À deux</span><b id="communBadge">0</b></button>
   </nav>
   <div class="sidebar-label">Raccourcis</div>
   <div class="shortcut-list">
@@ -113,7 +113,7 @@
 <fieldset class="full"><legend>Alertes</legend><div class="alerts-grid"><label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label><label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label><label><input type="checkbox" name="alerts" value="1"> La veille</label><label><input type="checkbox" name="alerts" value="0"> Le jour même</label></div></fieldset>
 <label class="full">Notes<textarea name="notes" rows="3" placeholder="Ajoutez les détails utiles…"></textarea></label>
 </div><div class="modal-actions"><button id="cancelBtn" class="secondary-action" type="button">Annuler</button><button class="primary-action" type="submit">Enregistrer</button></div></form></dialog>
-<script src="app.js?v=1.6"></script>
+<script src="app.js?v=1.7"></script>
 
   <dialog id="searchDialog" class="utility-dialog">
     <div class="utility-dialog-head">
