@@ -1,24 +1,14 @@
-# DuoPilot V1.9
+# DuoPilot V1.10
 
-## Nouvelle amélioration : modifier une échéance
-
-Une échéance existante peut maintenant être modifiée sans la supprimer.
-
-### Utilisation
-- cliquez/touchez le contenu d’une échéance ;
-- ou utilisez le bouton « Modifier » ;
-- le formulaire s’ouvre avec les données existantes ;
-- modifiez le titre, le responsable, l’univers, la date, la priorité, les alertes ou les notes ;
-- cliquez sur « Enregistrer les modifications ».
-
-### Mobile
-Le bouton Modifier reste visible sur smartphone et les zones tactiles sont optimisées.
-
-## Base
-Construite directement sur la V1.8 stable.
+## Univers dans la barre latérale
+- Les univers sont désormais regroupés dans une liste déroulante.
+- « Tous les univers » permet de revenir à l'affichage complet.
+- Choisir Maison, Véhicule, Administratif, Santé, etc. filtre immédiatement les échéances.
+- Le champ « Ajouter un univers… » reste disponible sous la liste.
+- Les univers personnalisés ajoutés apparaissent automatiquement dans la liste déroulante.
 
 ## Summary GitHub Desktop
-V1.9 - Edit existing tasks
+DuoPilot V1.10 - Liste déroulante Univers
 
 ## Site
 https://yarmkof.github.io/DuoPilot/

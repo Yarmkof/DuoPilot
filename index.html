@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#14213d">
 <title>DuoPilot</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=1.9.2">
+<link rel="stylesheet" href="styles.css?v=1.10">
 
   <meta name="theme-color" content="#6c757d">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -38,7 +38,11 @@
     <button class="shortcut" data-smart="done" data-tooltip="Retrouve les échéances déjà terminées."><span>✓</span><span>Terminées</span><b id="doneBadgeSide">0</b></button>
   </div>
   <div class="sidebar-label">Univers <span class="help-dot" data-tooltip="Un univers sert à classer vos échéances : Maison, Véhicules, Santé… Vous pouvez en créer autant que vous voulez.">?</span></div>
-      <div id="universeList" class="universe-list"></div>
+      <div class="universe-select-wrap">
+        <select id="sidebarUniverseSelect" class="universe-select" aria-label="Choisir un univers" data-tooltip="Choisissez un univers pour afficher uniquement ses échéances.">
+          <option value="all">Tous les univers</option>
+        </select>
+      </div>
       <form id="universeForm" class="universe-add" autocomplete="off">
         <input id="newUniverseInput" type="text" maxlength="30" placeholder="Ajouter un univers…" aria-label="Nouvel univers" data-tooltip="Ajoutez ici une nouvelle rubrique personnalisée : Banque, Animaux, École, Abonnements…">
         <button type="submit" aria-label="Ajouter l’univers" data-tooltip="Ajouter cet univers à DuoPilot">＋</button>
@@ -185,5 +189,5 @@
     </div>
   </dialog>
 
-  <script src="app.js?v=1.9.2"></script>
+  <script src="app.js?v=1.10"></script>
 </body></html>

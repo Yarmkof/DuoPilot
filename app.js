@@ -1,5 +1,5 @@
 
-window.DUOPILOT_VERSION = "1.9.2";
+window.DUOPILOT_VERSION = "1.10";
 const TASKS_KEY = "duopilot.tasks.v1";
 const UNIVERSES_KEY = "duopilot.universes.v2";
 const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
@@ -92,25 +92,22 @@ function applyTheme() {
 }
 
 function renderUniverses() {
-  const container = q("#universeList");
-  container.innerHTML = "";
-  universes.forEach(name => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.dataset.category = name;
-    b.setAttribute("data-tooltip", `Afficher les échéances de l’univers « ${name} ».`);
-    b.innerHTML = `<i class="u-dot"></i><span>${esc(name)}</span>`;
-    b.onclick = () => {
-      q("#categoryFilter").value = name;
-      smart = null;
-      renderAll();
-      closeSide();
-    };
-    container.appendChild(b);
-  });
-
+  const sidebarSelect = q("#sidebarUniverseSelect");
   const filter = q("#categoryFilter");
-  const selected = filter.value;
+
+  const currentSidebar = sidebarSelect?.value || "all";
+  const currentFilter = filter.value || "all";
+
+  if (sidebarSelect) {
+    sidebarSelect.innerHTML = '<option value="all">Tous les univers</option>';
+    universes.forEach(name => {
+      const o = document.createElement("option");
+      o.value = name;
+      o.textContent = name;
+      sidebarSelect.appendChild(o);
+    });
+  }
+
   filter.innerHTML = '<option value="all">Toutes les catégories</option>';
   universes.forEach(name => {
     const o = document.createElement("option");
@@ -118,7 +115,10 @@ function renderUniverses() {
     o.textContent = name;
     filter.appendChild(o);
   });
-  filter.value = universes.includes(selected) ? selected : "all";
+
+  const selected = universes.includes(currentFilter) ? currentFilter : "all";
+  filter.value = selected;
+  if (sidebarSelect) sidebarSelect.value = selected;
 }
 
 function filtered() {
@@ -429,6 +429,17 @@ form.onsubmit=e=>{
   renderAll();
 };
 
+const sidebarUniverseSelect = q("#sidebarUniverseSelect");
+if (sidebarUniverseSelect) {
+  sidebarUniverseSelect.addEventListener("change", () => {
+    const value = sidebarUniverseSelect.value;
+    q("#categoryFilter").value = value;
+    smart = null;
+    renderAll();
+    closeSide();
+  });
+}
+
 q("#universeForm").addEventListener("submit",e=>{
   e.preventDefault();
   const input=q("#newUniverseInput");
@@ -436,6 +447,7 @@ q("#universeForm").addEventListener("submit",e=>{
   input.value="";
   renderAll();
   q("#categoryFilter").value=name;
+  if (q("#sidebarUniverseSelect")) q("#sidebarUniverseSelect").value=name;
   renderAll();
 });
 

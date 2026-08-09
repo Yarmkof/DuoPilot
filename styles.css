@@ -1811,3 +1811,46 @@ body[data-theme="sonka"] .edit-button:hover {
 .week-calendar-icon::before{content:"";width:16px;height:15px;border:2px solid currentColor;border-radius:4px;display:block;box-sizing:border-box;background:linear-gradient(currentColor,currentColor) 0 4px/100% 2px no-repeat;}
 .week-calendar-icon::after{content:"";position:absolute;width:2px;height:4px;border-radius:2px;background:currentColor;transform:translate(-5px,-8px);box-shadow:10px 0 0 currentColor;}
 .week-calendar-icon{position:relative;}
+
+
+/* =========================================================
+   DuoPilot V1.10 — Univers dropdown in sidebar
+   ========================================================= */
+.universe-select-wrap {
+  width: 100%;
+  padding: 2px 0 10px;
+}
+
+.universe-select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 38px 0 14px;
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 13px;
+  color: #fff;
+  background: rgba(255,255,255,.12);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+  outline: none;
+  appearance: auto;
+}
+
+.universe-select:hover,
+.universe-select:focus {
+  background: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.35);
+}
+
+.universe-select option {
+  color: #1f2a36;
+  background: #fff;
+}
+
+@media (max-width: 860px) {
+  .universe-select {
+    min-height: 48px;
+    font-size: 1rem;
+    touch-action: manipulation;
+  }
+}
