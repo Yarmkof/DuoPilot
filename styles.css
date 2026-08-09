@@ -1653,3 +1653,76 @@ body[data-theme="sonka"] .pulse-strip .pulse-card.active {
     background:linear-gradient(90deg,#566d7e,#43596b) !important;
   }
 }
+
+
+/* =========================================================
+   DuoPilot V1.8 — REAL mobile interaction fix
+   Root cause: sidebar backdrop was above the entire app-shell.
+   ========================================================= */
+
+@media (max-width: 860px) {
+  /*
+   * IMPORTANT:
+   * .app-shell has z-index:1 on desktop.
+   * That creates a stacking context which trapped .sidebar below
+   * the sibling .sidebar-backdrop (z-index:50), so the backdrop
+   * intercepted every tap on SONKI / SONKA / shortcuts.
+   */
+  .app-shell {
+    z-index: auto !important;
+  }
+
+  .main-panel {
+    position: relative;
+    z-index: 1;
+  }
+
+  .sidebar-backdrop {
+    z-index: 40 !important;
+    pointer-events: auto !important;
+  }
+
+  .sidebar-backdrop.hidden {
+    display: none !important;
+    pointer-events: none !important;
+  }
+
+  .sidebar {
+    z-index: 60 !important;
+    pointer-events: auto !important;
+  }
+
+  .sidebar.open {
+    z-index: 60 !important;
+    pointer-events: auto !important;
+  }
+
+  .space-nav,
+  .space-item,
+  .shortcut-list,
+  .shortcut,
+  .universe-list,
+  .universe-list button,
+  .new-task,
+  .universe-add,
+  .universe-add input,
+  .universe-add button {
+    position: relative;
+    z-index: 61;
+    pointer-events: auto !important;
+    touch-action: manipulation;
+  }
+
+  /* Give touch targets enough room on iPhone */
+  .space-item,
+  .shortcut {
+    min-height: 46px !important;
+  }
+
+  /* Make active state obvious after a tap */
+  .space-item.active,
+  .shortcut.active {
+    background: rgba(255,255,255,.24) !important;
+    box-shadow: inset 4px 0 0 #fff !important;
+  }
+}
