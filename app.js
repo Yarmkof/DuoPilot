@@ -1,5 +1,5 @@
 
-window.DUOPILOT_VERSION = "1.10";
+window.DUOPILOT_VERSION = "1.12";
 const TASKS_KEY = "duopilot.tasks.v1";
 const UNIVERSES_KEY = "duopilot.universes.v2";
 const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
@@ -660,4 +660,299 @@ if (homeBrand) {
       returnHome();
     }
   });
+}
+
+
+// =========================================================
+// DuoPilot V1.12 — Notifications + Web Push Railway
+// =========================================================
+const PUSH_SERVER_URL = String(window.DUOPILOT_CONFIG?.PUSH_SERVER_URL || "").replace(/\/+$/,"");
+const notificationDialog = q("#notificationDialog");
+const notificationBtn = q("#notificationBtn");
+const mobileNotificationBtn = q("#mobileNotificationBtn");
+const enableNotificationsBtn = q("#enableNotificationsBtn");
+const testNotificationBtn = q("#testNotificationBtn");
+const syncPushBtn = q("#syncPushBtn");
+const notificationPermissionLabel = q("#notificationPermissionLabel");
+const notificationPermissionHelp = q("#notificationPermissionHelp");
+const notificationReminderList = q("#notificationReminderList");
+const notificationBadge = q("#notificationBadge");
+const mobileNotificationBadge = q("#mobileNotificationBadge");
+const pushBackendStatus = q("#pushBackendStatus");
+const pushBackendHelp = q("#pushBackendHelp");
+
+const NOTIFICATION_SENT_KEY = "duopilot.notifications.sent.v12";
+
+function loadSentNotifications(){
+  try { return JSON.parse(localStorage.getItem(NOTIFICATION_SENT_KEY)) || {}; }
+  catch { return {}; }
+}
+let sentNotifications = loadSentNotifications();
+
+function saveSentNotifications(){
+  localStorage.setItem(NOTIFICATION_SENT_KEY, JSON.stringify(sentNotifications));
+}
+
+function dayKey(date){
+  const y=date.getFullYear();
+  const m=String(date.getMonth()+1).padStart(2,"0");
+  const d=String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+
+function reminderLabel(offset){
+  const n=Number(offset);
+  if(n===14) return "2 semaines avant";
+  if(n===7) return "1 semaine avant";
+  if(n===1) return "La veille";
+  if(n===0) return "Le jour même";
+  return `${n} jours avant`;
+}
+
+function reminderDate(task, offset){
+  const d=parse(task.dueDate);
+  d.setDate(d.getDate()-Number(offset));
+  d.setHours(9,0,0,0);
+  return d;
+}
+
+function reminderEntries(){
+  const rows=[];
+  tasks.filter(t=>!t.done).forEach(task=>{
+    (task.alerts||[]).forEach(offset=>{
+      rows.push({
+        task,
+        offset:Number(offset),
+        when:reminderDate(task,offset),
+        key:`${task.id}:${offset}:${task.dueDate}`
+      });
+    });
+  });
+  return rows.sort((a,b)=>a.when-b.when);
+}
+
+function renderReminderCenter(){
+  if(!notificationReminderList) return;
+  const today=new Date(); today.setHours(0,0,0,0);
+  const entries=reminderEntries().filter(r=>{
+    const d=new Date(r.when); d.setHours(0,0,0,0);
+    return d>=today;
+  }).slice(0,30);
+
+  if(!entries.length){
+    notificationReminderList.innerHTML='<div class="notification-empty"><span>✓</span><strong>Aucun rappel à venir</strong><p>Ajoutez une échéance avec une alerte.</p></div>';
+  } else {
+    notificationReminderList.innerHTML=entries.map(r=>`
+      <article class="notification-reminder-item">
+        <div class="notification-reminder-icon">🔔</div>
+        <div class="notification-reminder-main">
+          <strong>${esc(r.task.title)}</strong>
+          <span>${esc(r.task.owner)} · ${esc(r.task.category)}</span>
+          <p>${reminderLabel(r.offset)} · ${fmt(dayKey(r.when))}</p>
+        </div>
+        <div class="notification-reminder-due">
+          <small>Échéance</small><strong>${fmt(r.task.dueDate)}</strong>
+        </div>
+      </article>`).join("");
+  }
+
+  const current=dayKey(new Date());
+  const count=reminderEntries().filter(r=>dayKey(r.when)===current&&!sentNotifications[r.key]).length;
+  [notificationBadge,mobileNotificationBadge].forEach(b=>{
+    if(!b) return;
+    b.textContent=count;
+    b.classList.toggle("hidden",count===0);
+  });
+}
+
+function updateNotificationPermissionUI(){
+  if(!notificationPermissionLabel) return;
+  if(!("Notification" in window)){
+    notificationPermissionLabel.textContent="Non compatible";
+    notificationPermissionHelp.textContent="Ce navigateur ne prend pas en charge les notifications Web.";
+    enableNotificationsBtn.disabled=true;
+    return;
+  }
+  if(Notification.permission==="granted"){
+    notificationPermissionLabel.textContent="Activées ✓";
+    notificationPermissionHelp.textContent="Cet appareil autorise les notifications DuoPilot.";
+    enableNotificationsBtn.textContent="Activées ✓";
+    enableNotificationsBtn.disabled=true;
+  } else if(Notification.permission==="denied"){
+    notificationPermissionLabel.textContent="Bloquées";
+    notificationPermissionHelp.textContent="Autorisez les notifications dans les réglages du navigateur.";
+    enableNotificationsBtn.textContent="Bloquées";
+    enableNotificationsBtn.disabled=true;
+  } else {
+    notificationPermissionLabel.textContent="Non activées";
+    notificationPermissionHelp.textContent="Cliquez sur Activer pour autoriser les rappels.";
+    enableNotificationsBtn.textContent="Activer";
+    enableNotificationsBtn.disabled=false;
+  }
+}
+
+async function apiFetch(path,options={}){
+  if(!PUSH_SERVER_URL) throw new Error("PUSH_SERVER_NOT_CONFIGURED");
+  const response=await fetch(`${PUSH_SERVER_URL}${path}`,{
+    ...options,
+    headers:{"Content-Type":"application/json",...(options.headers||{})}
+  });
+  if(!response.ok) throw new Error(`HTTP ${response.status}: ${await response.text().catch(()=>"")}`);
+  return response.status===204?null:response.json();
+}
+
+function urlBase64ToUint8Array(base64String){
+  const padding="=".repeat((4-base64String.length%4)%4);
+  const base64=(base64String+padding).replace(/-/g,"+").replace(/_/g,"/");
+  const raw=atob(base64);
+  return Uint8Array.from([...raw].map(c=>c.charCodeAt(0)));
+}
+
+async function checkPushBackend(){
+  if(!pushBackendStatus) return;
+  try{
+    const data=await apiFetch("/health");
+    pushBackendStatus.textContent=data?.status==="ok"?"Disponible ✓":"Disponible";
+    pushBackendHelp.textContent="Le service Railway est accessible.";
+  }catch(err){
+    pushBackendStatus.textContent="Non connecté";
+    pushBackendHelp.textContent="Le backend Railway doit être configuré avant les notifications en arrière-plan.";
+  }
+}
+
+async function ensurePushSubscription(){
+  if(!("serviceWorker" in navigator)||!("PushManager" in window)) throw new Error("PUSH_NOT_SUPPORTED");
+  if(Notification.permission!=="granted") throw new Error("NOTIFICATION_PERMISSION_REQUIRED");
+
+  const reg=await navigator.serviceWorker.ready;
+  let sub=await reg.pushManager.getSubscription();
+
+  if(!sub){
+    const {publicKey}=await apiFetch("/api/push/public-key");
+    sub=await reg.pushManager.subscribe({
+      userVisibleOnly:true,
+      applicationServerKey:urlBase64ToUint8Array(publicKey)
+    });
+  }
+
+  await apiFetch("/api/push/subscribe",{
+    method:"POST",
+    body:JSON.stringify({
+      subscription:sub.toJSON(),
+      device:{userAgent:navigator.userAgent,language:navigator.language}
+    })
+  });
+  return sub;
+}
+
+function remindersForServer(){
+  return tasks.filter(t=>!t.done).map(t=>({
+    id:t.id,title:t.title,owner:t.owner,category:t.category,
+    dueDate:t.dueDate,alerts:(t.alerts||[]).map(Number)
+  }));
+}
+
+async function syncPushReminders(){
+  try{
+    pushBackendStatus.textContent="Synchronisation…";
+    const sub=await ensurePushSubscription();
+    await apiFetch("/api/reminders/sync",{
+      method:"POST",
+      body:JSON.stringify({
+        endpoint:sub.endpoint,
+        reminders:remindersForServer(),
+        timezone:Intl.DateTimeFormat().resolvedOptions().timeZone||"Europe/Paris"
+      })
+    });
+    pushBackendStatus.textContent="Synchronisé ✓";
+    pushBackendHelp.textContent="Les alertes sont enregistrées sur Railway.";
+    return true;
+  }catch(err){
+    console.error("Push sync",err);
+    pushBackendStatus.textContent="À configurer";
+    pushBackendHelp.textContent="Vérifiez les variables Railway puis réessayez.";
+    return false;
+  }
+}
+
+async function enableDuoPilotNotifications(){
+  if(!("Notification" in window)) return;
+  const permission=await Notification.requestPermission();
+  updateNotificationPermissionUI();
+  if(permission==="granted"){
+    await syncPushReminders();
+  }
+}
+
+async function showLocalNotification(title,options={}){
+  if(Notification.permission!=="granted") return;
+  const reg=await navigator.serviceWorker.ready;
+  await reg.showNotification(title,{
+    icon:"./assets/icon-192.png",
+    badge:"./assets/icon-192.png",
+    ...options
+  });
+}
+
+async function checkTodayLocalReminders(){
+  if(!("Notification" in window)||Notification.permission!=="granted") return;
+  const today=dayKey(new Date());
+  for(const r of reminderEntries().filter(x=>dayKey(x.when)===today&&!sentNotifications[x.key])){
+    await showLocalNotification(`DuoPilot · ${r.task.title}`,{
+      body:`${reminderLabel(r.offset)} · ${r.task.owner} · ${r.task.category}`,
+      tag:`duopilot-${r.key}`,
+      data:{url:"./",taskId:r.task.id}
+    });
+    sentNotifications[r.key]=Date.now();
+    saveSentNotifications();
+  }
+  renderReminderCenter();
+}
+
+function openNotificationCenter(){
+  updateNotificationPermissionUI();
+  renderReminderCenter();
+  checkPushBackend();
+  notificationDialog?.showModal();
+}
+
+notificationBtn?.addEventListener("click",openNotificationCenter);
+mobileNotificationBtn?.addEventListener("click",openNotificationCenter);
+enableNotificationsBtn?.addEventListener("click",enableDuoPilotNotifications);
+syncPushBtn?.addEventListener("click",syncPushReminders);
+testNotificationBtn?.addEventListener("click",async()=>{
+  if(Notification.permission!=="granted"){
+    await enableDuoPilotNotifications();
+    if(Notification.permission!=="granted") return;
+  }
+  await showLocalNotification("Test DuoPilot 🔔",{
+    body:"Les notifications fonctionnent sur cet appareil.",
+    tag:`duopilot-test-${Date.now()}`,
+    data:{url:"./"}
+  });
+});
+
+document.addEventListener("visibilitychange",()=>{
+  if(document.visibilityState==="visible") checkTodayLocalReminders();
+});
+window.addEventListener("focus",checkTodayLocalReminders);
+setInterval(checkTodayLocalReminders,60000);
+
+setTimeout(()=>{
+  updateNotificationPermissionUI();
+  renderReminderCenter();
+  checkPushBackend();
+  checkTodayLocalReminders();
+},800);
+
+
+
+let __pushSyncTimer=null;
+function schedulePushSync(){
+  clearTimeout(__pushSyncTimer);
+  __pushSyncTimer=setTimeout(()=>{
+    if(typeof syncPushReminders==="function" && "Notification" in window && Notification.permission==="granted"){
+      syncPushReminders().catch(console.error);
+    }
+  },900);
 }

@@ -1,10 +1,11 @@
-const CACHE="duopilot-v110-universe-dropdown";
+const CACHE="duopilot-v112-notifications";
 const ASSETS=[
   "./",
   "./index.html",
-  "./styles.css?v=1.10",
-  "./app.js?v=1.10",
+  "./styles.css?v=1.12",
+  "./app.js?v=1.12",
   "./manifest.json",
+  "./config.js?v=1.12",
   "./assets/icon-180.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
@@ -53,4 +54,29 @@ self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request))
   );
+});
+
+self.addEventListener("push",event=>{
+  let payload={};
+  try{payload=event.data?event.data.json():{}}
+  catch{payload={body:event.data?event.data.text():"Une échéance approche."}}
+  const title=payload.title||"DuoPilot";
+  event.waitUntil(self.registration.showNotification(title,{
+    body:payload.body||"Une échéance approche.",
+    icon:"./assets/icon-192.png",
+    badge:"./assets/icon-192.png",
+    tag:payload.tag||`duopilot-${Date.now()}`,
+    data:{url:payload.url||"./",taskId:payload.taskId||null}
+  }));
+});
+
+self.addEventListener("notificationclick",event=>{
+  event.notification.close();
+  const target=event.notification.data?.url||"./";
+  event.waitUntil(clients.matchAll({type:"window",includeUncontrolled:true}).then(list=>{
+    for(const client of list){
+      if("focus" in client){client.navigate(target).catch(()=>{});return client.focus()}
+    }
+    return clients.openWindow?clients.openWindow(target):null;
+  }));
 });

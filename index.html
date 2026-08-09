@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#14213d">
 <title>DuoPilot</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=1.10">
+<link rel="stylesheet" href="styles.css?v=1.12">
 
   <meta name="theme-color" content="#6c757d">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -59,12 +59,16 @@
           <span>Assistant du quotidien</span>
         </div>
         <div class="desktop-appbar-right">
-          <button id="searchBtn" type="button" aria-label="Rechercher" data-tooltip="Rechercher une échéance, un univers ou une note.">⌕</button>
+          <button id="notificationBtn" class="notification-trigger" type="button" aria-label="Notifications" data-tooltip="Afficher les notifications DuoPilot.">
+          <span aria-hidden="true">🔔</span><b id="notificationBadge" class="notification-badge hidden">0</b>
+        </button>
+        <button id="searchBtn" type="button" aria-label="Rechercher" data-tooltip="Rechercher une échéance, un univers ou une note.">⌕</button>
           <button id="helpBtn" type="button" aria-label="Aide" data-tooltip="Aide rapide sur l’utilisation de DuoPilot.">?</button>
         </div>
       </div>
 
-      <header class="mobile-header"><button id="menuBtn" class="mobile-icon">☰</button><strong>DuoPilot</strong><button id="mobileAddBtn" class="mobile-add">＋</button></header>
+      <header class="mobile-header"><button id="menuBtn" class="mobile-icon">☰</button><strong>DuoPilot</strong><button id="mobileNotificationBtn" class="mobile-icon mobile-notification" type="button" aria-label="Notifications">🔔<b id="mobileNotificationBadge" class="notification-badge hidden">0</b></button>
+        <button id="mobileAddBtn" class="mobile-add">＋</button></header>
   <section class="hero">
     <div><p class="hero-kicker" id="viewEyebrow">Votre cockpit</p><h1 id="titleView">Bonjour 👋</h1><p id="dateNow" class="hero-date"></p><p id="heroSubtitle" class="hero-subtitle">Tout ce qui mérite votre attention, au même endroit.</p></div>
     <div class="hero-actions"><div class="status-orb" id="statusOrb"><span></span><div><small>État du jour</small><strong id="dailyStatus">Tout va bien</strong></div></div><button id="addBtn" class="primary-action"><span>＋</span> Ajouter</button></div>
@@ -117,6 +121,51 @@
 <fieldset class="full"><legend>Alertes</legend><div class="alerts-grid"><label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label><label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label><label><input type="checkbox" name="alerts" value="1"> La veille</label><label><input type="checkbox" name="alerts" value="0"> Le jour même</label></div></fieldset>
 <label class="full">Notes<textarea name="notes" rows="3" placeholder="Ajoutez les détails utiles…"></textarea></label>
 </div><div class="modal-actions"><button id="cancelBtn" class="secondary-action" type="button">Annuler</button><button class="primary-action" id="taskSubmitBtn" type="submit">Enregistrer</button></div></form></dialog>
+
+<dialog id="notificationDialog" class="utility-dialog notification-dialog">
+  <div class="utility-dialog-head">
+    <div>
+      <small class="section-kicker">RAPPELS</small>
+      <h2>Notifications DuoPilot</h2>
+    </div>
+    <button class="utility-close" type="button" data-close-dialog="notificationDialog" aria-label="Fermer">×</button>
+  </div>
+
+  <div class="notification-settings">
+    <div class="notification-status-card">
+      <div>
+        <small>Notifications sur cet appareil</small>
+        <strong id="notificationPermissionLabel">Vérification…</strong>
+        <p id="notificationPermissionHelp">Activez les notifications pour recevoir les rappels DuoPilot.</p>
+      </div>
+      <button id="enableNotificationsBtn" class="primary-action" type="button">Activer</button>
+    </div>
+
+    <div class="push-backend-card">
+      <div>
+        <small>Notifications quand DuoPilot est fermé</small>
+        <strong id="pushBackendStatus">Vérification…</strong>
+        <p id="pushBackendHelp">Connexion au service Railway.</p>
+      </div>
+      <button id="syncPushBtn" class="secondary-action" type="button">Synchroniser</button>
+    </div>
+
+    <div class="notification-note">
+      <strong>Fonctionnement</strong>
+      <p>Les rappels utilisent les choix enregistrés dans chaque échéance : 2 semaines avant, 1 semaine avant, la veille et le jour même.</p>
+    </div>
+  </div>
+
+  <div class="notification-center-head">
+    <div>
+      <small class="section-kicker">PROCHAINS RAPPELS</small>
+      <h3>Calendrier des notifications</h3>
+    </div>
+    <button id="testNotificationBtn" class="secondary-action" type="button">Tester</button>
+  </div>
+  <div id="notificationReminderList" class="notification-reminder-list"></div>
+</dialog>
+
 <dialog id="searchDialog" class="utility-dialog">
     <div class="utility-dialog-head">
       <div>
@@ -189,5 +238,6 @@
     </div>
   </dialog>
 
-  <script src="app.js?v=1.10"></script>
+  <script src="config.js?v=1.12"></script>
+  <script src="app.js?v=1.12"></script>
 </body></html>
