@@ -1806,3 +1806,8 @@ body[data-theme="sonka"] .edit-button:hover {
     touch-action: manipulation;
   }
 }
+
+/* V1.9.3 — calendar icon without emoji digit */
+.week-calendar-icon::before{content:"";width:16px;height:15px;border:2px solid currentColor;border-radius:4px;display:block;box-sizing:border-box;background:linear-gradient(currentColor,currentColor) 0 4px/100% 2px no-repeat;}
+.week-calendar-icon::after{content:"";position:absolute;width:2px;height:4px;border-radius:2px;background:currentColor;transform:translate(-5px,-8px);box-shadow:10px 0 0 currentColor;}
+.week-calendar-icon{position:relative;}

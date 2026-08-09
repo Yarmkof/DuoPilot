@@ -1,4 +1,4 @@
-const CACHE="duopilot-v192-week-icon-fix";
+const CACHE="duopilot-v193-calendar-icon-fix";
 const ASSETS=[
   "./",
   "./index.html",
