@@ -1,5 +1,5 @@
 
-window.DUOPILOT_VERSION = "1.8";
+window.DUOPILOT_VERSION = "1.9";
 const TASKS_KEY = "duopilot.tasks.v1";
 const UNIVERSES_KEY = "duopilot.universes.v2";
 const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
@@ -27,6 +27,7 @@ let activeOwner = "all";
 let smart = null;
 let cal = new Date();
 let installPrompt = null;
+let editingTaskId = null;
 
 function migrateOwner(owner) {
   if (owner === "Christelle") return "SONKI";
@@ -145,17 +146,74 @@ function renderTasks() {
   list.innerHTML="";
   list.classList.toggle("hidden",arr.length===0);
   empty.classList.toggle("hidden",arr.length>0);
+
   arr.forEach(t => {
     const overdue=!t.done&&days(t.dueDate)<0;
     const a=document.createElement("article");
     a.className=`task-item${t.done?" done":""}${overdue?" overdue":""}`;
-    a.innerHTML=`<button class="complete-button"></button><div><div class="task-main-row"><span class="priority-mark ${t.priority}"></span><h3 class="task-title">${esc(t.title)}</h3></div><div class="task-meta"><span>${esc(t.owner)}</span><span>${esc(t.category)}</span><span class="alerts-meta">Alertes : ${t.alerts?.length?t.alerts.map(alertTxt).join(", "):"aucune"}</span></div>${t.notes?`<p class="task-notes">${esc(t.notes)}</p>`:""}</div><div class="task-time${overdue?" overdue":""}"><strong>${fmt(t.dueDate)}</strong><span>${timing(t)}</span></div><button class="delete-button">Supprimer</button>`;
-    a.querySelector(".complete-button").onclick=()=>{t.done=!t.done;saveTasks();renderAll();};
-    a.querySelector(".delete-button").onclick=()=>{if(confirm(`Supprimer « ${t.title} » ?`)){tasks=tasks.filter(x=>x.id!==t.id);saveTasks();renderAll();}};
+    a.dataset.taskId=t.id;
+    a.setAttribute("tabindex","0");
+    a.setAttribute("role","button");
+    a.setAttribute("aria-label",`Modifier l’échéance ${t.title}`);
+
+    a.innerHTML=`
+      <button class="complete-button" type="button" aria-label="${t.done?"Rouvrir":"Marquer comme terminée"}"></button>
+      <div class="task-click-zone">
+        <div class="task-main-row">
+          <span class="priority-mark ${t.priority}"></span>
+          <h3 class="task-title">${esc(t.title)}</h3>
+        </div>
+        <div class="task-meta">
+          <span>${esc(t.owner)}</span>
+          <span>${esc(t.category)}</span>
+          <span class="alerts-meta">Alertes : ${t.alerts?.length?t.alerts.map(alertTxt).join(", "):"aucune"}</span>
+        </div>
+        ${t.notes?`<p class="task-notes">${esc(t.notes)}</p>`:""}
+      </div>
+      <div class="task-time${overdue?" overdue":""}">
+        <strong>${fmt(t.dueDate)}</strong>
+        <span>${timing(t)}</span>
+      </div>
+      <button class="edit-button" type="button" aria-label="Modifier">Modifier</button>
+      <button class="delete-button" type="button" aria-label="Supprimer">Supprimer</button>`;
+
+    const openEdit = () => openModal(t);
+
+    a.querySelector(".complete-button").onclick=e=>{
+      e.stopPropagation();
+      t.done=!t.done;
+      saveTasks();
+      renderAll();
+    };
+
+    a.querySelector(".edit-button").onclick=e=>{
+      e.stopPropagation();
+      openEdit();
+    };
+
+    a.querySelector(".delete-button").onclick=e=>{
+      e.stopPropagation();
+      if(confirm(`Supprimer « ${t.title} » ?`)){
+        tasks=tasks.filter(x=>x.id!==t.id);
+        saveTasks();
+        renderAll();
+      }
+    };
+
+    a.querySelector(".task-click-zone").onclick=openEdit;
+    a.querySelector(".task-time").onclick=openEdit;
+
+    a.addEventListener("keydown", e=>{
+      if(e.key==="Enter" || e.key===" "){
+        if(e.target!==a) return;
+        e.preventDefault();
+        openEdit();
+      }
+    });
+
     list.appendChild(a);
   });
 }
-
 function count(owner){return tasks.filter(t=>!t.done&&(owner==="all"||t.owner===owner)).length;}
 function counters(){
   const cur=tasks.filter(t=>!t.done&&(activeOwner==="all"||t.owner===activeOwner));
@@ -233,16 +291,42 @@ function closeSide(){
   if(backdrop) backdrop.classList.add("hidden");
   document.body.classList.remove("mobile-menu-open");
 }
-function openModal(){
+function openModal(task=null){
   form.reset();
-  form.owner.value=activeOwner==="all"?"SONKA":activeOwner;
-  form.dueDate.value=addDays(7);
-  form.category.value="";
-  qa('[name="alerts"]').forEach(i=>i.checked=["14","7"].includes(i.value));
+  editingTaskId = task?.id || null;
+
+  const modalKicker=q("#taskModalKicker");
+  const modalTitle=q("#taskModalTitle");
+  const submitBtn=q("#taskSubmitBtn");
+
+  if(task){
+    modalKicker.textContent="Modifier l’échéance";
+    modalTitle.textContent="Mettre à jour dans DuoPilot";
+    submitBtn.textContent="Enregistrer les modifications";
+
+    form.title.value=task.title || "";
+    form.owner.value=task.owner || "SONKA";
+    form.category.value=task.category || "";
+    form.dueDate.value=task.dueDate || addDays(7);
+    form.priority.value=task.priority || "normal";
+    form.notes.value=task.notes || "";
+
+    const selectedAlerts=new Set((task.alerts||[]).map(Number));
+    qa('[name="alerts"]').forEach(i=>i.checked=selectedAlerts.has(Number(i.value)));
+  }else{
+    modalKicker.textContent="Nouvelle échéance";
+    modalTitle.textContent="Ajouter à DuoPilot";
+    submitBtn.textContent="Enregistrer";
+
+    form.owner.value=activeOwner==="all"?"SONKA":activeOwner;
+    form.dueDate.value=addDays(7);
+    form.category.value="";
+    qa('[name="alerts"]').forEach(i=>i.checked=["14","7"].includes(i.value));
+  }
+
   modal.showModal();
   setTimeout(()=>form.title.focus(),0);
 }
-
 function activateSpace(owner, sourceButton = null) {
   activeOwner = owner || "all";
   clearSmart();
@@ -309,15 +393,40 @@ qa(".pulse-card").forEach(card=>card.onclick=()=>{
 q("#categoryFilter").onchange=()=>{clearSmart();renderAll();};
 q("#statusFilter").onchange=()=>{clearSmart();renderAll();};
 qa(".density").forEach(b=>b.onclick=()=>{qa(".density").forEach(x=>x.classList.remove("active"));b.classList.add("active");list.classList.toggle("compact",b.dataset.mode==="compact");});
-["#addBtn","#quickAddBtn","#mobileAddBtn"].forEach(s=>{const el=q(s);if(el)el.onclick=openModal;});
-q("#closeBtn").onclick=()=>modal.close();q("#cancelBtn").onclick=()=>modal.close();
+["#addBtn","#quickAddBtn","#mobileAddBtn"].forEach(s=>{const el=q(s);if(el)el.onclick=()=>openModal();});
+q("#closeBtn").onclick=()=>{editingTaskId=null;modal.close();};q("#cancelBtn").onclick=()=>{editingTaskId=null;modal.close();};
 
 form.onsubmit=e=>{
   e.preventDefault();
   const d=new FormData(form);
   const universe=normalizeUniverse(d.get("category"));
-  tasks.push({id:crypto.randomUUID(),title:String(d.get("title")||"").trim(),owner:migrateOwner(d.get("owner")),category:universe,dueDate:d.get("dueDate"),priority:d.get("priority"),alerts:d.getAll("alerts").map(Number),notes:String(d.get("notes")||"").trim(),done:false});
-  saveTasks();modal.close();q("#categoryFilter").value="all";renderAll();
+
+  const payload={
+    title:String(d.get("title")||"").trim(),
+    owner:migrateOwner(d.get("owner")),
+    category:universe,
+    dueDate:d.get("dueDate"),
+    priority:d.get("priority"),
+    alerts:d.getAll("alerts").map(Number),
+    notes:String(d.get("notes")||"").trim()
+  };
+
+  if(editingTaskId){
+    const task=tasks.find(t=>t.id===editingTaskId);
+    if(task) Object.assign(task,payload);
+  }else{
+    tasks.push({
+      id:crypto.randomUUID(),
+      ...payload,
+      done:false
+    });
+  }
+
+  saveTasks();
+  editingTaskId=null;
+  modal.close();
+  q("#categoryFilter").value="all";
+  renderAll();
 };
 
 q("#universeForm").addEventListener("submit",e=>{

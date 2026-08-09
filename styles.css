@@ -1726,3 +1726,83 @@ body[data-theme="sonka"] .pulse-strip .pulse-card.active {
     box-shadow: inset 4px 0 0 #fff !important;
   }
 }
+
+
+/* =========================================================
+   DuoPilot V1.9 — Edit existing tasks
+   ========================================================= */
+
+.task-item {
+  cursor: default;
+}
+
+.task-click-zone,
+.task-time {
+  cursor: pointer;
+}
+
+.task-click-zone:hover .task-title {
+  text-decoration: underline;
+  text-decoration-color: rgba(90,105,120,.28);
+  text-underline-offset: 3px;
+}
+
+.edit-button {
+  position: absolute;
+  right: 78px;
+  bottom: 5px;
+  border: 0;
+  color: #7e8894;
+  background: transparent;
+  font-size: .7rem;
+  opacity: 0;
+  transition: opacity .15s ease, color .15s ease;
+}
+
+.task-item:hover .edit-button,
+.task-item:focus-within .edit-button {
+  opacity: 1;
+}
+
+.edit-button:hover {
+  color: #2f6085;
+}
+
+body[data-theme="sonki"] .edit-button:hover {
+  color: #a85572;
+}
+
+body[data-theme="sonka"] .edit-button:hover {
+  color: #005b9e;
+}
+
+/* Mobile: edit action is always visible and touch-friendly */
+@media (max-width: 860px) {
+  .edit-button,
+  .delete-button {
+    position: static !important;
+    opacity: 1 !important;
+    min-height: 36px !important;
+    padding: 6px 9px !important;
+    border-radius: 9px !important;
+    margin-top: 8px;
+  }
+
+  .edit-button {
+    grid-column: 2;
+    justify-self: start;
+    background: rgba(100,115,130,.08);
+  }
+
+  .delete-button {
+    grid-column: 2;
+    justify-self: end;
+    margin-top: -36px;
+    background: rgba(190,80,80,.06);
+  }
+
+  .task-click-zone,
+  .task-time {
+    touch-action: manipulation;
+  }
+}

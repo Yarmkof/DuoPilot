@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#14213d">
 <title>DuoPilot</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=1.8">
+<link rel="stylesheet" href="styles.css?v=1.9">
 
   <meta name="theme-color" content="#6c757d">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -99,7 +99,7 @@
 </main>
 </div>
 <div id="sidebarBackdrop" class="sidebar-backdrop hidden"></div>
-<dialog id="modal"><form id="taskForm"><div class="modal-header"><div><p class="section-kicker">Nouvelle échéance</p><h2>Ajouter à DuoPilot</h2></div><button id="closeBtn" class="modal-close" type="button">×</button></div><div class="form-grid">
+<dialog id="modal"><form id="taskForm"><div class="modal-header"><div><p class="section-kicker" id="taskModalKicker">Nouvelle échéance</p><h2 id="taskModalTitle">Ajouter à DuoPilot</h2></div><button id="closeBtn" class="modal-close" type="button">×</button></div><div class="form-grid">
 <label class="full">Titre<input name="title" required maxlength="80" placeholder="Ex. Révision de la Mercedes"></label>
 <label>Responsable<select name="owner"><option>SONKI</option><option>SONKA</option><option>Commun</option></select></label>
 <label>Univers
@@ -112,7 +112,7 @@
 <label>Priorité<select name="priority"><option value="normal">Normale</option><option value="important">Importante</option><option value="urgent">Urgente</option></select></label>
 <fieldset class="full"><legend>Alertes</legend><div class="alerts-grid"><label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label><label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label><label><input type="checkbox" name="alerts" value="1"> La veille</label><label><input type="checkbox" name="alerts" value="0"> Le jour même</label></div></fieldset>
 <label class="full">Notes<textarea name="notes" rows="3" placeholder="Ajoutez les détails utiles…"></textarea></label>
-</div><div class="modal-actions"><button id="cancelBtn" class="secondary-action" type="button">Annuler</button><button class="primary-action" type="submit">Enregistrer</button></div></form></dialog>
+</div><div class="modal-actions"><button id="cancelBtn" class="secondary-action" type="button">Annuler</button><button class="primary-action" id="taskSubmitBtn" type="submit">Enregistrer</button></div></form></dialog>
 <dialog id="searchDialog" class="utility-dialog">
     <div class="utility-dialog-head">
       <div>
@@ -185,5 +185,5 @@
     </div>
   </dialog>
 
-  <script src="app.js?v=1.8"></script>
+  <script src="app.js?v=1.9"></script>
 </body></html>

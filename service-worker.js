@@ -1,9 +1,9 @@
-const CACHE="duopilot-v18-mobile-real-fix";
+const CACHE="duopilot-v19-edit-tasks";
 const ASSETS=[
   "./",
   "./index.html",
-  "./styles.css?v=1.8",
-  "./app.js?v=1.8",
+  "./styles.css?v=1.9",
+  "./app.js?v=1.9",
   "./manifest.json",
   "./assets/icon-180.png",
   "./assets/icon-192.png",
