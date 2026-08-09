@@ -1,9 +1,9 @@
-const CACHE="duopilot-v191-calendar-icon";
+const CACHE="duopilot-v192-week-icon-fix";
 const ASSETS=[
   "./",
   "./index.html",
-  "./styles.css?v=1.9.1",
-  "./app.js?v=1.9.1",
+  "./styles.css?v=1.9.2",
+  "./app.js?v=1.9.2",
   "./manifest.json",
   "./assets/icon-180.png",
   "./assets/icon-192.png",

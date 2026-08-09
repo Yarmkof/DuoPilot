@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#14213d">
 <title>DuoPilot</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=1.9.1">
+<link rel="stylesheet" href="styles.css?v=1.9.2">
 
   <meta name="theme-color" content="#6c757d">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -72,7 +72,7 @@
     </button>
     <button class="pulse-card" type="button" data-pulse="week" aria-pressed="false"
       data-tooltip="Afficher uniquement les échéances prévues dans les 7 prochains jours.">
-      <div><small>Cette semaine</small><strong id="week">0</strong></div><span class="pulse-symbol green">7</span>
+      <div><small>Cette semaine</small><strong id="week">0</strong></div><span class="pulse-symbol green" aria-hidden="true">📅</span>
     </button>
     <button class="pulse-card" type="button" data-pulse="overdue" aria-pressed="false"
       data-tooltip="Afficher uniquement les échéances en retard.">
@@ -185,5 +185,5 @@
     </div>
   </dialog>
 
-  <script src="app.js?v=1.9.1"></script>
+  <script src="app.js?v=1.9.2"></script>
 </body></html>
