@@ -1,22 +1,24 @@
-# DuoPilot V1.5
+# DuoPilot V1.6
 
-## Nouveautés
-- Loupe fonctionnelle : recherche instantanée dans les titres, notes, univers et responsables.
-- Raccourci clavier : Cmd+K sur Mac / Ctrl+K sur Windows.
-- Point d’interrogation fonctionnel : guide d’utilisation intégré.
-- Aide dédiée à l’installation sur iPhone.
-- PWA améliorée : manifest, icônes, mode standalone, safe areas iPhone et cibles tactiles.
-- Nouvelle icône DuoPilot pour l’écran d’accueil.
+## Correctif mobile / iPhone
+Les thèmes contextuels sont maintenant explicitement appliqués sur smartphone et en mode PWA installé.
 
-## Installer sur iPhone
-1. Ouvrir https://yarmkof.github.io/DuoPilot/ dans Safari.
-2. Appuyer sur Partager.
-3. Choisir « Sur l’écran d’accueil ».
-4. Appuyer sur « Ajouter ».
-5. DuoPilot apparaît comme une application sur l’iPhone.
+- Vue d’ensemble : gris
+- SONKI : rose clair
+- SONKA : bleu Outlook assombri
+- À deux : gris bleuté
+
+## Fonctions conservées
+- recherche
+- aide
+- PWA iPhone
+- cartes cliquables
+- univers personnalisés
+- filtres
+- SONKI / SONKA / À deux
 
 ## Summary GitHub Desktop
-V1.5 - Search + Help + iPhone PWA
+V1.6 - Mobile contextual colors fix
 
 ## Site
 https://yarmkof.github.io/DuoPilot/

@@ -1420,3 +1420,160 @@ body[data-theme="sonka"] .pulse-strip .pulse-card.active {
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+
+/* =========================================================
+   DuoPilot V1.6 — Mobile contextual colors fix
+   ========================================================= */
+@media (max-width: 860px) {
+
+  /* OVERVIEW — grey */
+  body[data-theme="overview"] {
+    background: linear-gradient(180deg,#eef0f2 0%,#e2e5e8 55%,#d8dde1 100%) !important;
+  }
+  body[data-theme="overview"] .mobile-header,
+  body[data-theme="overview"] .sidebar {
+    background: linear-gradient(180deg,#696f76 0%,#5c6269 55%,#4c5258 100%) !important;
+  }
+  body[data-theme="overview"] .main-panel {
+    background: linear-gradient(180deg,rgba(246,247,248,.98),rgba(230,233,236,.96)) !important;
+  }
+  body[data-theme="overview"] .primary-action,
+  body[data-theme="overview"] .mobile-add {
+    background:#626970 !important;
+    border-color:#626970 !important;
+    color:#fff !important;
+  }
+
+  /* SONKI — pale pink */
+  body[data-theme="sonki"] {
+    background: linear-gradient(180deg,#fff8fb 0%,#fcedf3 52%,#f8dfe8 100%) !important;
+  }
+  body[data-theme="sonki"] .mobile-header,
+  body[data-theme="sonki"] .sidebar {
+    background: linear-gradient(180deg,#e7aabd 0%,#dd99ae 55%,#d2879f 100%) !important;
+  }
+  body[data-theme="sonki"] .main-panel {
+    background: linear-gradient(180deg,rgba(255,250,252,.98),rgba(252,233,240,.96)) !important;
+  }
+  body[data-theme="sonki"] .hero,
+  body[data-theme="sonki"] .workspace-main,
+  body[data-theme="sonki"] .insight-card,
+  body[data-theme="sonki"] .pulse-strip .pulse-card,
+  body[data-theme="sonki"] .pulse-strip > article {
+    background:linear-gradient(180deg,#fff 0%,#fff6f9 100%) !important;
+    border-color:#efc9d6 !important;
+  }
+  body[data-theme="sonki"] .hero h1,
+  body[data-theme="sonki"] .workspace-toolbar h2,
+  body[data-theme="sonki"] .card-head h3,
+  body[data-theme="sonki"] .priority-top h3,
+  body[data-theme="sonki"] .duo-card h3 {
+    color:#7e4259 !important;
+  }
+  body[data-theme="sonki"] .hero-kicker,
+  body[data-theme="sonki"] .section-kicker {
+    color:#b96885 !important;
+  }
+  body[data-theme="sonki"] .primary-action,
+  body[data-theme="sonki"] .mobile-add {
+    background:linear-gradient(135deg,#d991a7,#c97994) !important;
+    border-color:#d991a7 !important;
+    color:#fff !important;
+  }
+  body[data-theme="sonki"] .calendar-day.today {
+    background:#d991a7 !important;
+  }
+  body[data-theme="sonki"] .focus-meter span {
+    background:linear-gradient(90deg,#d991a7,#ebb4c4) !important;
+  }
+
+  /* SONKA — darker blue */
+  body[data-theme="sonka"] {
+    background: linear-gradient(180deg,#d2eafb 0%,#b3d8f2 52%,#8bc1ea 100%) !important;
+  }
+  body[data-theme="sonka"] .mobile-header,
+  body[data-theme="sonka"] .sidebar {
+    background: linear-gradient(180deg,#0e64b2 0%,#0a56a2 55%,#073b70 100%) !important;
+  }
+  body[data-theme="sonka"] .main-panel {
+    background: linear-gradient(180deg,rgba(222,241,253,.98),rgba(205,231,248,.96)) !important;
+  }
+  body[data-theme="sonka"] .hero,
+  body[data-theme="sonka"] .workspace-main,
+  body[data-theme="sonka"] .insight-card,
+  body[data-theme="sonka"] .pulse-strip .pulse-card,
+  body[data-theme="sonka"] .pulse-strip > article {
+    background:linear-gradient(180deg,#fff 0%,#eff8fd 100%) !important;
+    border-color:#b9dff5 !important;
+  }
+  body[data-theme="sonka"] .primary-action,
+  body[data-theme="sonka"] .mobile-add {
+    background:linear-gradient(135deg,#0070c6,#00538f) !important;
+    border-color:#0070c6 !important;
+    color:#fff !important;
+  }
+  body[data-theme="sonka"] .calendar-day.today {
+    background:#0070c6 !important;
+  }
+  body[data-theme="sonka"] .focus-meter span {
+    background:linear-gradient(90deg,#0070c6,#4f9bd5) !important;
+  }
+
+  /* DUO — blue grey */
+  body[data-theme="duo"] {
+    background: linear-gradient(180deg,#eef3f7 0%,#dce6ed 52%,#cad8e2 100%) !important;
+  }
+  body[data-theme="duo"] .mobile-header,
+  body[data-theme="duo"] .sidebar {
+    background: linear-gradient(180deg,#566d7e 0%,#495f71 55%,#3b5062 100%) !important;
+  }
+  body[data-theme="duo"] .main-panel {
+    background: linear-gradient(180deg,rgba(242,246,249,.98),rgba(223,232,239,.96)) !important;
+  }
+  body[data-theme="duo"] .primary-action,
+  body[data-theme="duo"] .mobile-add {
+    background:linear-gradient(135deg,#5d7486,#455d70) !important;
+    border-color:#5d7486 !important;
+    color:#fff !important;
+  }
+
+  /* common mobile sidebar text */
+  .sidebar,
+  .sidebar .brand strong,
+  .sidebar .brand small,
+  .sidebar .sidebar-label,
+  .sidebar .space-item,
+  .sidebar .shortcut,
+  .sidebar .universe-list button,
+  .sidebar .sync-status {
+    color:#fff !important;
+  }
+
+  .sidebar .brand small,
+  .sidebar .sidebar-label,
+  .sidebar .sync-status {
+    color:rgba(255,255,255,.78) !important;
+  }
+
+  .mobile-icon {
+    color:#fff !important;
+    background:rgba(255,255,255,.14) !important;
+  }
+
+  .new-task {
+    background:#fff !important;
+  }
+  body[data-theme="sonki"] .new-task { color:#b45f7e !important; }
+  body[data-theme="sonka"] .new-task { color:#075b9e !important; }
+  body[data-theme="overview"] .new-task { color:#5d646b !important; }
+  body[data-theme="duo"] .new-task { color:#506879 !important; }
+}
+
+/* installed PWA on iPhone */
+@media (display-mode: standalone) {
+  body[data-theme="overview"] .mobile-header { background:linear-gradient(90deg,#696f76,#555c63) !important; }
+  body[data-theme="sonki"] .mobile-header { background:linear-gradient(90deg,#e1a0b4,#d78fa7) !important; }
+  body[data-theme="sonka"] .mobile-header { background:linear-gradient(90deg,#0d61ac,#07539a) !important; }
+  body[data-theme="duo"] .mobile-header { background:linear-gradient(90deg,#566d7e,#43596b) !important; }
+}
