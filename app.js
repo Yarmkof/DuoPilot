@@ -1,5 +1,5 @@
 
-window.DUOPILOT_VERSION = "2.4.0";
+window.DUOPILOT_VERSION = "3.0.0";
 const TASKS_KEY = "duopilot.tasks.v1";
 const UNIVERSES_KEY = "duopilot.universes.v2";
 const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
@@ -1084,3 +1084,61 @@ function schedulePushSync(){
     }
   },900);
 }
+
+
+// =========================================================
+// DuoPilot V3.0 — Dark dashboard presentation layer
+// =========================================================
+function v3Scope(){return tasks.filter(t=>activeOwner==="all"||t.owner===activeOwner);}
+function v3Set(id,value){const el=q(id);if(el)el.textContent=value;}
+function v3OwnerCount(arr,owner){return arr.filter(t=>t.owner===owner).length;}
+function v3MetricTriplet(prefix,arr){
+  v3Set(`#${prefix}Sonki`,`${v3OwnerCount(arr,"SONKI")} SONKI`);
+  v3Set(`#${prefix}Sonka`,`${v3OwnerCount(arr,"SONKA")} SONKA`);
+  v3Set(`#${prefix}Duo`,`${v3OwnerCount(arr,"Commun")} À deux`);
+}
+function v3CategoryIcon(name){const n=(name||"").toLowerCase();if(n.includes("véhic"))return"▰";if(n.includes("admin"))return"▤";if(n.includes("maison"))return"⌂";if(n.includes("sant"))return"♥";if(n.includes("pro"))return"◆";if(n.includes("voy"))return"✈";return"●";}
+function renderV3Universes(){
+  const host=q("#v3UniverseList");if(!host)return;
+  host.innerHTML=universes.filter(u=>u!=="Autre").slice(0,8).map(u=>`<button type="button" data-v3-universe="${esc(u)}"><span>${v3CategoryIcon(u)}</span><b>${esc(u)}</b></button>`).join("");
+  qa("[data-v3-universe]").forEach(btn=>btn.addEventListener("click",()=>{q("#categoryFilter").value=btn.dataset.v3Universe;clearSmart();renderAll();}));
+}
+function renderV3Metrics(){
+  const scope=v3Scope();const active=scope.filter(t=>!t.done);const week=active.filter(t=>{const d=days(t.dueDate);return d>=0&&d<=7});const upcoming=active.filter(t=>days(t.dueDate)>=0);const late=active.filter(t=>days(t.dueDate)<0);const done=scope.filter(t=>t.done);
+  v3MetricTriplet("v3Week",week);v3MetricTriplet("v3Up",upcoming);v3MetricTriplet("v3Late",late);v3MetricTriplet("v3Done",done);v3Set("#v3DoneTotal",done.length);
+}
+function renderV3Activity(){
+  const host=q("#v3ActivityList");if(!host)return;const scope=[...v3Scope()].sort((a,b)=>parse(b.dueDate)-parse(a.dueDate)).slice(0,5);
+  if(!scope.length){host.innerHTML='<p class="v3-empty-copy">Aucune activité récente.</p>';return;}
+  host.innerHTML=scope.map((t,i)=>`<div class="v3-activity-item"><span class="v3-mini-avatar ${t.owner.toLowerCase()}">${t.owner==="SONKI"?"🦁":t.owner==="SONKA"?"🐘":"∞"}</span><div><small>${esc(t.owner)} ${t.done?"a terminé":"suit"}</small><b>${esc(t.title)}</b><em>${t.done?"Terminée":timing(t)}</em></div></div>`).join("");
+}
+function renderV3SevenDays(){
+  const daysHost=q("#v3WeekDays"),listHost=q("#v3UpcomingList");if(!daysHost||!listHost)return;const now=today();
+  daysHost.innerHTML=Array.from({length:7},(_,i)=>{const d=new Date(now);d.setDate(now.getDate()+i);const key=d.toISOString().slice(0,10);const has=v3Scope().some(t=>!t.done&&t.dueDate===key);return `<div class="${i===0?'today':''}"><small>${new Intl.DateTimeFormat('fr-FR',{weekday:'short'}).format(d)}</small><b>${d.getDate()}</b>${has?'<i></i>':''}</div>`}).join("");
+  const upcoming=v3Scope().filter(t=>!t.done&&days(t.dueDate)>=0&&days(t.dueDate)<=7).sort((a,b)=>parse(a.dueDate)-parse(b.dueDate)).slice(0,4);
+  listHost.innerHTML=upcoming.length?upcoming.map(t=>`<button type="button" data-task-open="${t.id}"><span class="v3-task-dot ${t.owner.toLowerCase()}"></span><div><b>${esc(t.title)}</b><small>${esc(t.category)}</small></div><em>${fmt(t.dueDate,{weekday:'short',day:'numeric',month:'short'})}</em><i>${esc(t.owner==="Commun"?"À deux":t.owner)}</i></button>`).join(""):'<p class="v3-empty-copy">Aucune échéance cette semaine.</p>';
+  qa('[data-task-open]').forEach(b=>b.addEventListener('click',()=>{const t=tasks.find(x=>x.id===b.dataset.taskOpen);if(t)openModal(t);}));
+}
+function renderV3Progress(){
+  const scope=v3Scope();const total=scope.length,done=scope.filter(t=>t.done).length,pct=total?Math.round(done/total*100):0;v3Set('#v3ProgressPct',pct+'%');v3Set('#v3ProgressNumbers',`${done} / ${total}`);const ring=q('#v3ProgressRing');if(ring)ring.style.setProperty('--p',pct);
+  const host=q('#v3OwnerProgress');if(!host)return;host.innerHTML=['SONKI','SONKA','Commun'].map(owner=>{const a=scope.filter(t=>t.owner===owner),d=a.filter(t=>t.done).length,p=a.length?Math.round(d/a.length*100):0,label=owner==='Commun'?'À deux':owner;return `<div class="${owner.toLowerCase()}"><span><b>${label}</b><em>${d} / ${a.length}</em></span><i><u style="width:${p}%"></u></i></div>`}).join('');
+}
+function renderV3Distribution(){
+  const scope=v3Scope().filter(t=>!t.done),s=v3OwnerCount(scope,'SONKI'),a=v3OwnerCount(scope,'SONKA'),d=v3OwnerCount(scope,'Commun'),total=s+a+d||1;v3Set('#v3SonkiCount',s);v3Set('#v3SonkaCount',a);v3Set('#v3DuoCount',d);
+  const ps=s/total*100,pa=a/total*100;const donut=q('#v3OwnerDonut');if(donut)donut.style.background=`conic-gradient(#f24f91 0 ${ps}%, #4aa8ff ${ps}% ${ps+pa}%, #768196 ${ps+pa}% 100%)`;
+  const legend=q('#v3OwnerLegend');if(legend)legend.innerHTML=`<p><i class="sonki"></i><b>SONKI</b><span>${Math.round(s/total*100)}% (${s})</span></p><p><i class="sonka"></i><b>SONKA</b><span>${Math.round(a/total*100)}% (${a})</span></p><p><i class="duo"></i><b>À deux</b><span>${Math.round(d/total*100)}% (${d})</span></p>`;
+}
+function renderV3CalendarAgenda(){
+  const host=q('#v3CalendarAgenda');if(!host)return;const arr=v3Scope().filter(t=>!t.done&&days(t.dueDate)>=0).sort((a,b)=>parse(a.dueDate)-parse(b.dueDate)).slice(0,4);host.innerHTML=arr.map(t=>`<button type="button" data-cal-open="${t.id}"><span class="v3-task-dot ${t.owner.toLowerCase()}"></span><div><b>${esc(t.title)}</b><small>${esc(t.category)}</small></div><em>${timing(t)}</em></button>`).join('');qa('[data-cal-open]').forEach(b=>b.addEventListener('click',()=>{const t=tasks.find(x=>x.id===b.dataset.calOpen);if(t)openModal(t);}));
+}
+function syncV3OwnerButtons(){qa('[data-v3-owner]').forEach(b=>b.classList.toggle('active',b.dataset.v3Owner===activeOwner));}
+function renderV3(){renderV3Universes();renderV3Metrics();renderV3Activity();renderV3SevenDays();renderV3Progress();renderV3Distribution();renderV3CalendarAgenda();syncV3OwnerButtons();}
+
+qa('[data-v3-owner]').forEach(btn=>btn.addEventListener('click',()=>{activeOwner=btn.dataset.v3Owner;clearSmart();qa('.space-item').forEach(b=>b.classList.toggle('active',b.dataset.owner===activeOwner));renderAll();}));
+qa('[data-v3-add]').forEach(btn=>btn.addEventListener('click',()=>openModal()));
+q('[data-v3-go-week]')?.addEventListener('click',()=>{smart='week';renderAll();});
+qa('[data-v3-filter]').forEach(btn=>btn.addEventListener('click',()=>{qa('[data-v3-filter]').forEach(x=>x.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.v3Filter;if(f==='all'){smart=null;q('#statusFilter').value='all';}else if(f==='week'){smart='week';q('#statusFilter').value='all';}else if(f==='done'){smart='done';q('#statusFilter').value='done';}else{smart=null;q('#statusFilter').value='todo';}renderAll();}));
+
+const __v3RenderAll=renderAll;
+renderAll=function(){__v3RenderAll();renderV3();};
+renderV3();
