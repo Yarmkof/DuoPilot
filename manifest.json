@@ -1,12 +1,12 @@
 {
-  "name": "DuoPilot",
+  "name": "DuoPilot V2",
   "short_name": "DuoPilot",
-  "description": "Votre copilote pour les échéances SONKI, SONKA et la vie à deux.",
+  "description": "Votre cockpit collaboratif SONKI, SONKA et À deux.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f2f4f6",
-  "theme_color": "#6c757d",
+  "background_color": "#08111f",
+  "theme_color": "#08111f",
   "icons": [
     {
       "src": "assets/icon-192.png",
@@ -25,7 +25,7 @@
     "standalone",
     "minimal-ui"
   ],
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "categories": [
     "productivity",
     "utilities"

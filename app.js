@@ -1,5 +1,5 @@
 
-window.DUOPILOT_VERSION = "1.12";
+window.DUOPILOT_VERSION = "2.0.0";
 const TASKS_KEY = "duopilot.tasks.v1";
 const UNIVERSES_KEY = "duopilot.universes.v2";
 const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
@@ -648,7 +648,116 @@ if (homeBrand) {
     if (category) category.value = "all";
     if (status) status.value = "all";
 
+    
+// =========================================================
+// DuoPilot V2.0 — PWA Outlook-inspired responsive shell
+// =========================================================
+function updateAppbarProfile(){
+  const profile=q("#appbarProfileName");
+  const avatar=q(".appbar-profile-avatar");
+  if(!profile||!avatar) return;
+  const map={
+    all:["DUO","∞"],
+    SONKI:["SONKI","S"],
+    SONKA:["SONKA","S"],
+    Commun:["À DEUX","∞"]
+  };
+  const [name,letter]=map[activeOwner]||map.all;
+  profile.textContent=name;
+  avatar.textContent=letter;
+  avatar.dataset.owner=activeOwner;
+}
+
+const ANALYTICS_COLORS=["#ec8fbd","#3979f6","#9b6cf4","#65c5a4","#e7a759","#7e90a6","#c65f72","#4da8d8"];
+
+function renderUniverseAnalytics(){
+  const donut=q("#universeDonut");
+  const legend=q("#universeLegend");
+  const totalEl=q("#analyticsTotal");
+  const donutTotal=q("#donutTotal");
+  if(!donut||!legend) return;
+
+  const scope=tasks.filter(t=>!t.done&&(activeOwner==="all"||t.owner===activeOwner));
+  const counts={};
+  scope.forEach(t=>counts[t.category]=(counts[t.category]||0)+1);
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,7);
+  const total=entries.reduce((s,[,n])=>s+n,0);
+
+  totalEl.textContent=total;
+  donutTotal.textContent=total;
+
+  if(!total){
+    donut.style.background="conic-gradient(#263347 0 100%)";
+    legend.innerHTML='<div class="analytics-empty">Aucune échéance active</div>';
+    return;
+  }
+
+  let cursor=0;
+  const stops=[];
+  entries.forEach(([name,n],i)=>{
+    const start=cursor;
+    const end=cursor+(n/total*100);
+    const color=ANALYTICS_COLORS[i%ANALYTICS_COLORS.length];
+    stops.push(`${color} ${start}% ${end}%`);
+    cursor=end;
+  });
+  donut.style.background=`conic-gradient(${stops.join(",")})`;
+
+  legend.innerHTML=entries.map(([name,n],i)=>{
+    const pct=Math.round(n/total*100);
+    return `<button type="button" class="legend-row" data-universe-analytics="${esc(name)}">
+      <span class="legend-dot" style="--legend-color:${ANALYTICS_COLORS[i%ANALYTICS_COLORS.length]}"></span>
+      <span>${esc(name)}</span><b>${n}</b><small>${pct}%</small>
+    </button>`;
+  }).join("");
+
+  qa("[data-universe-analytics]").forEach(btn=>btn.addEventListener("click",()=>{
+    const name=btn.dataset.universeAnalytics;
+    const filter=q("#categoryFilter");
+    const side=q("#sidebarUniverseSelect");
+    if(filter) filter.value=name;
+    if(side) side.value=name;
+    clearSmart();
     renderAll();
+  }));
+}
+
+function updateMobileTabs(){
+  qa(".mobile-tab[data-mobile-view]").forEach(b=>b.classList.toggle("active",b.dataset.mobileView===activeOwner));
+}
+
+q("#appbarSearchBtn")?.addEventListener("click",()=>q("#searchDialog")?.showModal());
+q("#mobileFab")?.addEventListener("click",()=>openModal());
+q("#mobileUniversBtn")?.addEventListener("click",()=>{
+  const sidebar=q("#sidebar");
+  const backdrop=q("#sidebarBackdrop");
+  sidebar?.classList.add("open");
+  backdrop?.classList.remove("hidden");
+  document.body.classList.add("mobile-menu-open");
+  setTimeout(()=>q("#sidebarUniverseSelect")?.focus(),180);
+});
+q("#mobileMoreBtn")?.addEventListener("click",()=>q("#helpDialog")?.showModal());
+qa(".mobile-tab[data-mobile-view]").forEach(btn=>btn.addEventListener("click",()=>{
+  activeOwner=btn.dataset.mobileView;
+  clearSmart();
+  qa(".space-item").forEach(b=>{
+    const active=b.dataset.owner===activeOwner;
+    b.classList.toggle("active",active);
+    b.setAttribute("aria-pressed",String(active));
+  });
+  renderAll();
+}));
+
+const __v2RenderAll = renderAll;
+renderAll = function(){
+  __v2RenderAll();
+  updateAppbarProfile();
+  renderUniverseAnalytics();
+  updateMobileTabs();
+  if(typeof renderReminderCenter==="function") renderReminderCenter();
+};
+
+renderAll();
     if (typeof closeSide === "function") closeSide();
     window.scrollTo({top: 0, behavior: "smooth"});
   };

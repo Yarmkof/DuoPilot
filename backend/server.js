@@ -18,9 +18,18 @@ if(!VAPID_PUBLIC_KEY||!VAPID_PRIVATE_KEY){
 webpush.setVapidDetails(VAPID_SUBJECT,VAPID_PUBLIC_KEY,VAPID_PRIVATE_KEY);
 
 import fs from "fs";
-fs.mkdirSync(new URL(".",`file://${process.cwd()}/${DB_PATH}`).pathname.replace(/\/[^/]+$/,""),{recursive:true});
+import path from "path";
 
-const db=new Database(DB_PATH);
+let effectiveDbPath=DB_PATH;
+try{
+  fs.mkdirSync(path.dirname(DB_PATH),{recursive:true});
+}catch(error){
+  console.warn(`Cannot create ${path.dirname(DB_PATH)}; falling back to local ./data storage`,error.message);
+  effectiveDbPath="./data/duopilot.sqlite";
+  fs.mkdirSync(path.dirname(effectiveDbPath),{recursive:true});
+}
+
+const db=new Database(effectiveDbPath);
 db.pragma("journal_mode = WAL");
 db.exec(`
 CREATE TABLE IF NOT EXISTS subscriptions(

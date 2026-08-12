@@ -1,11 +1,11 @@
-const CACHE="duopilot-v112-notifications";
+const CACHE="duopilot-v200-pwa-outlook";
 const ASSETS=[
   "./",
   "./index.html",
-  "./styles.css?v=1.12",
-  "./app.js?v=1.12",
+  "./styles.css?v=2.0.0",
+  "./app.js?v=2.0.0",
   "./manifest.json",
-  "./config.js?v=1.12",
+  "./config.js?v=2.0.0",
   "./assets/icon-180.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png",
