@@ -1,3 +1,11 @@
+# DuoPilot V2.3 — Calendrier compact + colonne droite équilibrée
+
+- Calendrier compact
+- À venir / Cette semaine / En retard déplacés sous Prochaine priorité
+- Trois cartes identiques et équilibrées
+- Responsive conservé
+- Notifications conservées
+
 # DuoPilot V2.2 — Central Insights
 
 ## Changements visuels

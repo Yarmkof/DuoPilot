@@ -2452,3 +2452,58 @@ body{font-size:14px!important;letter-spacing:-.008em}
     width:32px!important;height:32px!important;
   }
 }
+
+
+/* =========================================================
+   DuoPilot V2.3 — Right rail balanced + compact calendar
+   ========================================================= */
+.right-kpi-stack{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:10px;
+}
+.right-kpi-stack > *{
+  min-width:0!important;
+  width:100%!important;
+  margin:0!important;
+  min-height:88px!important;
+  height:88px!important;
+  padding:13px 14px!important;
+  border-radius:14px!important;
+}
+.right-kpi-stack > * h3,
+.right-kpi-stack > * strong{
+  font-size:1.15rem!important;
+}
+.dp-compact-calendar{
+  align-self:start!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:390px!important;
+  overflow:hidden!important;
+  padding:14px 16px!important;
+}
+.dp-compact-calendar .calendar-grid{
+  grid-auto-rows:minmax(30px,38px)!important;
+  min-height:0!important;
+  height:auto!important;
+  gap:3px!important;
+}
+.dp-compact-calendar .calendar-day{
+  min-height:30px!important;
+  height:34px!important;
+  padding:0!important;
+}
+.dp-compact-calendar .calendar-weekdays{
+  min-height:24px!important;
+  margin-bottom:3px!important;
+}
+@media (max-width:1100px){
+  .right-kpi-stack{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+@media (max-width:720px){
+  .right-kpi-stack{grid-template-columns:1fr;gap:8px;}
+  .right-kpi-stack > *{height:auto!important;min-height:72px!important;}
+  .dp-compact-calendar{max-height:none!important;}
+}

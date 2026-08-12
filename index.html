@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#08111f">
 <title>DuoPilot</title>
 <link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=2.2.0">
+<link rel="stylesheet" href="styles.css?v=2.3.0">
 
   <meta name="theme-color" content="#6c757d">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -287,5 +287,38 @@
   </dialog>
 
   <script src="config.js?v=2.2.0"></script>
-  <script src="app.js?v=2.2.0"></script>
+  <script src="app.js?v=2.3.0"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const norm = s => (s || "").replace(/\s+/g," ").trim().toLowerCase();
+  const all = [...document.querySelectorAll("body *")];
+
+  const findCardByLabel = (label) => {
+    const el = all.find(e => norm(e.textContent) === norm(label));
+    if (!el) return null;
+    return el.closest(".stat-card, .metric-card, .summary-card, .kpi-card, article, .card") || el.parentElement;
+  };
+
+  const priority = findCardByLabel("Prochaine priorité");
+  const cards = ["À venir","Cette semaine","En retard"].map(findCardByLabel).filter(Boolean);
+
+  if (priority && cards.length) {
+    const host = priority.parentElement;
+    let stack = document.querySelector(".right-kpi-stack");
+    if (!stack) {
+      stack = document.createElement("div");
+      stack.className = "right-kpi-stack";
+      priority.insertAdjacentElement("afterend", stack);
+    }
+    cards.forEach(c => stack.appendChild(c));
+  }
+
+  // Tag calendar card for compact sizing even if class names evolve.
+  const calTitle = all.find(e => norm(e.textContent) === "calendrier");
+  const cal = calTitle && (calTitle.closest(".calendar-card, article, .card, section") || calTitle.parentElement);
+  if (cal) cal.classList.add("dp-compact-calendar");
+});
+</script>
+
 </body></html>
