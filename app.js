@@ -1,5 +1,5 @@
 
-window.DUOPILOT_VERSION = "2.1.0";
+window.DUOPILOT_VERSION = "2.2.0";
 const TASKS_KEY = "duopilot.tasks.v1";
 const UNIVERSES_KEY = "duopilot.universes.v2";
 const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
@@ -668,7 +668,7 @@ function updateAppbarProfile(){
   avatar.dataset.owner=activeOwner;
 }
 
-const ANALYTICS_COLORS=["#ec8fbd","#3979f6","#9b6cf4","#65c5a4","#e7a759","#7e90a6","#c65f72","#4da8d8"];
+const ANALYTICS_COLORS=["#FF6B8A","#22C1C3","#F6C85F","#7A77FF","#6DD3A0","#FF9F66","#5AB2FF","#C987E8"];
 
 
 function renderUniverseAnalytics(){

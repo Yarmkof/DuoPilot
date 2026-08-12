@@ -1,11 +1,11 @@
-const CACHE="duopilot-v210-fine-spartan";
+const CACHE="duopilot-v220-central-insights";
 const ASSETS=[
   "./",
   "./index.html",
-  "./styles.css?v=2.1.0",
-  "./app.js?v=2.1.0",
+  "./styles.css?v=2.2.0",
+  "./app.js?v=2.2.0",
   "./manifest.json",
-  "./config.js?v=2.1.0",
+  "./config.js?v=2.2.0",
   "./assets/icon-180.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png",

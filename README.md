@@ -1,29 +1,34 @@
-# DuoPilot V2.1 — Interface affinée + Spartan + camembert
+# DuoPilot V2.2 — Central Insights
 
-Cette version affine la V2.0 sans retirer les fonctions existantes.
+## Changements visuels
+- volet gauche encore réduit ;
+- espace central mieux exploité ;
+- Univers déplacé sous les échéances ;
+- Focus déplacé dans la zone centrale ;
+- À deux déplacé dans la zone centrale ;
+- calendrier conservé dans la colonne droite ;
+- nouvelle palette du camembert ;
+- responsive PC / tablette / smartphone maintenu ;
+- League Spartan conservée.
 
-## Visuel
-- police League Spartan / Spartan ;
-- sidebar et header plus fins ;
-- cartes plus compactes ;
-- espacements, rayons et ombres réduits ;
-- densité visuelle améliorée ;
-- responsive PC / tablette / smartphone retravaillé.
+## Camembert
+Nouvelle palette :
+- corail ;
+- turquoise ;
+- jaune doux ;
+- indigo ;
+- vert menthe ;
+- orange pêche ;
+- bleu ciel ;
+- violet.
 
-## Camembert par univers
-- camembert/donut dynamique ;
-- total réel des échéances actives au centre ;
-- légende avec nombre et pourcentage ;
-- clic sur un univers pour filtrer ;
-- affichage également sur smartphone.
-
-Le nombre central est dynamique : il dépend des échéances actives de la vue courante.
+Le total au centre reste dynamique.
 
 ## Notifications
-Les notifications Web Push, le centre de notifications et le backend Railway de la V2.0 sont conservés.
+Le système de notifications et le backend Railway restent inchangés.
 
 ## Summary GitHub Desktop
-DuoPilot V2.1 - Interface affinée + Spartan + camembert
+DuoPilot V2.2 - Central Insights + volet affiné
 
 ## Site
 https://yarmkof.github.io/DuoPilot/
