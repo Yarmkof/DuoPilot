@@ -1,33 +1,29 @@
-# DuoPilot V2.0 — PWA inspirée d’Outlook
+# DuoPilot V2.1 — Interface affinée + Spartan + camembert
 
-Cette version repart de la V1.12 et conserve les fonctions existantes tout en
-modernisant fortement l’interface desktop, tablette et smartphone.
+Cette version affine la V2.0 sans retirer les fonctions existantes.
 
-## Interface
-- shell sombre type application/PWA ;
-- barre supérieure avec recherche, notifications, aide et profil actif ;
-- SONKI / SONKA mis en avant dans la navigation ;
-- cockpit 4 cartes ;
-- panneau analytique par univers ;
-- navigation mobile fixe + bouton d’ajout flottant ;
-- interface responsive PC / tablette / smartphone ;
-- cache PWA passé en V2.0.0.
+## Visuel
+- police League Spartan / Spartan ;
+- sidebar et header plus fins ;
+- cartes plus compactes ;
+- espacements, rayons et ombres réduits ;
+- densité visuelle améliorée ;
+- responsive PC / tablette / smartphone retravaillé.
+
+## Camembert par univers
+- camembert/donut dynamique ;
+- total réel des échéances actives au centre ;
+- légende avec nombre et pourcentage ;
+- clic sur un univers pour filtrer ;
+- affichage également sur smartphone.
+
+Le nombre central est dynamique : il dépend des échéances actives de la vue courante.
 
 ## Notifications
-- centre de notifications conservé ;
-- activation des notifications navigateur/PWA ;
-- synchronisation Web Push vers Railway ;
-- bouton de test ;
-- Service Worker capable de recevoir les Push ;
-- backend `/health` pour vérifier Railway.
-
-## Correctif Railway
-Le backend crée désormais automatiquement le dossier SQLite. Si `/data`
-n’est pas disponible, il bascule sur `./data/duopilot.sqlite` au lieu de planter.
-Pour une vraie persistance après redéploiement, un volume Railway reste recommandé.
+Les notifications Web Push, le centre de notifications et le backend Railway de la V2.0 sont conservés.
 
 ## Summary GitHub Desktop
-DuoPilot V2.0 - Nouvelle interface PWA + notifications
+DuoPilot V2.1 - Interface affinée + Spartan + camembert
 
 ## Site
 https://yarmkof.github.io/DuoPilot/

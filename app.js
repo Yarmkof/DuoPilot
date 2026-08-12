@@ -1,5 +1,5 @@
 
-window.DUOPILOT_VERSION = "2.0.0";
+window.DUOPILOT_VERSION = "2.1.0";
 const TASKS_KEY = "duopilot.tasks.v1";
 const UNIVERSES_KEY = "duopilot.universes.v2";
 const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
@@ -670,44 +670,62 @@ function updateAppbarProfile(){
 
 const ANALYTICS_COLORS=["#ec8fbd","#3979f6","#9b6cf4","#65c5a4","#e7a759","#7e90a6","#c65f72","#4da8d8"];
 
+
 function renderUniverseAnalytics(){
   const donut=q("#universeDonut");
   const legend=q("#universeLegend");
   const totalEl=q("#analyticsTotal");
   const donutTotal=q("#donutTotal");
-  if(!donut||!legend) return;
+  if(!donut||!legend||!donutTotal) return;
 
-  const scope=tasks.filter(t=>!t.done&&(activeOwner==="all"||t.owner===activeOwner));
+  const scope=tasks.filter(t=>{
+    if(t.done) return false;
+    if(activeOwner==="all") return true;
+    if(activeOwner==="Commun") return t.owner==="Commun";
+    return t.owner===activeOwner;
+  });
+
   const counts={};
-  scope.forEach(t=>counts[t.category]=(counts[t.category]||0)+1);
-  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,7);
-  const total=entries.reduce((s,[,n])=>s+n,0);
+  scope.forEach(t=>{
+    const category=(t.category||"Autres").trim()||"Autres";
+    counts[category]=(counts[category]||0)+1;
+  });
 
-  totalEl.textContent=total;
+  const entries=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const total=entries.reduce((sum,[,count])=>sum+count,0);
+
+  if(totalEl) totalEl.textContent=total;
   donutTotal.textContent=total;
 
   if(!total){
-    donut.style.background="conic-gradient(#263347 0 100%)";
-    legend.innerHTML='<div class="analytics-empty">Aucune échéance active</div>';
+    donut.classList.add("is-empty");
+    donut.style.setProperty("--donut-gradient","#243247 0 100%");
+    legend.innerHTML='<div class="analytics-empty">Aucune échéance active dans cette vue.</div>';
     return;
   }
 
+  donut.classList.remove("is-empty");
   let cursor=0;
   const stops=[];
-  entries.forEach(([name,n],i)=>{
+
+  entries.forEach(([name,count],index)=>{
     const start=cursor;
-    const end=cursor+(n/total*100);
-    const color=ANALYTICS_COLORS[i%ANALYTICS_COLORS.length];
-    stops.push(`${color} ${start}% ${end}%`);
+    const end=cursor+(count/total*100);
+    const color=ANALYTICS_COLORS[index%ANALYTICS_COLORS.length];
+    stops.push(`${color} ${start.toFixed(2)}% ${end.toFixed(2)}%`);
     cursor=end;
   });
-  donut.style.background=`conic-gradient(${stops.join(",")})`;
 
-  legend.innerHTML=entries.map(([name,n],i)=>{
-    const pct=Math.round(n/total*100);
+  donut.style.setProperty("--donut-gradient",stops.join(","));
+
+  legend.innerHTML=entries.map(([name,count],index)=>{
+    const pct=Math.round((count/total)*100);
+    const color=ANALYTICS_COLORS[index%ANALYTICS_COLORS.length];
     return `<button type="button" class="legend-row" data-universe-analytics="${esc(name)}">
-      <span class="legend-dot" style="--legend-color:${ANALYTICS_COLORS[i%ANALYTICS_COLORS.length]}"></span>
-      <span>${esc(name)}</span><b>${n}</b><small>${pct}%</small>
+      <span class="legend-dot" style="--legend-color:${color}"></span>
+      <span class="legend-name">${esc(name)}</span>
+      <b>${count}</b>
+      <small>${pct}%</small>
     </button>`;
   }).join("");
 
@@ -721,6 +739,7 @@ function renderUniverseAnalytics(){
     renderAll();
   }));
 }
+
 
 function updateMobileTabs(){
   qa(".mobile-tab[data-mobile-view]").forEach(b=>b.classList.toggle("active",b.dataset.mobileView===activeOwner));
