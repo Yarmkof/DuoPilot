@@ -1,11 +1,11 @@
-const CACHE="duopilot-v220-central-insights";
+const CACHE="duopilot-v240-right-rail";
 const ASSETS=[
   "./",
   "./index.html",
-  "./styles.css?v=2.2.0",
-  "./app.js?v=2.2.0",
+  "./styles.css?v=2.4.0",
+  "./app.js?v=2.4.0",
   "./manifest.json",
-  "./config.js?v=2.2.0",
+  "./config.js?v=2.4.0",
   "./assets/icon-180.png",
   "./assets/icon-192.png",
   "./assets/icon-512.png",

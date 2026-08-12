@@ -1,42 +1,17 @@
-# DuoPilot V2.3 — Calendrier compact + colonne droite équilibrée
+# DuoPilot V2.4 — Colonne droite propre
 
-- Calendrier compact
-- À venir / Cette semaine / En retard déplacés sous Prochaine priorité
-- Trois cartes identiques et équilibrées
-- Responsive conservé
-- Notifications conservées
-
-# DuoPilot V2.2 — Central Insights
-
-## Changements visuels
-- volet gauche encore réduit ;
-- espace central mieux exploité ;
-- Univers déplacé sous les échéances ;
-- Focus déplacé dans la zone centrale ;
-- À deux déplacé dans la zone centrale ;
-- calendrier conservé dans la colonne droite ;
-- nouvelle palette du camembert ;
-- responsive PC / tablette / smartphone maintenu ;
-- League Spartan conservée.
-
-## Camembert
-Nouvelle palette :
-- corail ;
-- turquoise ;
-- jaune doux ;
-- indigo ;
-- vert menthe ;
-- orange pêche ;
-- bleu ciel ;
-- violet.
-
-Le total au centre reste dynamique.
-
-## Notifications
-Le système de notifications et le backend Railway restent inchangés.
+## Disposition
+- Univers déplacé dans la colonne droite ;
+- Focus déplacé dans la colonne droite ;
+- À deux déplacé dans la colonne droite ;
+- suppression des doublons sous la liste des échéances ;
+- calendrier placé sous ces trois modules et rendu compact ;
+- volet gauche légèrement réduit ;
+- responsive PC / tablette / smartphone conservé ;
+- notifications Web Push conservées.
 
 ## Summary GitHub Desktop
-DuoPilot V2.2 - Central Insights + volet affiné
+DuoPilot V2.4 - Colonne droite + calendrier compact
 
 ## Site
 https://yarmkof.github.io/DuoPilot/

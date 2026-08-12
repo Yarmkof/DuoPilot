@@ -1,5 +1,5 @@
 
-window.DUOPILOT_VERSION = "2.3.0";
+window.DUOPILOT_VERSION = "2.4.0";
 const TASKS_KEY = "duopilot.tasks.v1";
 const UNIVERSES_KEY = "duopilot.universes.v2";
 const DEFAULT_UNIVERSES = ["Maison", "Véhicule", "Administratif", "Santé", "Professionnel", "Voyage", "Autre"];
