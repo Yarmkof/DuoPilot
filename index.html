@@ -1,346 +1,134 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#08111f">
-<title>DuoPilot</title>
-<link rel="manifest" href="manifest.json">
-<link rel="stylesheet" href="styles.css?v=2.4.0">
-
-  <meta name="theme-color" content="#6c757d">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="DuoPilot">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="format-detection" content="telephone=no">
-  <link rel="apple-touch-icon" href="assets/icon-180.png">
-
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4f46e5">
+  <title>DuoPilot</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body data-theme="overview">
-<div class="ambient a1"></div><div class="ambient a2"></div>
-<div class="app-shell">
-<aside class="sidebar" id="sidebar">
-  <div class="brand" id="homeBrand" role="button" tabindex="0" aria-label="Retour à la vue d’ensemble"><div class="brand-symbol"><span></span><span></span></div><div><strong>DuoPilot</strong><small>Orchestrez votre quotidien</small></div></div>
-  <button class="new-task" id="quickAddBtn"><span>＋</span> Nouvelle échéance</button>
-  <div class="sidebar-label">Espaces</div>
-  <nav class="space-nav">
-    <button class="space-item active" aria-pressed="true" data-owner="all" data-tooltip="Affiche toutes les échéances de SONKI, SONKA et celles gérées à deux."><span class="space-icon">◈</span><span>Vue d’ensemble</span><b id="globalBadge">0</b></button>
-    <button class="space-item" aria-pressed="false" data-owner="SONKI" data-tooltip="Affiche uniquement les échéances attribuées à SONKI."><span class="person-avatar photo-avatar"><img src="assets/sonki-lion.png" alt="Lion SONKI"></span><span>SONKI</span><b id="christelleBadge">0</b></button>
-    <button class="space-item" aria-pressed="false" data-owner="SONKA" data-tooltip="Affiche uniquement les échéances attribuées à SONKA."><span class="person-avatar photo-avatar"><img src="assets/sonka-elephant.jpg" alt="Éléphant SONKA"></span><span>SONKA</span><b id="armandBadge">0</b></button>
-    <button class="space-item" aria-pressed="false" data-owner="Commun" data-tooltip="Affiche les échéances qui concernent SONKI et SONKA ensemble."><span class="space-icon">∞</span><span>À deux</span><b id="communBadge">0</b></button>
-  </nav>
-  <div class="sidebar-label">Raccourcis</div>
-  <div class="shortcut-list">
-    <button class="shortcut" data-smart="today" data-tooltip="Affiche uniquement ce qui arrive aujourd’hui."><span>●</span><span>Aujourd’hui</span><b id="todayBadge">0</b></button>
-    <button class="shortcut" data-smart="week" data-tooltip="Affiche les échéances prévues dans les 7 prochains jours."><span>↗</span><span>7 prochains jours</span><b id="weekBadgeSide">0</b></button>
-    <button class="shortcut" data-smart="overdue" data-tooltip="Affiche les échéances dont la date est déjà dépassée."><span>!</span><span>En retard</span><b id="lateBadgeSide">0</b></button>
-    <button class="shortcut" data-smart="done" data-tooltip="Retrouve les échéances déjà terminées."><span>✓</span><span>Terminées</span><b id="doneBadgeSide">0</b></button>
+<body>
+  <div class="app">
+    <header>
+      <div>
+        <p class="kicker">Pilotez votre quotidien ensemble</p>
+        <h1>DuoPilot</h1>
+      </div>
+      <button id="installBtn" class="secondary hidden">Installer l’app</button>
+    </header>
+
+    <section class="stats">
+      <article><span>À venir</span><strong id="upcoming">0</strong></article>
+      <article><span>Cette semaine</span><strong id="week">0</strong></article>
+      <article><span>En retard</span><strong id="late">0</strong></article>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab active" data-owner="all">Vue globale</button>
+      <button class="tab" data-owner="Christelle">Christelle</button>
+      <button class="tab" data-owner="Armand">Armand</button>
+      <button class="tab" data-owner="Commun">Commun</button>
+    </nav>
+
+    <section class="toolbar">
+      <div>
+        <h2 id="titleView">Toutes les échéances</h2>
+        <p id="dateNow"></p>
+      </div>
+      <button id="addBtn" class="primary">+ Ajouter</button>
+    </section>
+
+    <section class="filters">
+      <select id="categoryFilter">
+        <option value="all">Toutes les catégories</option>
+        <option>Véhicule</option>
+        <option>Maison</option>
+        <option>Administratif</option>
+        <option>Santé</option>
+        <option>Professionnel</option>
+        <option>Voyage</option>
+        <option>Autre</option>
+      </select>
+      <select id="statusFilter">
+        <option value="all">Tous les statuts</option>
+        <option value="todo">À faire</option>
+        <option value="done">Terminées</option>
+        <option value="overdue">En retard</option>
+      </select>
+    </section>
+
+    <section id="taskList" class="task-list"></section>
+    <p id="empty" class="empty hidden">Aucune échéance à afficher.</p>
   </div>
-  <div class="sidebar-label">Univers <span class="help-dot" data-tooltip="Un univers sert à classer vos échéances : Maison, Véhicules, Santé… Vous pouvez en créer autant que vous voulez.">?</span></div>
-      <div class="universe-select-wrap">
-        <select id="sidebarUniverseSelect" class="universe-select" aria-label="Choisir un univers" data-tooltip="Choisissez un univers pour afficher uniquement ses échéances.">
-          <option value="all">Tous les univers</option>
-        </select>
-      </div>
-      <form id="universeForm" class="universe-add" autocomplete="off">
-        <input id="newUniverseInput" type="text" maxlength="30" placeholder="Ajouter un univers…" aria-label="Nouvel univers" data-tooltip="Ajoutez ici une nouvelle rubrique personnalisée : Banque, Animaux, École, Abonnements…">
-        <button type="submit" aria-label="Ajouter l’univers" data-tooltip="Ajouter cet univers à DuoPilot">＋</button>
-      </form>
 
-      <div class="sidebar-footer"><div class="sync-status"><span></span>Données locales</div><button id="installBtn" class="install-button hidden">Installer DuoPilot</button></div>
-</aside>
-<main class="main-panel">
-  <div class="desktop-appbar">
-        <div class="desktop-appbar-left">
-          <div class="appbar-brand-mark"><span></span><span></span><span></span><span></span></div>
-          <strong>DuoPilot</strong>
-        </div>
-        <button id="appbarSearchBtn" class="appbar-search" type="button" aria-label="Rechercher dans DuoPilot">
-          <span>⌕</span><span>Rechercher une échéance, un univers, un mot-clé…</span>
-        </button>
-        <div class="desktop-appbar-right">
-          <button id="searchBtn" type="button" aria-label="Rechercher" data-tooltip="Rechercher dans DuoPilot."><span>⌕</span><small>Rechercher</small></button>
-          <button id="notificationBtn" class="notification-trigger" type="button" aria-label="Notifications" data-tooltip="Afficher les notifications DuoPilot.">
-            <span aria-hidden="true">♧</span><small>Notifications</small><b id="notificationBadge" class="notification-badge hidden">0</b>
-          </button>
-          <button id="helpBtn" type="button" aria-label="Aide" data-tooltip="Aide rapide sur l’utilisation de DuoPilot."><span>?</span><small>Aide</small></button>
-          <div class="appbar-profile" aria-label="Profil actif">
-            <span class="appbar-profile-avatar">S</span><strong id="appbarProfileName">DUO</strong><span>⌄</span>
-          </div>
-        </div>
-      </div>
-
-      <header class="mobile-header"><button id="menuBtn" class="mobile-icon">☰</button><strong>DuoPilot</strong><button id="mobileNotificationBtn" class="mobile-icon mobile-notification" type="button" aria-label="Notifications">🔔<b id="mobileNotificationBadge" class="notification-badge hidden">0</b></button>
-        <button id="mobileAddBtn" class="mobile-add">＋</button></header>
-  <section class="hero">
-    <div><p class="hero-kicker" id="viewEyebrow">Votre cockpit</p><h1 id="titleView">Bonjour 👋</h1><p id="dateNow" class="hero-date"></p><p id="heroSubtitle" class="hero-subtitle">Tout ce qui mérite votre attention, au même endroit.</p></div>
-    <div class="hero-actions"><div class="status-orb" id="statusOrb"><span></span><div><small>État du jour</small><strong id="dailyStatus">Tout va bien</strong></div></div><button id="addBtn" class="primary-action"><span>＋</span> Ajouter</button></div>
-  </section>
-  <section class="pulse-strip">
-    <button class="pulse-card" type="button" data-pulse="upcoming" aria-pressed="false"
-      data-tooltip="Afficher toutes les échéances à venir dans l’espace actuellement sélectionné.">
-      <div><small>À venir</small><strong id="upcoming">0</strong></div><span class="pulse-symbol blue">↗</span>
-    </button>
-    <button class="pulse-card" type="button" data-pulse="week" aria-pressed="false"
-      data-tooltip="Afficher uniquement les échéances prévues dans les 7 prochains jours.">
-      <div><small>Cette semaine</small><strong id="week">0</strong></div><span class="pulse-symbol green week-calendar-icon" aria-hidden="true"></span>
-    </button>
-    <button class="pulse-card" type="button" data-pulse="overdue" aria-pressed="false"
-      data-tooltip="Afficher uniquement les échéances en retard.">
-      <div><small>En retard</small><strong id="late">0</strong></div><span class="pulse-symbol red">!</span>
-    </button>
-    <article class="next-focus"><div><small>Prochaine priorité</small><strong id="nextFocusText">Aucune</strong></div><span class="pulse-symbol gold">✦</span></article>
-  </section>
-  <section class="workspace">
-    <div class="workspace-main">
-      <div class="workspace-toolbar">
+  <dialog id="modal">
+    <form id="taskForm">
+      <div class="modal-head">
         <div>
-          <p class="section-kicker">Échéances</p>
-          <h2 id="listTitle">À surveiller</h2>
+          <p class="kicker">Nouvelle échéance</p>
+          <h2>Ajouter une tâche</h2>
         </div>
-        <div class="toolbar-controls">
-          <select id="categoryFilter" data-tooltip="Filtrer l’affichage par univers.">
-            <option value="all">Toutes les catégories</option>
-            <option>Maison</option>
+        <button type="button" id="closeBtn" class="icon">×</button>
+      </div>
+
+      <div class="grid">
+        <label class="full">Titre
+          <input name="title" required placeholder="Ex. Révision de la Mercedes">
+        </label>
+
+        <label>Responsable
+          <select name="owner">
+            <option>Christelle</option>
+            <option>Armand</option>
+            <option>Commun</option>
+          </select>
+        </label>
+
+        <label>Catégorie
+          <select name="category">
             <option>Véhicule</option>
+            <option>Maison</option>
             <option>Administratif</option>
             <option>Santé</option>
             <option>Professionnel</option>
             <option>Voyage</option>
             <option>Autre</option>
           </select>
-          <select id="statusFilter" data-tooltip="Filtrer les échéances selon leur état.">
-            <option value="all">Tous les statuts</option>
-            <option value="todo">À faire</option>
-            <option value="done">Terminées</option>
-            <option value="overdue">En retard</option>
+        </label>
+
+        <label>Date
+          <input name="dueDate" type="date" required>
+        </label>
+
+        <label>Priorité
+          <select name="priority">
+            <option value="normal">Normale</option>
+            <option value="important">Importante</option>
+            <option value="urgent">Urgente</option>
           </select>
-          <div class="density-switch">
-            <button class="density active" data-mode="comfort">Confort</button>
-            <button class="density" data-mode="compact">Compact</button>
-          </div>
-        </div>
+        </label>
+
+        <fieldset class="full">
+          <legend>Alertes</legend>
+          <label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label>
+          <label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label>
+          <label><input type="checkbox" name="alerts" value="1"> La veille</label>
+          <label><input type="checkbox" name="alerts" value="0"> Le jour même</label>
+        </fieldset>
+
+        <label class="full">Notes
+          <textarea name="notes" rows="3" placeholder="Informations utiles..."></textarea>
+        </label>
       </div>
 
-      <section id="taskList" class="task-list"></section>
-      <div id="empty" class="empty-state hidden">
-        <div class="empty-orbit">✓</div>
-        <h3>Rien à signaler</h3>
-        <p>Cette vue ne contient aucune échéance.</p>
+      <div class="actions">
+        <button type="button" id="cancelBtn" class="secondary">Annuler</button>
+        <button type="submit" class="primary">Enregistrer</button>
       </div>
-    </div>
-
-    <aside class="insight-column right-rail">
-      <section class="insight-card universe-analytics-card">
-        <div class="card-head">
-          <div>
-            <p class="section-kicker">Univers</p>
-            <h3>Répartition active</h3>
-          </div>
-          <span class="analytics-total" id="analyticsTotal">0</span>
-        </div>
-        <div class="universe-analytics-body">
-          <div class="universe-donut" id="universeDonut">
-            <span id="donutTotal">0</span>
-            <small>Total</small>
-          </div>
-          <div class="universe-legend" id="universeLegend"></div>
-        </div>
-      </section>
-
-      <section class="insight-card priority-card">
-        <div class="priority-top">
-          <div>
-            <p class="section-kicker">Focus</p>
-            <h3 id="focusTitle">Aucune priorité</h3>
-          </div>
-          <span id="focusOwner" class="focus-owner">—</span>
-        </div>
-        <p id="focusDate" class="focus-date">Ajoutez une échéance pour commencer.</p>
-        <div class="focus-meter"><span id="focusMeter"></span></div>
-        <p id="focusNotes" class="focus-notes"></p>
-      </section>
-
-      <section class="insight-card duo-card">
-        <div class="duo-avatars">
-          <span class="big-avatar photo-big-avatar"><img src="assets/sonki-lion.png" alt="SONKI"></span>
-          <span class="link-dot">•</span>
-          <span class="big-avatar photo-big-avatar"><img src="assets/sonka-elephant.jpg" alt="SONKA"></span>
-        </div>
-        <div>
-          <p class="section-kicker">À deux</p>
-          <h3>Votre quotidien partagé</h3>
-          <p>Les tâches communes restent visibles sans mélanger les responsabilités personnelles.</p>
-        </div>
-      </section>
-
-      <section class="insight-card calendar-card compact-calendar">
-        <div class="card-head">
-          <div>
-            <p class="section-kicker">Calendrier</p>
-            <h3 id="calendarTitle"></h3>
-          </div>
-          <div class="calendar-nav">
-            <button id="prevMonth">‹</button>
-            <button id="nextMonth">›</button>
-          </div>
-        </div>
-        <div class="calendar-weekdays">
-          <span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span>
-        </div>
-        <div id="calendarGrid" class="calendar-grid"></div>
-      </section>
-    </aside>
-  </section>
-
-<nav class="mobile-bottom-nav" aria-label="Navigation mobile">
-    <button class="mobile-tab active" type="button" data-mobile-view="all"><span>⌂</span><small>Accueil</small></button>
-    <button class="mobile-tab" type="button" data-mobile-view="Commun"><span>♡</span><small>À deux</small></button>
-    <button class="mobile-tab" type="button" id="mobileUniversBtn"><span>⊞</span><small>Univers</small></button>
-    <button class="mobile-tab" type="button" id="mobileMoreBtn"><span>•••</span><small>Plus</small></button>
-  </nav>
-  <button id="mobileFab" class="mobile-fab" type="button" aria-label="Ajouter une échéance">＋</button>
-
-</main>
-</div>
-<div id="sidebarBackdrop" class="sidebar-backdrop hidden"></div>
-<dialog id="modal"><form id="taskForm"><div class="modal-header"><div><p class="section-kicker" id="taskModalKicker">Nouvelle échéance</p><h2 id="taskModalTitle">Ajouter à DuoPilot</h2></div><button id="closeBtn" class="modal-close" type="button">×</button></div><div class="form-grid">
-<label class="full">Titre<input name="title" required maxlength="80" placeholder="Ex. Révision de la Mercedes"></label>
-<label>Responsable<select name="owner"><option>SONKI</option><option>SONKA</option><option>Commun</option></select></label>
-<label>Univers
-  <input name="category" id="taskCategory" type="text" maxlength="30" required
-    placeholder="Ex. Banque, Animaux, École…"
-    autocomplete="off"
-    data-tooltip="Écrivez librement l’univers souhaité. S’il n’existe pas encore, DuoPilot le créera automatiquement.">
-</label>
-<label>Date<input name="dueDate" type="date" required></label>
-<label>Priorité<select name="priority"><option value="normal">Normale</option><option value="important">Importante</option><option value="urgent">Urgente</option></select></label>
-<fieldset class="full"><legend>Alertes</legend><div class="alerts-grid"><label><input type="checkbox" name="alerts" value="14" checked> 2 semaines avant</label><label><input type="checkbox" name="alerts" value="7" checked> 1 semaine avant</label><label><input type="checkbox" name="alerts" value="1"> La veille</label><label><input type="checkbox" name="alerts" value="0"> Le jour même</label></div></fieldset>
-<label class="full">Notes<textarea name="notes" rows="3" placeholder="Ajoutez les détails utiles…"></textarea></label>
-</div><div class="modal-actions"><button id="cancelBtn" class="secondary-action" type="button">Annuler</button><button class="primary-action" id="taskSubmitBtn" type="submit">Enregistrer</button></div></form></dialog>
-
-<dialog id="notificationDialog" class="utility-dialog notification-dialog">
-  <div class="utility-dialog-head">
-    <div>
-      <small class="section-kicker">RAPPELS</small>
-      <h2>Notifications DuoPilot</h2>
-    </div>
-    <button class="utility-close" type="button" data-close-dialog="notificationDialog" aria-label="Fermer">×</button>
-  </div>
-
-  <div class="notification-settings">
-    <div class="notification-status-card">
-      <div>
-        <small>Notifications sur cet appareil</small>
-        <strong id="notificationPermissionLabel">Vérification…</strong>
-        <p id="notificationPermissionHelp">Activez les notifications pour recevoir les rappels DuoPilot.</p>
-      </div>
-      <button id="enableNotificationsBtn" class="primary-action" type="button">Activer</button>
-    </div>
-
-    <div class="push-backend-card">
-      <div>
-        <small>Notifications quand DuoPilot est fermé</small>
-        <strong id="pushBackendStatus">Vérification…</strong>
-        <p id="pushBackendHelp">Connexion au service Railway.</p>
-      </div>
-      <button id="syncPushBtn" class="secondary-action" type="button">Synchroniser</button>
-    </div>
-
-    <div class="notification-note">
-      <strong>Fonctionnement</strong>
-      <p>Les rappels utilisent les choix enregistrés dans chaque échéance : 2 semaines avant, 1 semaine avant, la veille et le jour même.</p>
-    </div>
-  </div>
-
-  <div class="notification-center-head">
-    <div>
-      <small class="section-kicker">PROCHAINS RAPPELS</small>
-      <h3>Calendrier des notifications</h3>
-    </div>
-    <button id="testNotificationBtn" class="secondary-action" type="button">Tester</button>
-  </div>
-  <div id="notificationReminderList" class="notification-reminder-list"></div>
-</dialog>
-
-<dialog id="searchDialog" class="utility-dialog">
-    <div class="utility-dialog-head">
-      <div>
-        <small class="section-kicker">RECHERCHE</small>
-        <h2>Rechercher dans DuoPilot</h2>
-      </div>
-      <button class="utility-close" type="button" data-close-dialog="searchDialog" aria-label="Fermer">×</button>
-    </div>
-
-    <label class="search-field">
-      <span>Recherche</span>
-      <input id="globalSearchInput" type="search" placeholder="Titre, note, univers, SONKI, SONKA…" autocomplete="off">
-    </label>
-
-    <div class="search-meta">
-      <span id="searchResultCount">Commencez à saisir votre recherche.</span>
-    </div>
-
-    <div id="searchResults" class="search-results">
-      <div class="search-empty">
-        <span>⌕</span>
-        <strong>Recherche instantanée</strong>
-        <p>Vous pouvez rechercher dans les titres, les notes, les univers et les responsables.</p>
-      </div>
-    </div>
+    </form>
   </dialog>
 
-  <dialog id="helpDialog" class="utility-dialog help-dialog">
-    <div class="utility-dialog-head">
-      <div>
-        <small class="section-kicker">AIDE DUOPILOT</small>
-        <h2>Comment utiliser DuoPilot ?</h2>
-      </div>
-      <button class="utility-close" type="button" data-close-dialog="helpDialog" aria-label="Fermer">×</button>
-    </div>
-
-    <div class="help-grid">
-      <article>
-        <span>◇</span>
-        <div><strong>Vue d’ensemble</strong><p>Regroupe toutes les échéances et utilise le thème gris neutre.</p></div>
-      </article>
-      <article>
-        <span>🦁</span>
-        <div><strong>SONKI</strong><p>Affiche uniquement les échéances pilotées par SONKI, dans l’univers rose.</p></div>
-      </article>
-      <article>
-        <span>🐘</span>
-        <div><strong>SONKA</strong><p>Affiche uniquement les échéances pilotées par SONKA, dans l’univers bleu.</p></div>
-      </article>
-      <article>
-        <span>∞</span>
-        <div><strong>À deux</strong><p>Réunit les échéances communes aux deux espaces.</p></div>
-      </article>
-      <article>
-        <span>↗</span>
-        <div><strong>Filtres rapides</strong><p>À venir, Cette semaine et En retard sont cliquables et filtrent immédiatement la liste.</p></div>
-      </article>
-      <article>
-        <span>＋</span>
-        <div><strong>Univers personnalisés</strong><p>Dans Nouvelle échéance, saisissez librement l’univers souhaité : Banque, École, Animaux…</p></div>
-      </article>
-    </div>
-
-    <div class="iphone-install-box">
-      <div class="iphone-install-icon">⌂</div>
-      <div>
-        <strong>Installer DuoPilot sur iPhone</strong>
-        <p>Ouvrez DuoPilot dans Safari, touchez <b>Partager</b>, puis <b>Sur l’écran d’accueil</b> et enfin <b>Ajouter</b>.</p>
-      </div>
-    </div>
-  </dialog>
-
-  <script src="config.js?v=2.4.0"></script>
-  <script src="app.js?v=2.4.0"></script>
-</body></html>
+  <script src="app.js"></script>
+</body>
+</html>

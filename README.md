@@ -1,17 +1,23 @@
-# DuoPilot V2.4 — Colonne droite propre
+# DuoPilot V1
 
-## Disposition
-- Univers déplacé dans la colonne droite ;
-- Focus déplacé dans la colonne droite ;
-- À deux déplacé dans la colonne droite ;
-- suppression des doublons sous la liste des échéances ;
-- calendrier placé sous ces trois modules et rendu compact ;
-- volet gauche légèrement réduit ;
-- responsive PC / tablette / smartphone conservé ;
-- notifications Web Push conservées.
+Première ébauche d'une application collaborative d'échéances.
 
-## Summary GitHub Desktop
-DuoPilot V2.4 - Colonne droite + calendrier compact
+## Inclus
+- Espaces Christelle, Armand et Commun
+- Ajout et suppression d'échéances
+- Priorités, catégories et notes
+- Alertes à 2 semaines, 1 semaine, la veille ou le jour même
+- Filtres et compteurs
+- Sauvegarde locale
+- Installation PWA
 
-## Site
-https://yarmkof.github.io/DuoPilot/
+## Lancement
+Dans le dossier :
+
+```bash
+python3 -m http.server 8000
+```
+
+Puis ouvrir http://localhost:8000
+
+Cette V1 ne contient pas encore la synchronisation internet, les comptes utilisateurs, les notifications push réelles ni les e-mails.
